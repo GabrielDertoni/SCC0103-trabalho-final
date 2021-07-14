@@ -13,6 +13,11 @@ public class Interpreter implements Stmt.Visitor<Void> {
 
     @Override
     public Void visitIfStmt(Stmt.If stmt) {
+        if (stmt.conditional.toBoolean()) {
+            stmt.thenBranch.access(this);
+        } else if (stmt.elseBranch != null) {
+            stmt.elseBranch.access(this);
+        }
         return null;
     }
 
@@ -28,6 +33,16 @@ public class Interpreter implements Stmt.Visitor<Void> {
 
     @Override
     public Void visitLoop(Stmt.Loop stmt) {
+        while (stmt.condition.evaluate().toBoolean()) {
+            stmt.body.access(this);
+        }
+
+        return null;
+    }
+
+    @Override
+    public Void visitBlock(Stmt.Block stmt) {
+
         return null;
     }
 }
