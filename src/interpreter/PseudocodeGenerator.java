@@ -220,11 +220,11 @@ public class PseudocodeGenerator implements Stmt.Visitor<String>, Expr.Visitor<S
 
     private int getPrecedenceOf(Expr.Binary.Operator operator) {
         switch (operator) {
+            case OR:             return 0;
+            case AND:            return 1;
             case NOT_EQUAL, EQUAL,
-                    LESS, LESS_EQ,
-                    GREATER_EQ:     return 0;
-            case OR:             return 1;
-            case AND:            return 2;
+                 LESS, LESS_EQ, GREATER,
+                 GREATER_EQ:     return 2;
             case PLUS, MINUS:    return 3;
             case MULT, DIV, MOD: return 4;
         }
