@@ -1,10 +1,10 @@
 package interpreter;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Stream;
+import java.util.stream.StreamSupport;
 
-public class Interpreter implements Stmt.Visitor<Void>, Expr.Visitor<Object> {
+public class Interpreter implements Stmt.Visitor<Stream<Void>>, Expr.Visitor<Object> {
 
     private Environment environment;
 
@@ -35,7 +35,24 @@ public class Interpreter implements Stmt.Visitor<Void>, Expr.Visitor<Object> {
                         new Expr.Call(
                                 "imprimeFormatado",
                                 Arrays.asList(
-                                        new Expr.Literal("minha variável possui valor %d"),
+                                        new Expr.Literal("minha variável possui valor %f"),
+                                        new Expr.Variable("minhaVar")
+                                )
+                        )
+                ),
+                new Stmt.VariableAssign(
+                        "minhaVar",
+                        new Expr.Binary(
+                                new Expr.Variable("minhaVar"),
+                                Expr.Binary.Operator.PLUS,
+                                new Expr.Literal(1)
+                        )
+                ),
+                new Stmt.StmtExpr(
+                        new Expr.Call(
+                                "imprimeFormatado",
+                                Arrays.asList(
+                                        new Expr.Literal("minha variável possui valor %f"),
                                         new Expr.Variable("minhaVar")
                                 )
                         )
@@ -45,7 +62,13 @@ public class Interpreter implements Stmt.Visitor<Void>, Expr.Visitor<Object> {
         PseudocodeGenerator gen = new PseudocodeGenerator();
         System.out.println(gen.fromStmts(stmts));
 
-        interpreter.interpret(stmts);
+        Iterator<Void> interpretStream = interpreter.interpret(stmts).iterator();
+
+        Scanner scanner = new Scanner(System.in);
+        while (interpretStream.hasNext()) {
+            interpretStream.next();
+            scanner.nextLine();
+        }
     }
 
     public Interpreter(OutputDevice outputDevice) {
@@ -76,10 +99,8 @@ public class Interpreter implements Stmt.Visitor<Void>, Expr.Visitor<Object> {
         });
     }
 
-    void interpret(List<Stmt> stmts) {
-        for (Stmt stmt : stmts) {
-            stmt.access(this);
-        }
+    Stream<Void> interpret(List<Stmt> stmts) {
+        return stmts.stream().flatMap((stmt) -> stmt.access(this));
     }
 
     public Object evaluate(Expr expr) {
@@ -93,55 +114,78 @@ public class Interpreter implements Stmt.Visitor<Void>, Expr.Visitor<Object> {
     /* Statement visitor */
 
     @Override
-    public Void visitIfStmt(Stmt.If stmt) {
-        if (isTruthy(evaluate(stmt.conditional))) {
-            stmt.thenBranch.access(this);
-        } else if (stmt.elseBranch != null) {
-            stmt.elseBranch.access(this);
-        }
-        return null;
+    public Stream<Void> visitIfStmt(Stmt.If stmt) {
+        return once(() -> {
+            if (isTruthy(evaluate(stmt.conditional))) {
+                stmt.thenBranch.access(this);
+            } else if (stmt.elseBranch != null) {
+                stmt.elseBranch.access(this);
+            }
+            return null;
+        });
     }
 
     @Override
-    public Void visitInteractStmt(Stmt.Interact stmt) {
-        return null;
+    public Stream<Void> visitInteractStmt(Stmt.Interact stmt) {
+        return Stream.empty();
     }
 
     @Override
-    public Void visitMoveStmt(Stmt.Move stmt) {
-        return null;
+    public Stream<Void> visitMoveStmt(Stmt.Move stmt) {
+        return Stream.empty();
     }
 
     @Override
-    public Void visitLoopStmt(Stmt.Loop stmt) {
-        while (isTruthy(evaluate(stmt.condition))) {
-            stmt.body.access(this);
-        }
-        return null;
+    public Stream<Void> visitLoopStmt(Stmt.Loop stmt) {
+        Interpreter iterpreter = this;
+
+        return iteratorToStream(new Iterator<Void>() {
+            private boolean condition = true;
+
+            @Override
+            public boolean hasNext() {
+                return condition;
+            }
+
+            @Override
+            public Void next() {
+                condition = isTruthy(evaluate(stmt.condition));
+                if (condition) {
+                    stmt.body.access(iterpreter);
+                }
+                return null;
+            }
+        });
     }
 
     @Override
-    public Void visitBlockStmt(Stmt.Block stmt) {
+    public Stream<Void> visitBlockStmt(Stmt.Block stmt) {
         interpret(stmt.stmts);
-        return null;
+        return Stream.empty();
     }
 
     @Override
-    public Void visitExprStmt(Stmt.StmtExpr stmt) {
-        stmt.expr.access(this);
-        return null;
+    public Stream<Void> visitExprStmt(Stmt.StmtExpr stmt) {
+        return once(() -> {
+            stmt.expr.access(this);
+            return null;
+        });
     }
 
     @Override
-    public Void visitVariableDeclarationStmt(Stmt.VariableDeclaration stmt) {
-        environment.declareVariable(stmt.varName, stmt.initializer.access(this));
-        return null;
+    public Stream<Void> visitVariableDeclarationStmt(Stmt.VariableDeclaration stmt) {
+        return once(() -> {
+            environment.declareVariable(stmt.varName, stmt.initializer.access(this));
+            return null;
+        });
     }
 
     @Override
-    public Void visitVariableAssignStmt(Stmt.VariableAssign stmt) {
-        environment.declareVariable(stmt.varName, stmt.value.access(this));
-        return null;
+    public Stream<Void> visitVariableAssignStmt(Stmt.VariableAssign stmt) {
+        return once(() -> {
+            environment.declareVariable(stmt.varName, stmt.value.access(this));
+            return null;
+        });
     }
 
     /* Expression visitor */
@@ -255,17 +299,23 @@ public class Interpreter implements Stmt.Visitor<Void>, Expr.Visitor<Object> {
 
             case LESS, LESS_EQ, GREATER, GREATER_EQ, PLUS, MINUS, MULT:
                 if (!(left instanceof Double && right instanceof Double))
-                    throw new InterpreterException(String.format("Operador %s não pode ser usado com esses operandos", operator.toString()));
+                    throw new InterpreterException(
+                            String.format("Operador '%s' não pode ser usado com esses operandos", Expr.Binary.operatorString(operator))
+                    );
 
                 break;
 
 
             case DIV, MOD:
                 if (!(left instanceof Double && right instanceof Double))
-                    throw new InterpreterException(String.format("Operador %s não pode ser usado com esses operandos", operator.toString()));
+                    throw new InterpreterException(
+                            String.format("Operador '%s' não pode ser usado com esses operandos", Expr.Binary.operatorString(operator))
+                    );
 
                 if ((double)right == 0)
-                    throw new InterpreterException(String.format("Divisão por 0 em operador %s", operator.toString()));
+                    throw new InterpreterException(
+                            String.format("Divisão por 0 em operador '%s'", Expr.Binary.operatorString(operator))
+                    );
 
                 break;
         }
@@ -277,5 +327,32 @@ public class Interpreter implements Stmt.Visitor<Void>, Expr.Visitor<Object> {
         if (left == null) return false;
 
         return left.equals(right);
+    }
+
+    private <E> Stream<E> iteratorToStream(Iterator<E> iterator) {
+        Iterable<E> iterable = () -> iterator;
+        return StreamSupport.stream(iterable.spliterator(), false);
+    }
+
+    @FunctionalInterface
+    private interface OnceFunction<E> {
+        E call();
+    }
+
+    private <E> Stream<E> once(OnceFunction<E> function) {
+        return iteratorToStream(new Iterator<E>() {
+            private boolean hasRun = false;
+
+            @Override
+            public boolean hasNext() {
+                return !hasRun;
+            }
+
+            @Override
+            public E next() {
+                hasRun = true;
+                return function.call();
+            }
+        });
     }
 }

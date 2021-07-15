@@ -81,7 +81,11 @@ public abstract class Expr {
         public final Object literal;
 
         public Literal(Object literal) {
-            this.literal = literal;
+            if (literal instanceof Number) {
+                this.literal = ((Number) literal).doubleValue();
+            } else {
+                this.literal = literal;
+            }
         }
 
         @Override
