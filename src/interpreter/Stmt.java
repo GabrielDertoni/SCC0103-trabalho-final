@@ -34,6 +34,8 @@ public abstract class Stmt {
    }
 
    public static class Interact extends Stmt {
+      public Interact() {}
+
       @Override
       public <R> R access(Visitor<R> visitor) {
          return visitor.visitInteractStmt(this);
