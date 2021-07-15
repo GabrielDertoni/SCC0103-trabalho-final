@@ -113,7 +113,7 @@ public class PseudocodeGeneratorTest {
 
     @Test
     public void testVisitMoveStmt() {
-        Stmt.Move stmt = new Stmt.Move(Stmt.Move.Direction.DOWN);
+        Stmt.Move stmt = new Stmt.Move(Direction.DOWN);
         assertEquals("movePara baixo;", generator.visitMoveStmt(stmt));
     }
 
@@ -145,7 +145,7 @@ public class PseudocodeGeneratorTest {
     @Test
     public void testVisitBlockStmt() {
         Stmt.Block stmt = new Stmt.Block(Arrays.asList(
-           new Stmt.Move(Stmt.Move.Direction.UP)
+           new Stmt.Move(Direction.UP)
         ));
 
         String expected = "{\n" +

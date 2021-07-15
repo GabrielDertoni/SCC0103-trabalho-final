@@ -41,9 +41,6 @@ public abstract class Stmt {
    }
 
    public static class Move extends Stmt {
-      public enum Direction {
-         UP, DOWN, LEFT, RIGHT
-      }
 
       public static String getDirectionName(Direction direction) {
          switch (direction) {

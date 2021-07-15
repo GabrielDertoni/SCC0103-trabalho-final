@@ -1,15 +1,74 @@
 package interpreter;
 
-import java.util.HashMap;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
 
-public abstract class Interpreter implements Stmt.Visitor<Void>, Expr.Visitor<Object> {
+public class Interpreter implements Stmt.Visitor<Void>, Expr.Visitor<Object> {
 
-    private Map<String, Object> variables;
+    private Environment environment;
 
-    public Interpreter() {
-        variables = new HashMap<String, Object>();
+    public static void main(String[] args) {
+        Interpreter interpreter = new Interpreter(new OutputDevice() {
+            @Override
+            public void print(String msg) {
+                System.out.println(msg);
+            }
+
+            @Override
+            public void interact() {
+                System.out.println("interacted");
+            }
+
+            @Override
+            public void move(Direction direction) {
+                System.out.println("move " + direction.name());
+            }
+        });
+
+        interpreter.interpret(Arrays.asList(
+                new Stmt.VariableDeclaration(
+                        "minhaVar",
+                        new Expr.Literal(5)
+                ),
+                new Stmt.StmtExpr(
+                        new Expr.Call(
+                                "imprimeFormatado",
+                                Arrays.asList(
+                                        new Expr.Literal("minha variável possui valor %d"),
+                                        new Expr.Variable("minhaVar")
+                                )
+                        )
+                )
+        ));
+    }
+
+    public Interpreter(OutputDevice outputDevice) {
+        this.environment = new Environment(outputDevice);
+
+        addBuiltinFunction("imprime", (env, args) -> {
+            for (Object arg : args) {
+                env.outputDevice.print(arg.toString());
+                env.outputDevice.print(" ");
+            }
+            return null;
+        });
+
+        addBuiltinFunction("imprimeLinha", (env, args) -> {
+            env.callFunction("imprime", args);
+            env.outputDevice.print(" ");
+            return null;
+        });
+
+        addBuiltinFunction("imprimeFormatado", (env, args) -> {
+            if (!(args.get(0) instanceof String)) {
+                throw new RuntimeException("primeiro argumento para função 'imprimeFormatado' tem que ser um texto");
+            }
+
+            String format = (String)args.remove(0);
+            env.outputDevice.print(String.format(format, args.toArray()));
+            return null;
+        });
     }
 
     void interpret(List<Stmt> stmts) {
@@ -20,6 +79,10 @@ public abstract class Interpreter implements Stmt.Visitor<Void>, Expr.Visitor<Ob
 
     public Object evaluate(Expr expr) {
         return expr.access(this);
+    }
+
+    public void addBuiltinFunction(String name, Function<List<Object>, Object> func) {
+        environment.addFunction(name, func);
     }
 
     /* Statement visitor */
@@ -59,14 +122,20 @@ public abstract class Interpreter implements Stmt.Visitor<Void>, Expr.Visitor<Ob
     }
 
     @Override
+    public Void visitExprStmt(Stmt.StmtExpr stmt) {
+        stmt.expr.access(this);
+        return null;
+    }
+
+    @Override
     public Void visitVariableDeclarationStmt(Stmt.VariableDeclaration stmt) {
-        variables.put(stmt.varName, stmt.initializer.access(this));
+        environment.declareVariable(stmt.varName, stmt.initializer.access(this));
         return null;
     }
 
     @Override
     public Void visitVariableAssignStmt(Stmt.VariableAssign stmt) {
-        variables.put(stmt.varName, stmt.value.access(this));
+        environment.declareVariable(stmt.varName, stmt.value.access(this));
         return null;
     }
 
@@ -126,7 +195,17 @@ public abstract class Interpreter implements Stmt.Visitor<Void>, Expr.Visitor<Ob
 
     @Override
     public Object visitCallExpr(Expr.Call expr) {
-        throw new RuntimeException("Not supported");
+        if (!environment.isFunctionDefined(expr.functionName)) {
+            throw new InterpreterException(String.format("função %s não foi definida", expr.functionName));
+        }
+
+        List<Object> arguments = new ArrayList<Object>();
+
+        for (Expr argument : expr.arguments) {
+            arguments.add(argument.access(this));
+        }
+
+        return environment.callFunction(expr.functionName, arguments);
     }
 
     @Override
@@ -141,10 +220,10 @@ public abstract class Interpreter implements Stmt.Visitor<Void>, Expr.Visitor<Ob
 
     @Override
     public Object visitVariableExpr(Expr.Variable expr) {
-        if (!variables.containsKey(expr.name)) {
+        if (!environment.isVariableDefined(expr.name)) {
             throw new InterpreterException(String.format("variável %s foi usada mas não definida", expr.name));
         }
-        return variables.get(expr.name);
+        return environment.lookupVariable(expr.name);
     }
 
     /* Helper functions */
