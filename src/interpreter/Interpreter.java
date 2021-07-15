@@ -26,7 +26,7 @@ public class Interpreter implements Stmt.Visitor<Void>, Expr.Visitor<Object> {
             }
         });
 
-        interpreter.interpret(Arrays.asList(
+        List<Stmt> stmts = Arrays.asList(
                 new Stmt.VariableDeclaration(
                         "minhaVar",
                         new Expr.Literal(5)
@@ -40,7 +40,12 @@ public class Interpreter implements Stmt.Visitor<Void>, Expr.Visitor<Object> {
                                 )
                         )
                 )
-        ));
+        );
+
+        PseudocodeGenerator gen = new PseudocodeGenerator();
+        System.out.println(gen.fromStmts(stmts));
+
+        interpreter.interpret(stmts);
     }
 
     public Interpreter(OutputDevice outputDevice) {
