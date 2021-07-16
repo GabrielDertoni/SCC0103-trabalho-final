@@ -1,6 +1,18 @@
 package interpreter;
 
+import java.awt.Color;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.List;
+
+import javax.swing.*;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
+
+import interpreter.Expr.Binary;
+import interpreter.Expr.Literal;
+import interpreter.Expr.Variable;
+import menus.BlocoArrasta;
 
 public abstract class Stmt {
    public interface Visitor<R> {
@@ -16,15 +28,73 @@ public abstract class Stmt {
 
    public abstract <R> R access(Visitor<R> visitor);
 
+   //============================== IF ==============================
    public static class If extends Stmt {
-      public final Expr conditional;
-      public final Stmt thenBranch;
-      public final Stmt elseBranch;
+      public Expr.Binary conditional;
+      public Stmt thenBranch;
+      public Stmt elseBranch;
 
-      public If(Expr conditional, Stmt thenBranch, Stmt elseBranch) {
-         this.conditional = conditional;
+      public If(Expr.Variable left, Expr.Binary.Operator operator, Expr.Variable right, Stmt thenBranch, Stmt elseBranch) {
+         this.conditional = new Expr.Binary(left, operator, right);
          this.thenBranch = thenBranch;
          this.elseBranch = elseBranch;
+      }
+      
+      public BlocoArrasta block() {
+    	  int x = 700, y = 5;
+    	  int largura = 250, altura = 250;
+    	  
+    	  BlocoArrasta ifBlock = new BlocoArrasta();
+    	  ifBlock.setBounds(x, y, largura, altura);
+    	  ifBlock.setBackground(Color.YELLOW); 
+          
+          JLabel se = new JLabel("Se ");  
+          //se.setBounds(10,30, 200,200);
+          
+          String direction[]={"a Direita", "Cima", "a Esquerda", "Baixo"};        
+          JComboBox dir = new JComboBox(direction);    
+          dir.setBounds(100, 50, 90, 20);
+          
+          JLabel be = new JLabel("for ");  
+          be.setBounds(10,30, 200,200);
+          
+          String operator[]={"igual à", "diferente de"};        
+          JComboBox op = new JComboBox(operator);    
+          op.setBounds(100, 50, 90, 20);
+          
+          String stats[]={"uma parede", "nada", "um inimigo"};        
+          JComboBox st = new JComboBox(stats);    
+          st.setBounds(100, 50, 90, 20);
+          
+          JButton b = new JButton("Show");  
+          b.setBounds(200,100,75,20);  
+          b.addActionListener(new ActionListener() { 
+        	  @Override
+        	  public void actionPerformed(ActionEvent e) {       
+        		  Expr.Variable left = new Expr.Variable((String) dir.getItemAt(dir.getSelectedIndex()));
+        		  String operator = (String) op.getItemAt(op.getSelectedIndex());
+        		  Expr.Variable right = new Expr.Variable((String) st.getItemAt(st.getSelectedIndex()));
+        		  
+        		  if(operator == "igual à") {
+        		         conditional = new Expr.Binary(left, Expr.Binary.Operator.EQUAL, right);
+        		         thenBranch = null;
+        		         elseBranch = null;
+        		  }else {
+        		         conditional = new Expr.Binary(left, Expr.Binary.Operator.NOT_EQUAL, right);
+        		         thenBranch = null;
+        		         elseBranch = null;
+        		  }
+        	  }
+          });           
+          
+          ifBlock.add(se);
+          ifBlock.add(dir);
+          ifBlock.add(be);
+          ifBlock.add(op);
+          ifBlock.add(st);
+          ifBlock.add(b);
+   
+    	  return ifBlock;
       }
 
       @Override
@@ -32,6 +102,7 @@ public abstract class Stmt {
          return visitor.visitIfStmt(this);
       }
    }
+   //================================================================
 
    public static class Interact extends Stmt {
       public Interact() {}
@@ -68,21 +139,50 @@ public abstract class Stmt {
       }
    }
 
+   //============================= LOOP =============================
    public static class Loop extends Stmt {
-      public final Expr condition;
-      public final Stmt body;
+      public Expr.Binary condition;
+      public Stmt body;
 
-      public Loop(Expr condition, Stmt body) {
-         this.condition = condition;
+      public Loop(Expr.Literal number, Stmt body) {
+         this.condition = new Expr.Binary(new Expr.Variable("i"), Expr.Binary.Operator.LESS, number);
          this.body = body;
       }
 
+      public BlocoArrasta block() {
+    	  int x = 700, y = 5;
+    	  int largura = 250, altura = 400;
+    	  
+    	  BlocoArrasta loopBlock = new BlocoArrasta();
+    	  loopBlock.setBounds(x, y, largura, altura);
+    	  loopBlock.setBackground(Color.CYAN); 
+          
+          JLabel repete = new JLabel("Repete ");
+          
+          SpinnerModel value = new SpinnerNumberModel(1, 0, 20, 1);  
+          JSpinner spinner = new JSpinner(value);   
+          spinner.setBounds(100,100,50,30);    
+          
+          spinner.addChangeListener(new ChangeListener() {  
+              public void stateChanged(ChangeEvent e) {
+        		  String right = e.getSource().toString();
+        		  condition = new Expr.Binary(new Expr.Variable("i"), Expr.Binary.Operator.LESS, new Expr.Literal(right));
+        	  }
+          });           
+          
+          loopBlock.add(repete);
+          loopBlock.add(spinner);
+   
+    	  return loopBlock;
+      }
+      
       @Override
       public <R> R access(Visitor<R> visitor) {
          return visitor.visitLoopStmt(this);
       }
    }
-
+   //================================================================
+   
    public static class Block extends Stmt {
       public final List<Stmt> stmts;
 
