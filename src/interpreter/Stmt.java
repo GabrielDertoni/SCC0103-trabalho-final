@@ -3,6 +3,8 @@ package interpreter;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ContainerEvent;
+import java.awt.event.ContainerListener;
 import java.util.List;
 
 import javax.swing.*;
@@ -48,52 +50,59 @@ public abstract class Stmt {
     	  ifBlock.setBounds(x, y, largura, altura);
     	  ifBlock.setBackground(Color.YELLOW); 
           
-          JLabel se = new JLabel("Se ");  
-          //se.setBounds(10,30, 200,200);
-          
-          String direction[]={"a Direita", "Cima", "a Esquerda", "Baixo"};        
-          JComboBox dir = new JComboBox(direction);    
+          String direction[] = {"a Direita", "Cima", "a Esquerda", "Baixo"};        
+          JComboBox<String> dir = new JComboBox<String>(direction);    
           dir.setBounds(100, 50, 90, 20);
           
-          JLabel be = new JLabel("for ");  
-          be.setBounds(10,30, 200,200);
-          
-          String operator[]={"igual à", "diferente de"};        
-          JComboBox op = new JComboBox(operator);    
+          String operator[] = {"igual à", "diferente de"};        
+          JComboBox<String> op = new JComboBox<String>(operator);    
           op.setBounds(100, 50, 90, 20);
           
-          String stats[]={"uma parede", "nada", "um inimigo"};        
-          JComboBox st = new JComboBox(stats);    
+          String stats[] = {"uma parede", "nada", "um inimigo"};        
+          JComboBox<String> st = new JComboBox<String>(stats);    
           st.setBounds(100, 50, 90, 20);
           
-          JButton b = new JButton("Show");  
-          b.setBounds(200,100,75,20);  
-          b.addActionListener(new ActionListener() { 
-        	  @Override
-        	  public void actionPerformed(ActionEvent e) {       
-        		  Expr.Variable left = new Expr.Variable((String) dir.getItemAt(dir.getSelectedIndex()));
-        		  String operator = (String) op.getItemAt(op.getSelectedIndex());
-        		  Expr.Variable right = new Expr.Variable((String) st.getItemAt(st.getSelectedIndex()));
-        		  
-        		  if(operator == "igual à") {
-        		         conditional = new Expr.Binary(left, Expr.Binary.Operator.EQUAL, right);
-        		         thenBranch = null;
-        		         elseBranch = null;
-        		  }else {
-        		         conditional = new Expr.Binary(left, Expr.Binary.Operator.NOT_EQUAL, right);
-        		         thenBranch = null;
-        		         elseBranch = null;
-        		  }
-        	  }
-          });           
+          dir.addActionListener(new ActionListener() {  
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				JComboBox<String> cb = (JComboBox<String>) e.getSource();
+		        String left = (String)cb.getSelectedItem();
+      		  	conditional.left = new Expr.Variable(left);
+			}
+          });
           
-          ifBlock.add(se);
+          op.addActionListener(new ActionListener() {  
+
+  			@Override
+  			public void actionPerformed(ActionEvent e) {
+  				JComboBox<String> cb = (JComboBox<String>) e.getSource();
+  		        String operator = (String)cb.getSelectedItem();
+  		        
+  		        if(operator == "igual à") {
+  		        	conditional.operator = Expr.Binary.Operator.EQUAL;
+ 		        }else {
+ 		        	conditional.operator = Expr.Binary.Operator.NOT_EQUAL;
+ 		        }
+  			}
+           });
+          
+          st.addActionListener(new ActionListener() {  
+
+  			@Override
+  			public void actionPerformed(ActionEvent e) {
+  				JComboBox<String> cb = (JComboBox<String>) e.getSource();
+  		        String right = (String)cb.getSelectedItem();
+        		conditional.right = new Expr.Variable(right);
+  			}
+           }); 
+          
+          ifBlock.add(new JLabel("Se "));
           ifBlock.add(dir);
-          ifBlock.add(be);
+          ifBlock.add(new JLabel("for "));
           ifBlock.add(op);
           ifBlock.add(st);
-          ifBlock.add(b);
-   
+          
     	  return ifBlock;
       }
 
@@ -103,41 +112,6 @@ public abstract class Stmt {
       }
    }
    //================================================================
-
-   public static class Interact extends Stmt {
-      public Interact() {}
-
-      @Override
-      public <R> R access(Visitor<R> visitor) {
-         return visitor.visitInteractStmt(this);
-      }
-   }
-
-   public static class Move extends Stmt {
-
-      public static String getDirectionName(Direction direction) {
-         switch (direction) {
-            case UP:    return "cima";
-            case DOWN:  return "baixo";
-            case LEFT:  return "esquerda";
-            case RIGHT: return "direita";
-         }
-
-         // Unreachable
-         return null;
-      }
-
-      public final Direction direction;
-
-      public Move(Direction direction) {
-         this.direction = direction;
-      }
-
-      @Override
-      public <R> R access(Visitor<R> visitor) {
-         return visitor.visitMoveStmt(this);
-      }
-   }
 
    //============================= LOOP =============================
    public static class Loop extends Stmt {
@@ -155,10 +129,8 @@ public abstract class Stmt {
     	  
     	  BlocoArrasta loopBlock = new BlocoArrasta();
     	  loopBlock.setBounds(x, y, largura, altura);
-    	  loopBlock.setBackground(Color.CYAN); 
-          
-          JLabel repete = new JLabel("Repete ");
-          
+    	  loopBlock.setBackground(Color.CYAN);
+    	    
           SpinnerModel value = new SpinnerNumberModel(1, 0, 20, 1);  
           JSpinner spinner = new JSpinner(value);   
           spinner.setBounds(100,100,50,30);    
@@ -168,17 +140,113 @@ public abstract class Stmt {
         		  String right = e.getSource().toString();
         		  condition = new Expr.Binary(new Expr.Variable("i"), Expr.Binary.Operator.LESS, new Expr.Literal(right));
         	  }
-          });           
+          });
           
-          loopBlock.add(repete);
+          loopBlock.add(new JLabel("Repete "));
           loopBlock.add(spinner);
-   
+          loopBlock.add(new JLabel(" vezes"));
+          
     	  return loopBlock;
       }
       
       @Override
       public <R> R access(Visitor<R> visitor) {
          return visitor.visitLoopStmt(this);
+      }
+   }
+   //================================================================
+
+   //=========================== INTERACT ===========================
+   public static class Interact extends Stmt {
+      public Interact() {}
+
+      public BlocoArrasta block() {
+    	  int x = 700, y = 5;
+    	  int largura = 100, altura = 30;
+    	  
+    	  BlocoArrasta interactBlock = new BlocoArrasta();
+    	  interactBlock.setBounds(x, y, largura, altura);
+    	  interactBlock.setBackground(Color.RED);         
+          
+          interactBlock.add(new JLabel("Interagir"));
+   
+    	  return interactBlock;
+      }
+      
+      @Override
+      public <R> R access(Visitor<R> visitor) {
+         return visitor.visitInteractStmt(this);
+      }
+   }
+   //================================================================
+   
+   //============================= MOVE =============================
+   public static class Move extends Stmt {
+
+      public static String getDirectionName(Direction direction) {
+         switch (direction) {
+            case UP:    return "cima";
+            case DOWN:  return "baixo";
+            case LEFT:  return "esquerda";
+            case RIGHT: return "direita";
+         }
+
+         // Unreachable
+         return null;
+      }
+
+      public Direction direction;
+
+      public Move(Direction direction) {
+         this.direction = direction;
+      }
+
+      public BlocoArrasta block() {
+    	  int x = 700, y = 5;
+    	  int largura = 200, altura = 30;
+    	  
+    	  BlocoArrasta moveBlock = new BlocoArrasta();
+    	  moveBlock.setBounds(x, y, largura, altura);
+    	  moveBlock.setBackground(Color.PINK);         
+ 
+    	  String directions[] = {"a Direita", "Cima", "a Esquerda", "Baixo"};
+          JComboBox<String> dir = new JComboBox<String>(directions);    
+          dir.setBounds(100, 50, 90, 20);
+          
+          dir.addActionListener(new ActionListener() {  
+
+        	  @Override
+        	  public void actionPerformed(ActionEvent e) {
+        		  JComboBox<String> cb = (JComboBox<String>) e.getSource();
+        		  String dir = (String)cb.getSelectedItem();
+		    
+        		  switch(dir) {
+        		  case "a Direita":
+        			  direction = Direction.RIGHT;
+        		      break;
+        		  case "Cima":
+        			  direction = Direction.UP;
+        			  break;
+        		  case "a Esquerda":
+        			  direction = Direction.LEFT;
+        			  break;
+        		  case "Baixo":
+        			  direction = Direction.DOWN;
+        			  break;
+        		  }
+        		  System.out.println(direction);
+        	  }
+          });
+          
+          moveBlock.add(new JLabel("Mova para"));
+          moveBlock.add(dir);
+   
+    	  return moveBlock;
+      }
+      
+      @Override
+      public <R> R access(Visitor<R> visitor) {
+         return visitor.visitMoveStmt(this);
       }
    }
    //================================================================
