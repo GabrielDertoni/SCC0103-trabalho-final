@@ -19,7 +19,7 @@ public class IFBlock extends Stmt.If {
 
 	int x, y, largura, altura;
 	
-	public BlocoArrasta IFblock() {
+	public BlocoArrasta block() {
 		
 		x = 700;
 		y = 5;
@@ -48,7 +48,7 @@ public class IFBlock extends Stmt.If {
 			public void actionPerformed(ActionEvent e) {
 				JComboBox<String> cb = (JComboBox<String>) e.getSource();
 		        String left = (String)cb.getSelectedItem();
-			  	new If(new Expr.Binary(new Expr.Variable(left), Stmt.If.conditional.operator, Stmt.If.conditional.rightHandSide), Stmt.If.thenBranch, Stmt.If.elseBranch);
+			  	//new If(new Expr.Binary(new Expr.Variable(left), Stmt.If.conditional.operator, Stmt.If.conditional.rightHandSide), Stmt.If.thenBranch, Stmt.If.elseBranch);
 			}
 		});
 		
@@ -60,9 +60,9 @@ public class IFBlock extends Stmt.If {
 		        String operator = (String)cb.getSelectedItem();
 		        
 		        if(operator == "igual à") {
-		        	new If(new Expr.Binary(Stmt.If.conditional.leftHandSide, Expr.Binary.Operator.EQUAL, Stmt.If.conditional.rightHandSide), Stmt.If.thenBranch, Stmt.If.elseBranch);
+		        	//new If(new Expr.Binary(Stmt.If.conditional.leftHandSide, Expr.Binary.Operator.EQUAL, Stmt.If.conditional.rightHandSide), Stmt.If.thenBranch, Stmt.If.elseBranch);
 		        }else {
-		        	new If(new Expr.Binary(Stmt.If.conditional.leftHandSide, Expr.Binary.Operator.NOT_EQUAL, Stmt.If.conditional.rightHandSide), Stmt.If.thenBranch, Stmt.If.elseBranch);
+		        	//new If(new Expr.Binary(Stmt.If.conditional.leftHandSide, Expr.Binary.Operator.NOT_EQUAL, Stmt.If.conditional.rightHandSide), Stmt.If.thenBranch, Stmt.If.elseBranch);
 		        }
 			}
 		 });
@@ -73,7 +73,7 @@ public class IFBlock extends Stmt.If {
 			public void actionPerformed(ActionEvent e) {
 				JComboBox<String> cb = (JComboBox<String>) e.getSource();
 		        String right = (String)cb.getSelectedItem();
-			  	new If(new Expr.Binary(Stmt.If.conditional.leftHandSide, Stmt.If.conditional.operator, new Expr.Variable(right)), Stmt.If.thenBranch, Stmt.If.elseBranch);
+			  	//new If(new Expr.Binary(Stmt.If.conditional.leftHandSide, Stmt.If.conditional.operator, new Expr.Variable(right)), Stmt.If.thenBranch, Stmt.If.elseBranch);
 			}
 		 }); 
 		
