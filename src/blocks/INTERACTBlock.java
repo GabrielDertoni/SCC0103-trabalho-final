@@ -12,7 +12,7 @@ public class INTERACTBlock extends Stmt.Interact {
 	
 	int x, y, largura, altura;
 	
-	public BlocoArrasta INTERACTBlock() {
+	public BlocoArrasta block() {
 		
 		x = 700;
 		y = 5;
