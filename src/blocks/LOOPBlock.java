@@ -39,7 +39,7 @@ public class LOOPBlock extends Stmt.Loop {
         spinner.addChangeListener(new ChangeListener() {  
         	public void stateChanged(ChangeEvent e) {
       		String right = e.getSource().toString();
-      		new LOOPBlock(new Expr.Binary(new Expr.Variable("i"), Expr.Binary.Operator.LESS, new Expr.Literal(right)), Stmt.Loop.body);
+      		//new LOOPBlock(new Expr.Binary(new Expr.Variable("i"), Expr.Binary.Operator.LESS, new Expr.Literal(right)), Stmt.Loop.body);
       	  	}
         });
         
