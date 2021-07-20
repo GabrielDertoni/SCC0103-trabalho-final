@@ -14,6 +14,8 @@ import javax.swing.border.EmptyBorder;
 
 public class WindowManager extends JFrame {
 	private JPanel contentPane;
+	private int lvl;
+	private String window;
 
 	/**
 	 * Launch the application.
@@ -34,18 +36,48 @@ public class WindowManager extends JFrame {
 	}
 
 	public WindowManager() {
+		window = "inicio";
 		int x = getBounds().x;
 		int y = getBounds().y;
+		lvl = 1;
 		int width = getBounds().width;
 		int height = getBounds().height;
 		setBounds(x, y, width, height);
 		
+		
 		contentPane = new JPanel();
-		Background bg = new Background(new ImageIcon("specification/Prototipo_fundo_menu.png").getImage());
-		contentPane.add(bg);
-		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
-		setContentPane(contentPane);
-		contentPane.setLayout(new GridLayout(1, 0, 0, 0));
-		setVisible(true);
+		Inicio inicioScreen = new Inicio(x, y, width, height);
+		Niveis lvlScreen = new Niveis(x, y, width, height);
+		Config configScreen = new Config(x, y, width, height);
+		BaseLVL lvlBase = new BaseLVL(x, y, width, height, lvl);
+				
+		contentPane.add(inicioScreen);
+		contentPane.add(configScreen);
+		contentPane.add(lvlScreen);
+		contentPane.add(lvlBase);
+		
+		this.addPropertyChangeListener(PropertyChangeListener -> {		
+			if(window.equals("inicio")) {
+				inicioScreen.setVisible(true);
+			}
+			else if(window.equals("config")) {
+				configScreen.setVisible(true);
+			}
+			else if(window.equals("lvls")) {
+				lvlScreen.setVisible(true);
+			}
+			else if(window.equals("lvlBase")) {
+				lvlBase.setVisible(true);
+				lvlBase.setLvl(lvl);
+			}
+		});
+	}
+	
+	public void setWindow(String window) {
+		this.window = window;
+	}
+	
+	public void setLvl(int lvl) {
+		this.lvl = lvl;
 	}
 }
