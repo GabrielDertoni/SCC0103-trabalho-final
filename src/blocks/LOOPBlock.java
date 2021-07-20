@@ -15,8 +15,8 @@ import interpreter.Stmt;
 public class LOOPBlock {
 	
 	BlocoArrasta block;
-	Expr.Literal rightHandSide;
-	Stmt body;
+	Expr.Literal rightHandSide = new Expr.Literal(1);
+	Stmt body = null;
 	
 	public LOOPBlock() {
   	  
@@ -41,4 +41,11 @@ public class LOOPBlock {
 	public BlocoArrasta getBlock() {
 		return block;
 	}
+	
+	public Stmt getStmt() {
+		Stmt.Loop LOOP = new Stmt.Loop(new Expr.Binary(new Expr.Variable("i"), Expr.Binary.Operator.LESS, rightHandSide), body);
+		
+		return LOOP;
+	}
+	
 }

@@ -14,7 +14,7 @@ import interpreter.Stmt;
 public class MOVEBlock {
 
 	BlocoArrasta block;
-	Direction direction;
+	Direction direction = Direction.RIGHT;
 	
 	public MOVEBlock() {
   	  
@@ -55,4 +55,11 @@ public class MOVEBlock {
 	public BlocoArrasta getBlock() {
 		return block;
 	}
+	
+	public Stmt getStmt() {
+		Stmt.Move MOVE = new Stmt.Move(direction);
+		
+		return MOVE;
+	}
+	
 }

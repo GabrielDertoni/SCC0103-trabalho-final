@@ -3,35 +3,36 @@ package blocks;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.List;
 
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 
+import interpreter.Direction;
 import interpreter.Expr;
 import interpreter.Stmt;
 
 public class IFBlock { 
 
 	BlocoArrasta block;
-	Expr.Variable leftHandSide, rightHandSide;
-	Expr.Binary.Operator operator;
-	Stmt thenBranch, elseBranch;
+	Expr.Variable leftHandSide = new Expr.Variable("a Direita"), rightHandSide = new Expr.Variable("uma parede");
+	Expr.Binary.Operator operator = Expr.Binary.Operator.EQUAL;
+	Stmt thenBranch = null, elseBranch = null;
 	
 	public IFBlock() {
 	  
 		block = new BlocoArrasta(700, 5, 250, 250, Color.YELLOW);
 		    
 		String direction[] = {"a Direita", "Cima", "a Esquerda", "Baixo"};        
-		JComboBox<String> dir = new JComboBox<String>(direction);    
-		dir.setBounds(100, 50, 90, 20);
+		JComboBox<String> dir = new JComboBox<String>(direction);
 		
 		String operatorBox[] = {"igual à", "diferente de"};        
-		JComboBox<String> op = new JComboBox<String>(operatorBox);    
-		op.setBounds(100, 50, 90, 20);
+		JComboBox<String> op = new JComboBox<String>(operatorBox);
 		
 		String stats[] = {"uma parede", "nada", "um inimigo"};        
 		JComboBox<String> st = new JComboBox<String>(stats);    
 		st.setBounds(100, 50, 90, 20);
+
 		
 		dir.addActionListener(new ActionListener() {  
 		
@@ -80,6 +81,12 @@ public class IFBlock {
 	
 	public BlocoArrasta getBlock() {
 		return block;
+	}
+	
+	public Stmt getStmt() {
+		Stmt.If IF = new Stmt.If(new Expr.Binary(leftHandSide, operator, rightHandSide), thenBranch, elseBranch);
+		
+		return IF;
 	}
 
 }
