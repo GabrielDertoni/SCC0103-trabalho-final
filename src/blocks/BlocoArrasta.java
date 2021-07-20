@@ -1,4 +1,4 @@
-package menus;
+package blocks;
 
 
 import java.awt.Canvas;
@@ -15,8 +15,10 @@ public class BlocoArrasta extends JPanel{
 	
     private volatile int draggedAtX, draggedAtY;
 
-
-    public BlocoArrasta() {
+    public BlocoArrasta(int posX, int posY, int largura, int altura, Color color) {
+		setBounds(posX, posY, largura, altura);
+		setBackground(color); 
+		
     	//Movimentaçao do bloco, permite que ele seja arrastado
         addMouseListener(new MouseAdapter(){
 

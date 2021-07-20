@@ -1,4 +1,4 @@
-package projFinalPOO;
+package menus;
 
 import java.awt.Color;
 import java.awt.EventQueue;
