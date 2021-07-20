@@ -9,33 +9,24 @@ import javax.swing.JLabel;
 
 import interpreter.Expr;
 import interpreter.Stmt;
-import menus.BlocoArrasta;
 
-public class IFBlock extends Stmt.If {
-	
-	public IFBlock(Expr conditional, Stmt thenBranch, Stmt elseBranch) {
-		super(conditional, thenBranch, elseBranch);
-	}
+public class IFBlock { 
 
-	int x, y, largura, altura;
+	BlocoArrasta block;
+	Expr.Variable leftHandSide, rightHandSide;
+	Expr.Binary.Operator operator;
+	Stmt thenBranch, elseBranch;
 	
-	public BlocoArrasta block() {
-		
-		x = 700;
-		y = 5;
-		largura = 250;
-		altura = 250;
+	public IFBlock() {
 	  
-		BlocoArrasta ifBlock = new BlocoArrasta();
-		ifBlock.setBounds(x, y, largura, altura);
-		ifBlock.setBackground(Color.YELLOW); 
+		block = new BlocoArrasta(700, 5, 250, 250, Color.YELLOW);
 		    
 		String direction[] = {"a Direita", "Cima", "a Esquerda", "Baixo"};        
 		JComboBox<String> dir = new JComboBox<String>(direction);    
 		dir.setBounds(100, 50, 90, 20);
 		
-		String operator[] = {"igual à", "diferente de"};        
-		JComboBox<String> op = new JComboBox<String>(operator);    
+		String operatorBox[] = {"igual à", "diferente de"};        
+		JComboBox<String> op = new JComboBox<String>(operatorBox);    
 		op.setBounds(100, 50, 90, 20);
 		
 		String stats[] = {"uma parede", "nada", "um inimigo"};        
@@ -48,7 +39,8 @@ public class IFBlock extends Stmt.If {
 			public void actionPerformed(ActionEvent e) {
 				JComboBox<String> cb = (JComboBox<String>) e.getSource();
 		        String left = (String)cb.getSelectedItem();
-			  	//new If(new Expr.Binary(new Expr.Variable(left), Stmt.If.conditional.operator, Stmt.If.conditional.rightHandSide), Stmt.If.thenBranch, Stmt.If.elseBranch);
+			  	leftHandSide = new Expr.Variable(left);
+			  	// Teste: System.out.println(leftHandSide);
 			}
 		});
 		
@@ -57,13 +49,14 @@ public class IFBlock extends Stmt.If {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				JComboBox<String> cb = (JComboBox<String>) e.getSource();
-		        String operator = (String)cb.getSelectedItem();
+		        String operatorString = (String)cb.getSelectedItem();
 		        
-		        if(operator == "igual à") {
-		        	//new If(new Expr.Binary(Stmt.If.conditional.leftHandSide, Expr.Binary.Operator.EQUAL, Stmt.If.conditional.rightHandSide), Stmt.If.thenBranch, Stmt.If.elseBranch);
+		        if(operatorString == "igual à") {
+		        	operator = Expr.Binary.Operator.EQUAL;
 		        }else {
-		        	//new If(new Expr.Binary(Stmt.If.conditional.leftHandSide, Expr.Binary.Operator.NOT_EQUAL, Stmt.If.conditional.rightHandSide), Stmt.If.thenBranch, Stmt.If.elseBranch);
+		        	operator = Expr.Binary.Operator.NOT_EQUAL;
 		        }
+			  	// Teste: System.out.println(operator);
 			}
 		 });
 		
@@ -73,22 +66,20 @@ public class IFBlock extends Stmt.If {
 			public void actionPerformed(ActionEvent e) {
 				JComboBox<String> cb = (JComboBox<String>) e.getSource();
 		        String right = (String)cb.getSelectedItem();
-			  	//new If(new Expr.Binary(Stmt.If.conditional.leftHandSide, Stmt.If.conditional.operator, new Expr.Variable(right)), Stmt.If.thenBranch, Stmt.If.elseBranch);
+		        rightHandSide = new Expr.Variable(right);
+			  	// Teste: System.out.println(rightHandSide);
 			}
 		 }); 
 		
-		ifBlock.add(new JLabel("Se "));
-		ifBlock.add(dir);
-		ifBlock.add(new JLabel("for "));
-		ifBlock.add(op);
-		ifBlock.add(st);
-		    
-		return ifBlock;
+		block.add(new JLabel("Se "));
+		block.add(dir);
+		block.add(new JLabel("for "));
+		block.add(op);
+		block.add(st);
     }
-
-	@Override
-	public <R> R access(Visitor<R> visitor) {
-		// TODO Auto-generated method stub
-		return null;
+	
+	public BlocoArrasta getBlock() {
+		return block;
 	}
+
 }

@@ -11,48 +11,34 @@ import javax.swing.event.ChangeListener;
 
 import interpreter.Expr;
 import interpreter.Stmt;
-import menus.BlocoArrasta;
 
-public class LOOPBlock extends Stmt.Loop {
+public class LOOPBlock {
 	
-	public LOOPBlock(Expr condition, Stmt body) {
-		super(condition, body);
-	}
-
-	int x, y, largura, altura;
+	BlocoArrasta block;
+	Expr.Literal rightHandSide;
+	Stmt body;
 	
-	public BlocoArrasta block() {
-		
-		x = 700;
-		y = 5;
-		largura = 250;
-		altura = 400;
+	public LOOPBlock() {
   	  
-		BlocoArrasta loopBlock = new BlocoArrasta();
-		loopBlock.setBounds(x, y, largura, altura);
-		loopBlock.setBackground(Color.CYAN);
+		block = new BlocoArrasta(700, 5, 250, 400, Color.CYAN);
   	    
-		SpinnerModel value = new SpinnerNumberModel(1, 0, 20, 1);  
-        JSpinner spinner = new JSpinner(value);   
-        spinner.setBounds(100,100,50,30);    
+		SpinnerModel value = new SpinnerNumberModel(1, 1, 15, 1);  
+        JSpinner spinner = new JSpinner(value);    
         
         spinner.addChangeListener(new ChangeListener() {  
         	public void stateChanged(ChangeEvent e) {
-      		String right = e.getSource().toString();
-      		//new LOOPBlock(new Expr.Binary(new Expr.Variable("i"), Expr.Binary.Operator.LESS, new Expr.Literal(right)), Stmt.Loop.body);
+        		int right = (int) ((JSpinner) e.getSource()).getValue();
+        		rightHandSide = new Expr.Literal(right);
+        		// Teste: System.out.println(rightHandSide);
       	  	}
         });
         
-        loopBlock.add(new JLabel("Repete "));
-        loopBlock.add(spinner);
-        loopBlock.add(new JLabel(" vezes"));
-        
-        return loopBlock;
+        block.add(new JLabel("Repete "));
+        block.add(spinner);
+        block.add(new JLabel(" vezes"));
 	}
 
-	@Override
-	public <R> R access(Visitor<R> visitor) {
-		// TODO Auto-generated method stub
-		return null;
+	public BlocoArrasta getBlock() {
+		return block;
 	}
 }

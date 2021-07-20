@@ -8,31 +8,20 @@ import javax.swing.JComboBox;
 import javax.swing.JLabel;
 
 import interpreter.Direction;
+import interpreter.Expr;
 import interpreter.Stmt;
-import menus.BlocoArrasta;
 
-public class MOVEBlock extends Stmt.Move {
+public class MOVEBlock {
 
-	public MOVEBlock(Direction direction) {
-		super(direction);
-	}
-
-	int x, y, largura, altura;
+	BlocoArrasta block;
+	Direction direction;
 	
-	public BlocoArrasta block() {
-		
-		x = 700;
-		y = 5;
-  	  	largura = 200;
-  	  	altura = 30;
+	public MOVEBlock() {
   	  
-  	  	BlocoArrasta moveBlock = new BlocoArrasta();
-  	  	moveBlock.setBounds(x, y, largura, altura);
-  	  	moveBlock.setBackground(Color.PINK);         
-
+  	  	block = new BlocoArrasta(700, 5, 200, 30, Color.PINK);
+  	  	
   	  	String directions[] = {"a Direita", "Cima", "a Esquerda", "Baixo"};
-        JComboBox<String> dir = new JComboBox<String>(directions);    
-        dir.setBounds(100, 50, 90, 20);
+        JComboBox<String> dir = new JComboBox<String>(directions);
         
         dir.addActionListener(new ActionListener() {  
 
@@ -43,31 +32,27 @@ public class MOVEBlock extends Stmt.Move {
 		    
       		  	switch(dir) {
       		  		case "a Direita":
-      		  			new MOVEBlock(Direction.RIGHT);
+      		  			direction = Direction.RIGHT;
       		  			break;
       		  		case "Cima":
-      		  			new MOVEBlock(Direction.UP);
+      		  			direction = Direction.UP;
       		  			break;
       		  		case "a Esquerda":
-      		  			new MOVEBlock(Direction.LEFT);
+      		  			direction = Direction.LEFT;
       		  			break;
       		  		case "Baixo":
-      		  			new MOVEBlock(Direction.DOWN);
+      		  			direction = Direction.DOWN;
       		  			break;
       		  	}
-      		  	//System.out.println(Move.direction);
+      		  	// Teste: System.out.println(direction);
       	  }
         });
         
-        moveBlock.add(new JLabel("Mova para"));
-        moveBlock.add(dir);
- 
-  	  	return moveBlock;
-    }
+        block.add(new JLabel("Mova para"));
+        block.add(dir);
+	}
 
-	@Override
-	public <R> R access(Visitor<R> visitor) {
-		// TODO Auto-generated method stub
-		return null;
+	public BlocoArrasta getBlock() {
+		return block;
 	}
 }
