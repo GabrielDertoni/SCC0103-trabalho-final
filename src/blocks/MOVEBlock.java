@@ -4,21 +4,25 @@ import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
+import javax.swing.JPanel;
 
 import interpreter.Direction;
-import interpreter.Expr;
 import interpreter.Stmt;
 
 public class MOVEBlock {
-
+	
+	JPanel father;
 	BlocoArrasta block;
 	Direction direction = Direction.RIGHT;
 	
-	public MOVEBlock() {
+	public MOVEBlock(JPanel father) {
   	  
-  	  	block = new BlocoArrasta(700, 5, 200, 30, Color.PINK);
+		this.father = father;
+		
+  	  	block = new BlocoArrasta(700, 5, 300, 30, Color.PINK, BlocoArrasta.NOT_STATIC);
   	  	
   	  	String directions[] = {"a Direita", "Cima", "a Esquerda", "Baixo"};
         JComboBox<String> dir = new JComboBox<String>(directions);
@@ -47,9 +51,18 @@ public class MOVEBlock {
       		  	// Teste: System.out.println(direction);
       	  }
         });
+		
+		JButton removeButton = new JButton("Remover");
+		removeButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				father.remove(block);
+				father.repaint();
+			}
+		});
         
         block.add(new JLabel("Mova para"));
         block.add(dir);
+        block.add(removeButton);
 	}
 
 	public BlocoArrasta getBlock() {
