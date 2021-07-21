@@ -1,24 +1,29 @@
 package menus;
 
 import java.awt.BorderLayout;
+import java.awt.Container;
+import java.awt.Dimension;
 import java.awt.EventQueue;
+import java.awt.Font;
+import java.awt.Toolkit;
 
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+
+
 import javax.swing.JTextField;
 import javax.swing.JButton;
 import javax.swing.AbstractAction;
 import java.awt.event.ActionEvent;
 import javax.swing.Action;
+import javax.swing.ImageIcon;
+
 import java.awt.event.ActionListener;
 import javax.swing.JTextArea;
 
-public class Config extends JFrame {
-	private JPanel contentPane;
-	private JTextArea txtrNaoImplementado;
-
+public class Config extends Background {
 	/**
 	 * Launch the application.
 	 */
@@ -26,7 +31,11 @@ public class Config extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					Config frame = new Config();
+					Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+					JFrame frame = new JFrame();
+					Config teste = new Config(0, 0, screenSize.width, screenSize.height, frame);
+					frame.setContentPane(teste);
+					frame.setExtendedState(JFrame.MAXIMIZED_BOTH); 
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -38,42 +47,34 @@ public class Config extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public Config() {
-		//TODO vai usar isso pra alguma coisa??
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 450, 300);
-		contentPane = new JPanel();
-		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
-		setContentPane(contentPane);
-		contentPane.setLayout(null);
-		JFrame temp = this;
+	public Config(int x, int y, int width, int height, JFrame parent) {
+		super(new ImageIcon("specification/Prototipo_fundo_menu.png").getImage());
+
+		setLayout(null);
+		
+		ImageIcon btnBg = new ImageIcon("specification/Prototipo_fundo_menu.png");
 		
 		//Botao de fechar o popup de configuraçoes
 		JButton btnFechar = new JButton("Fechar");
-		btnFechar.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				temp.dispose();
-			}
-		});
+		
 		int btn_w = 120;
 		int btn_h = 30;
+		
 		btnFechar.setBounds(20, 0, btn_w, btn_h);
-		contentPane.add(btnFechar);
-		/*btnFechar.setFont(new Font("", Font.PLAIN, 18));// TODO mudar a fonte
-		TODO adicionar a aparencia do botao
-		try {
-			Image img = ImageIO.read(getClass().getResource(""));
-			btnFechar.setIcon(new ImageIcon(img));
-		} catch (IOException e1) {
-			;
-		}*/
+		btnFechar.setIcon(btnBg);
+		btnFechar.setFont(new Font("Serif", Font.BOLD, 18));
 		
+		btnFechar.addActionListener(ActionListener -> {
+			((WindowManager) parent).setWindow("inicio");
+		});
 		
-		JLabel lblProjetoFinalPoo = new JLabel("Nao Implementado");
+		add(btnFechar);		
+		
+		JLabel lvlTxt1 = new JLabel("Nao Implementado");
 		int label_w = 130;
 		int label_h = 20;
-		lblProjetoFinalPoo.setBounds(180, 40, label_w, label_h);
-		contentPane.add(lblProjetoFinalPoo);
-		//lblProjetoFinalPoo.setFont(new Font("", Font.PLAIN, 18));// TODO mudar a fonte
+		lvlTxt1.setBounds(180, 40, label_w, label_h);
+		add(lvlTxt1);
+		lvlTxt1.setFont(new Font("Arial", Font.PLAIN, 18));
 	}
 }

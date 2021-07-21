@@ -2,9 +2,11 @@ package menus;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.EventQueue;
 import java.awt.GridLayout;
 import java.awt.Image;
+import java.awt.Toolkit;
 
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
@@ -37,38 +39,41 @@ public class WindowManager extends JFrame {
 
 	public WindowManager() {
 		window = "inicio";
-		int x = getBounds().x;
-		int y = getBounds().y;
+		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+		
+		setDefaultCloseOperation(EXIT_ON_CLOSE);
+		setExtendedState(JFrame.MAXIMIZED_BOTH);
+		
+		int x = 0;
+		int y = 0;
 		lvl = 1;
-		int width = getBounds().width;
-		int height = getBounds().height;
-		setBounds(x, y, width, height);
+		int width = screenSize.width;
+		int height = screenSize.height;
 		
+		Inicio inicioScreen = new Inicio(x, y, width, height, this);
+		Niveis lvlScreen = new Niveis(x, y, width, height, this);
+		Config configScreen = new Config(x, y, width, height, this);
+		BaseLVL lvlBase = new BaseLVL(x, y, width, height, lvl, this);
+
+		setContentPane(inicioScreen);
 		
-		contentPane = new JPanel();
-		Inicio inicioScreen = new Inicio(x, y, width, height);
-		Niveis lvlScreen = new Niveis(x, y, width, height);
-		Config configScreen = new Config(x, y, width, height);
-		BaseLVL lvlBase = new BaseLVL(x, y, width, height, lvl);
-				
-		contentPane.add(inicioScreen);
-		contentPane.add(configScreen);
-		contentPane.add(lvlScreen);
-		contentPane.add(lvlBase);
-		
-		this.addPropertyChangeListener(PropertyChangeListener -> {		
+		this.addPropertyChangeListener(PropertyChangeListener -> {
 			if(window.equals("inicio")) {
-				inicioScreen.setVisible(true);
+				setContentPane(inicioScreen);
+				System.out.println(window);
 			}
 			else if(window.equals("config")) {
-				configScreen.setVisible(true);
+				setContentPane(configScreen);
+				System.out.println(window);
 			}
 			else if(window.equals("lvls")) {
-				lvlScreen.setVisible(true);
+				setContentPane(lvlScreen);
+				System.out.println(window);
 			}
 			else if(window.equals("lvlBase")) {
-				lvlBase.setVisible(true);
+				setContentPane(lvlBase);
 				lvlBase.setLvl(lvl);
+				System.out.println(window + lvl);
 			}
 		});
 	}
@@ -77,7 +82,16 @@ public class WindowManager extends JFrame {
 		this.window = window;
 	}
 	
+	public String getWindow() {
+		return this.window;
+	}
+	
 	public void setLvl(int lvl) {
 		this.lvl = lvl;
 	}
+	
+	public int getLvl() {
+		return this.lvl;
+	}
+	
 }

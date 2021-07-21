@@ -2,9 +2,11 @@ package menus;
 
 import java.awt.BorderLayout;
 import java.awt.Container;
+import java.awt.Dimension;
 import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.Image;
+import java.awt.Toolkit;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -13,12 +15,13 @@ import javax.swing.JButton;
 import javax.swing.AbstractAction;
 import java.awt.event.ActionEvent;
 import javax.swing.Action;
+import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 
 import java.awt.event.ActionListener;
 import javax.swing.JLabel;
 
-public class Niveis extends JPanel {
+public class Niveis extends Background {
 
 	/**
 	 * Launch the application.
@@ -27,7 +30,11 @@ public class Niveis extends JPanel {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					Niveis frame = new Niveis(0, 0, 500, 300); 
+					Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+					JFrame frame = new JFrame();
+					Niveis teste = new Niveis(0, 0, screenSize.width, screenSize.height, frame);
+					frame.setContentPane(teste);
+					frame.setExtendedState(JFrame.MAXIMIZED_BOTH); 
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -39,14 +46,12 @@ public class Niveis extends JPanel {
 	/**
 	 * Create the frame.
 	 */
-	public Niveis(int x, int y, int width, int height) {
-		setBounds(x, y, width, height);
-		Container parent = this.getParent();
-		Background bg = new Background(
-				new ImageIcon("specification/Prototipo_fundo_menu.png").getImage());
-		add(bg);
+	public Niveis(int x, int y, int width, int height, JFrame parent) {
+		super(new ImageIcon("specification/Prototipo_fundo_menu.png").getImage());
 		
-		ImageIcon btnBg = new ImageIcon("specification/Prototipo_fundo_menu.png");
+		setLayout(null);
+		
+		ImageIcon btnBg = new ImageIcon("specification/Fundo_prototipo_menu.jpg");
 		
 		// Botoes de voltar ao inicio
 		JButton btnVoltar = new JButton("Voltar");
@@ -57,10 +62,10 @@ public class Niveis extends JPanel {
 		btnVoltar.setFont(new Font("Serif", Font.PLAIN, 18));// TODO mudar a fonte
 		btnVoltar.setIcon(btnBg);
 		btnVoltar.setBounds(20, 20	, btnVoltar_w, btnVoltar_h);
+		btnVoltar.setBorder(BorderFactory.createEmptyBorder());
 		
 		btnVoltar.addActionListener(ActionListener -> {
 			((WindowManager) parent).setWindow("inicio");
-			setVisible(false);
 		});
 		add(btnVoltar);
 		
@@ -73,11 +78,11 @@ public class Niveis extends JPanel {
 		btnLvl1.setBounds((int) (0.1*width), (int) (2*height/5), btnLvl1_w, btnLvl1_h);
 		btnLvl1.setFont(new Font("Serif", Font.PLAIN, 18));
 		btnLvl1.setIcon(btnBg);
+		btnLvl1.setBorder(BorderFactory.createEmptyBorder());
 		
 		btnLvl1.addActionListener(ActionListener -> {
 			((WindowManager) parent).setWindow("lvlBase");
 			((WindowManager) parent).setLvl(1);
-			setVisible(false);
 		});
 		add(btnLvl1);
 		
@@ -90,9 +95,9 @@ public class Niveis extends JPanel {
 		btnLvl2.setBounds((int) (0.6*width), (int) (2*height/5), btnLvl2_w, btnLvl2_h);
 		btnLvl2.setFont(new Font("Serif", Font.PLAIN, 18));
 		btnLvl2.setIcon(btnBg);
+		btnLvl2.setBorder(BorderFactory.createEmptyBorder());
 		
 		btnLvl2.addActionListener(ActionListener -> {
-			setVisible(false);
 			((WindowManager) parent).setWindow("lvlBase");
 			((WindowManager) parent).setLvl(2);
 		});

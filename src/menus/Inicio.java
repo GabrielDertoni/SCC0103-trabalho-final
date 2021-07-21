@@ -1,88 +1,102 @@
 package menus;
 
+import java.awt.Color;
 import java.awt.Container;
+import java.awt.Dimension;
 import java.awt.EventQueue;
 import java.awt.Font;
+import java.awt.Image;
+import java.awt.Toolkit;
 
 import javax.swing.JPanel;
+import javax.swing.SwingUtilities;
+import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 
-public class Inicio extends JPanel {
-	public int width=1000;
-	public int height=700;
-	public int x = 0;
-	public int y = 0;
+public class Inicio extends Background {
+	public int width;
+	public int height;
+	public int x;
+	public int y;
 	
 	/**
 	 * Launch the application.
-	 */
+	 *//*
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					Inicio frame = new Inicio(0, 0, 1000, 700); 
+					Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+					JFrame frame = new JFrame();
+					Inicio teste = new Inicio(0, 0, screenSize.width, screenSize.height, frame);
+					frame.setContentPane(teste);
+					frame.setExtendedState(JFrame.MAXIMIZED_BOTH); 
 					frame.setVisible(true);
-				} catch (Exception e) {
+					
+					} catch (Exception e) {
 					e.printStackTrace();
 				}
 			}
 		});
-	}
+	}*/
 
-	public Inicio(int x, int y, int width, int height) {
-		Container parent = this.getParent();
-		setBounds(x, y, width, height);
+	public Inicio(int x, int y, int width, int height, WindowManager parent) {
+		super(new ImageIcon("specification/Prototipo_fundo_menu.png").getImage());
+
+/*		System.out.println(parent);
+		System.out.println(parent.getWindow());
+		parent.setWindow("lvls");*/
+		System.out.println("inicio "+parent.getWindow());
 		
-		// Background
-		Background bg = new Background(
-				new ImageIcon("specification/Nivel.png").getImage());
+		setLayout(null);
 		
-		ImageIcon btnBg = new ImageIcon("specification/Prototipo_fundo_menu.png");
+		int btnW = 350;
+		int btnH = 25;
+		
+		ImageIcon btnBg = new ImageIcon("specification/Fundo_prototipo_menu.jpg");
 		
 		//Botoes de mudança de janela
 		JButton btnNiveis = new JButton("Niveis");
-
-		int btnNiveis_w = 120;
-		int btnNiveis_h = 25;
+		//JButton btnNiveis = new JButton("Niveis", btnBg);
 		
-		btnNiveis.setIcon(btnBg);
-		btnNiveis.setFont(new Font("ITALIC", Font.PLAIN, 18));
-		btnNiveis.setBounds((width-btnNiveis_w)/2, 3*height/5-20, btnNiveis_w, btnNiveis_h);
+		btnNiveis.setFont(new Font("serif", Font.PLAIN, 18));
+		btnNiveis.setBounds((width-btnW)/2, 4*height/5-20, btnW, btnH);
+		btnNiveis.setBorder(BorderFactory.createEmptyBorder());
 		
 		btnNiveis.addActionListener(ActionListener -> {
-			setVisible(false);
-			((WindowManager) parent).setWindow("lvls");
+			parent.setWindow("lvls");
 		});
-		add(btnNiveis);
 		
 		//Botao de acesso a tela de configuraçoes
-		JButton btnConfig = new JButton("Config");
+		JButton btnConfig = new JButton("Configuraçoes");
+		//JButton btnConfig = new JButton("Configuraçoes", btnBg);
 		
-		btnConfig.setIcon(new ImageIcon("specification/Prototipo_fundo_menu.png"));
+		btnConfig.setBorder(BorderFactory.createEmptyBorder());
 		btnConfig.setFont(new Font("Serif", Font.PLAIN, 18));
-		btnConfig.setIcon(btnBg);
+		btnConfig.setForeground(Color.BLACK);
 		
-		int btnConfig_w = 180;
-		int btnConfig_h = 25;
-		
-		btnConfig.setBounds((width-btnConfig_w)/2, 3*height/5+20	, btnConfig_w, btnConfig_h);
+		btnConfig.setBounds((width-btnW)/2, 4*height/5+20, btnW, btnH);
 		
 		btnConfig.addActionListener(ActionListener -> {
-			setVisible(false);
-			((WindowManager) parent).setWindow("config");
+			parent.setWindow("config");
 		});
-		add(btnConfig);
-
+		
 		//Texto
-		int label_w = 130;
-		int label_h = 15;
+		int label_w = 200;
+		int label_h = 20;
 		
 		JLabel lblProjetoFinalPoo = new JLabel("Projeto Final POO");
 		lblProjetoFinalPoo.setBounds((int) ((width-label_w)/2), (int) (0.1*height), label_w, label_h);
+		lblProjetoFinalPoo.setFont(new Font("Arial", Font.PLAIN, 18));
+		lblProjetoFinalPoo.setForeground(Color.GREEN);
+		
+		//Adiciona os componentes ao Panel
+		add(btnConfig);
+		add(btnNiveis);
 		add(lblProjetoFinalPoo);
-		lblProjetoFinalPoo.setFont(new Font("Serif", Font.PLAIN, 18));
 	}
 }
 
