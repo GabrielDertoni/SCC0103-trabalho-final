@@ -1,8 +1,12 @@
 package blocks;
 
 import java.awt.Color;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
+import javax.swing.JButton;
 import javax.swing.JLabel;
+import javax.swing.JPanel;
 import javax.swing.JSpinner;
 import javax.swing.SpinnerModel;
 import javax.swing.SpinnerNumberModel;
@@ -14,13 +18,16 @@ import interpreter.Stmt;
 
 public class LOOPBlock {
 	
+	JPanel father;
 	BlocoArrasta block;
 	Expr.Literal rightHandSide = new Expr.Literal(1);
 	Stmt body = null;
 	
-	public LOOPBlock() {
+	public LOOPBlock(JPanel father) {
   	  
-		block = new BlocoArrasta(700, 5, 250, 400, Color.CYAN);
+		this.father = father;
+		
+		block = new BlocoArrasta(700, 5, 250, 60, Color.CYAN, BlocoArrasta.NOT_STATIC);
   	    
 		SpinnerModel value = new SpinnerNumberModel(1, 1, 15, 1);  
         JSpinner spinner = new JSpinner(value);    
@@ -32,10 +39,19 @@ public class LOOPBlock {
         		// Teste: System.out.println(rightHandSide);
       	  	}
         });
-        
+		
+		JButton removeButton = new JButton("Remover");
+		removeButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				father.remove(block);
+				father.repaint();
+			}
+		});
+		
         block.add(new JLabel("Repete "));
         block.add(spinner);
         block.add(new JLabel(" vezes"));
+        block.add(removeButton);
 	}
 
 	public BlocoArrasta getBlock() {
