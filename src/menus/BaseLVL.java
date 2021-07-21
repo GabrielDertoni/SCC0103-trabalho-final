@@ -1,19 +1,15 @@
 package menus;
 
 import java.awt.Color;
-import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.Toolkit;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
-import javax.swing.border.EmptyBorder;
 
 
 public class BaseLVL extends Background{
@@ -25,7 +21,7 @@ public class BaseLVL extends Background{
 				try {
 					Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 					JFrame frame = new JFrame();
-					BaseLVL teste = new BaseLVL(0, 0, screenSize.width, screenSize.height, 1, frame);
+					BaseLVL teste = new BaseLVL(0, 0, screenSize.width, screenSize.height, 1);
 					frame.setContentPane(teste);
 					frame.setExtendedState(JFrame.MAXIMIZED_BOTH); 
 					frame.setVisible(true);
@@ -38,7 +34,7 @@ public class BaseLVL extends Background{
 	
 
 	
-	public BaseLVL(int x, int y, int width, int height, int lvl, JFrame parent) {
+	public BaseLVL(int x, int y, int width, int height, int lvl) {
 		super(new ImageIcon("specification/Prototipo_fundo_menu.png").getImage());
 		
 		setLayout(null);
@@ -77,7 +73,7 @@ public class BaseLVL extends Background{
 		btnVoltar.setBounds(width-btnVoltar_w-30, height-100, btnVoltar_w, btnVoltar_h);
 		
 		btnVoltar.addActionListener(ActionListener -> {
-			((WindowManager) parent).setWindow("lvls");
+			WindowManager.getInstance().setCurrentWindow(WindowManager.WindowName.LevelMenu);
 		});
 		add(btnVoltar);
 		

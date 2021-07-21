@@ -1,7 +1,5 @@
 package menus;
 
-import java.awt.BorderLayout;
-import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.EventQueue;
 import java.awt.Font;
@@ -9,19 +7,10 @@ import java.awt.Toolkit;
 
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.border.EmptyBorder;
 
 
-import javax.swing.JTextField;
 import javax.swing.JButton;
-import javax.swing.AbstractAction;
-import java.awt.event.ActionEvent;
-import javax.swing.Action;
 import javax.swing.ImageIcon;
-
-import java.awt.event.ActionListener;
-import javax.swing.JTextArea;
 
 public class Config extends Background {
 	/**
@@ -33,7 +22,7 @@ public class Config extends Background {
 				try {
 					Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 					JFrame frame = new JFrame();
-					Config teste = new Config(0, 0, screenSize.width, screenSize.height, frame);
+					Config teste = new Config(0, 0, screenSize.width, screenSize.height);
 					frame.setContentPane(teste);
 					frame.setExtendedState(JFrame.MAXIMIZED_BOTH); 
 					frame.setVisible(true);
@@ -47,7 +36,7 @@ public class Config extends Background {
 	/**
 	 * Create the frame.
 	 */
-	public Config(int x, int y, int width, int height, JFrame parent) {
+	public Config(int x, int y, int width, int height) {
 		super(new ImageIcon("specification/Prototipo_fundo_menu.png").getImage());
 
 		setLayout(null);
@@ -65,7 +54,7 @@ public class Config extends Background {
 		btnFechar.setFont(new Font("Serif", Font.BOLD, 18));
 		
 		btnFechar.addActionListener(ActionListener -> {
-			((WindowManager) parent).setWindow("inicio");
+			WindowManager.getInstance().setCurrentWindow(WindowManager.WindowName.MainMenu);
 		});
 		
 		add(btnFechar);		

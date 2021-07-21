@@ -1,23 +1,32 @@
 package menus;
 
-import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.EventQueue;
-import java.awt.GridLayout;
-import java.awt.Image;
 import java.awt.Toolkit;
 
-import javax.swing.ImageIcon;
 import javax.swing.JFrame;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.border.EmptyBorder;
 
 public class WindowManager extends JFrame {
+
+	public enum WindowName {
+		LevelMenu,
+		MainMenu,
+		Config,
+		Game,
+	}
+
+	private static WindowManager instance = null;
+
 	private JPanel contentPane;
 	private int lvl;
-	private String window;
+	private WindowName currentWindow;
+
+	private Inicio inicioScreen;
+	private Niveis lvlScreen;
+	private Config configScreen;
+	private BaseLVL lvlBase;
+	private Object currentWindowObj;
 
 	/**
 	 * Launch the application.
@@ -26,19 +35,16 @@ public class WindowManager extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					WindowManager frame = new WindowManager();
-					frame.setExtendedState(JFrame.MAXIMIZED_BOTH); 
-					frame.setVisible(true);
-					
-					} catch (Exception e) {
+					WindowManager.getInstance();
+				} catch (Exception e) {
 					e.printStackTrace();
 				}
 			}
 		});
 	}
 
-	public WindowManager() {
-		window = "inicio";
+	private WindowManager() {
+		currentWindow = WindowName.MainMenu;
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 		
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -49,41 +55,47 @@ public class WindowManager extends JFrame {
 		lvl = 1;
 		int width = screenSize.width;
 		int height = screenSize.height;
-		
-		Inicio inicioScreen = new Inicio(x, y, width, height, this);
-		Niveis lvlScreen = new Niveis(x, y, width, height, this);
-		Config configScreen = new Config(x, y, width, height, this);
-		BaseLVL lvlBase = new BaseLVL(x, y, width, height, lvl, this);
 
+		inicioScreen = new Inicio(x, y, width, height);
+		lvlScreen = new Niveis(x, y, width, height);
+		configScreen = new Config(x, y, width, height);
+		lvlBase = new BaseLVL(x, y, width, height, lvl);
 		setContentPane(inicioScreen);
-		
-		this.addPropertyChangeListener(PropertyChangeListener -> {
-			if(window.equals("inicio")) {
-				setContentPane(inicioScreen);
-				System.out.println(window);
-			}
-			else if(window.equals("config")) {
-				setContentPane(configScreen);
-				System.out.println(window);
-			}
-			else if(window.equals("lvls")) {
+
+		setExtendedState(JFrame.MAXIMIZED_BOTH);
+		setVisible(true);
+	}
+
+	public static WindowManager getInstance() {
+		if (instance == null) {
+			instance = new WindowManager();
+		}
+		return instance;
+	}
+	
+	public void setCurrentWindow(WindowName window) {
+		currentWindow = window;
+		switch (window) {
+			case LevelMenu -> {
 				setContentPane(lvlScreen);
-				System.out.println(window);
 			}
-			else if(window.equals("lvlBase")) {
+			case MainMenu -> {
+				setContentPane(inicioScreen);
+			}
+			case Config -> {
+				setContentPane(configScreen);
+			}
+			case Game -> {
 				setContentPane(lvlBase);
 				lvlBase.setLvl(lvl);
-				System.out.println(window + lvl);
 			}
-		});
+		}
+		System.out.println(currentWindow);
+		revalidate();
 	}
 	
-	public void setWindow(String window) {
-		this.window = window;
-	}
-	
-	public String getWindow() {
-		return this.window;
+	public WindowName getCurrentWindow() {
+		return this.currentWindow;
 	}
 	
 	public void setLvl(int lvl) {

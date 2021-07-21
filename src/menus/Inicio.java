@@ -1,19 +1,11 @@
 package menus;
 
 import java.awt.Color;
-import java.awt.Container;
-import java.awt.Dimension;
-import java.awt.EventQueue;
 import java.awt.Font;
-import java.awt.Image;
-import java.awt.Toolkit;
 
-import javax.swing.JPanel;
-import javax.swing.SwingUtilities;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 
 public class Inicio extends Background {
@@ -43,14 +35,9 @@ public class Inicio extends Background {
 		});
 	}*/
 
-	public Inicio(int x, int y, int width, int height, WindowManager parent) {
+	public Inicio(int x, int y, int width, int height) {
 		super(new ImageIcon("specification/Prototipo_fundo_menu.png").getImage());
 
-/*		System.out.println(parent);
-		System.out.println(parent.getWindow());
-		parent.setWindow("lvls");*/
-		System.out.println("inicio "+parent.getWindow());
-		
 		setLayout(null);
 		
 		int btnW = 350;
@@ -67,7 +54,7 @@ public class Inicio extends Background {
 		btnNiveis.setBorder(BorderFactory.createEmptyBorder());
 		
 		btnNiveis.addActionListener(ActionListener -> {
-			parent.setWindow("lvls");
+			WindowManager.getInstance().setCurrentWindow(WindowManager.WindowName.LevelMenu);
 		});
 		
 		//Botao de acesso a tela de configuraçoes
@@ -81,7 +68,7 @@ public class Inicio extends Background {
 		btnConfig.setBounds((width-btnW)/2, 4*height/5+20, btnW, btnH);
 		
 		btnConfig.addActionListener(ActionListener -> {
-			parent.setWindow("config");
+			WindowManager.getInstance().setCurrentWindow(WindowManager.WindowName.LevelMenu);
 		});
 		
 		//Texto

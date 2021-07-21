@@ -1,24 +1,15 @@
 package menus;
 
-import java.awt.BorderLayout;
-import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.EventQueue;
 import java.awt.Font;
-import java.awt.Image;
 import java.awt.Toolkit;
 
 import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.border.EmptyBorder;
 import javax.swing.JButton;
-import javax.swing.AbstractAction;
-import java.awt.event.ActionEvent;
-import javax.swing.Action;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 
-import java.awt.event.ActionListener;
 import javax.swing.JLabel;
 
 public class Niveis extends Background {
@@ -32,7 +23,7 @@ public class Niveis extends Background {
 				try {
 					Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 					JFrame frame = new JFrame();
-					Niveis teste = new Niveis(0, 0, screenSize.width, screenSize.height, frame);
+					Niveis teste = new Niveis(0, 0, screenSize.width, screenSize.height);
 					frame.setContentPane(teste);
 					frame.setExtendedState(JFrame.MAXIMIZED_BOTH); 
 					frame.setVisible(true);
@@ -46,7 +37,7 @@ public class Niveis extends Background {
 	/**
 	 * Create the frame.
 	 */
-	public Niveis(int x, int y, int width, int height, JFrame parent) {
+	public Niveis(int x, int y, int width, int height) {
 		super(new ImageIcon("specification/Prototipo_fundo_menu.png").getImage());
 		
 		setLayout(null);
@@ -65,7 +56,7 @@ public class Niveis extends Background {
 		btnVoltar.setBorder(BorderFactory.createEmptyBorder());
 		
 		btnVoltar.addActionListener(ActionListener -> {
-			((WindowManager) parent).setWindow("inicio");
+			WindowManager.getInstance().setCurrentWindow(WindowManager.WindowName.MainMenu);
 		});
 		add(btnVoltar);
 		
@@ -81,8 +72,8 @@ public class Niveis extends Background {
 		btnLvl1.setBorder(BorderFactory.createEmptyBorder());
 		
 		btnLvl1.addActionListener(ActionListener -> {
-			((WindowManager) parent).setWindow("lvlBase");
-			((WindowManager) parent).setLvl(1);
+			WindowManager.getInstance().setCurrentWindow(WindowManager.WindowName.Game);
+			WindowManager.getInstance().setLvl(1);
 		});
 		add(btnLvl1);
 		
@@ -98,8 +89,8 @@ public class Niveis extends Background {
 		btnLvl2.setBorder(BorderFactory.createEmptyBorder());
 		
 		btnLvl2.addActionListener(ActionListener -> {
-			((WindowManager) parent).setWindow("lvlBase");
-			((WindowManager) parent).setLvl(2);
+			WindowManager.getInstance().setCurrentWindow(WindowManager.WindowName.Game);
+			WindowManager.getInstance().setLvl(2);
 		});
 		
 		add(btnLvl2);
