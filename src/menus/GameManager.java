@@ -1,24 +1,25 @@
 package menus;
 
 import interpreter.Direction;
+import interpreter.Interpreter;
 import interpreter.OutputDevice;
 
+import javax.swing.*;
 import java.awt.*;
 
 public class GameManager implements OutputDevice {
     private static GameManager instance = null;
 
-    private Grid grid;
+    private Interpreter interpreter;
     private Player player;
     private int goalX;
     private int goalY;
 
     private GameManager() {
-        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-        grid = new Grid(screenSize.width, screenSize.height, 30, 30);
         player = new Player(0, 0);
         goalX = 10;
         goalY = 10;
+        interpreter = new Interpreter(this);
     }
 
     public static GameManager getInstance() {
@@ -37,7 +38,9 @@ public class GameManager implements OutputDevice {
 
     @Override
     public void interact() {
-
+        if (player.x == goalX && player.y == goalY) {
+            JOptionPane.showConfirmDialog(WindowManager.getInstance(), "Nível vencido!");
+        }
     }
 
     @Override

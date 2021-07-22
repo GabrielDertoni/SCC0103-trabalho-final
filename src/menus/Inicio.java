@@ -32,7 +32,7 @@ public class Inicio extends Background {
 		btnNiveis.setBounds((width-btnW)/2, 4*height/5-20, btnW, btnH);
 		btnNiveis.setBorder(BorderFactory.createEmptyBorder());
 		
-		btnNiveis.addActionListener(ActionListener -> {
+		btnNiveis.addActionListener(event -> {
 			WindowManager.getInstance().setCurrentWindow(WindowManager.WindowName.LevelMenu);
 		});
 		
@@ -46,7 +46,7 @@ public class Inicio extends Background {
 		
 		btnConfig.setBounds((width-btnW)/2, 4*height/5+20, btnW, btnH);
 		
-		btnConfig.addActionListener(ActionListener -> {
+		btnConfig.addActionListener(event -> {
 			WindowManager.getInstance().setCurrentWindow(WindowManager.WindowName.LevelMenu);
 		});
 		

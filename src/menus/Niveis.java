@@ -34,7 +34,7 @@ public class Niveis extends Background {
 		btnVoltar.setBounds(20, 20	, btnVoltar_w, btnVoltar_h);
 		btnVoltar.setBorder(BorderFactory.createEmptyBorder());
 		
-		btnVoltar.addActionListener(ActionListener -> {
+		btnVoltar.addActionListener(event -> {
 			WindowManager.getInstance().setCurrentWindow(WindowManager.WindowName.MainMenu);
 		});
 		add(btnVoltar);
@@ -50,7 +50,7 @@ public class Niveis extends Background {
 		btnLvl1.setIcon(btnBg);
 		btnLvl1.setBorder(BorderFactory.createEmptyBorder());
 		
-		btnLvl1.addActionListener(ActionListener -> {
+		btnLvl1.addActionListener(event -> {
 			WindowManager.getInstance().setCurrentWindow(WindowManager.WindowName.Game);
 			WindowManager.getInstance().setLvl(1);
 		});
@@ -67,7 +67,7 @@ public class Niveis extends Background {
 		btnLvl2.setIcon(btnBg);
 		btnLvl2.setBorder(BorderFactory.createEmptyBorder());
 		
-		btnLvl2.addActionListener(ActionListener -> {
+		btnLvl2.addActionListener(event -> {
 			WindowManager.getInstance().setCurrentWindow(WindowManager.WindowName.Game);
 			WindowManager.getInstance().setLvl(2);
 		});
