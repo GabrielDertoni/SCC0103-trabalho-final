@@ -29,17 +29,6 @@ public class LevelArea extends Background {
     }
 
     public void runInterpreter(List<Stmt> stmts) {
-        /*
-        List<Stmt> stmts2 = Arrays.asList(
-            new Stmt.Move(Direction.RIGHT),
-            new Stmt.Move(Direction.RIGHT),
-            new Stmt.Move(Direction.UP),
-            new Stmt.Move(Direction.UP),
-            new Stmt.Interact()
-        );
-
-        PseudocodeGenerator gen = new PseudocodeGenerator();
-        */
         gameManager.interpret(stmts);
     }
 

@@ -8,6 +8,7 @@ public abstract class Stmt {
       R visitInteractStmt(Interact stmt);
       R visitMoveStmt(Move stmt);
       R visitLoopStmt(Loop stmt);
+      R visitRepeatStmt(Repeat stmt);
       R visitBlockStmt(Block stmt);
       R visitExprStmt(StmtExpr stmt);
       R visitVariableDeclarationStmt(VariableDeclaration stmt);
@@ -80,6 +81,21 @@ public abstract class Stmt {
       @Override
       public <R> R access(Visitor<R> visitor) {
          return visitor.visitLoopStmt(this);
+      }
+   }
+
+   public static class Repeat extends Stmt {
+      public final Expr numIterations;
+      public final Stmt body;
+
+      public Repeat(Expr numIterations, Stmt body) {
+         this.numIterations = numIterations;
+         this.body = body;
+      }
+
+      @Override
+      public <R> R access(Visitor<R> visitor) {
+         return visitor.visitRepeatStmt(this);
       }
    }
 

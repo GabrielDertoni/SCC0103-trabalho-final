@@ -105,6 +105,28 @@ public class PseudocodeGenerator implements Stmt.Visitor<String>, Expr.Visitor<S
     }
 
     @Override
+    public String visitRepeatStmt(Stmt.Repeat stmt) {
+        String result = "repete " + stmt.numIterations.access(this) + " vez(es) ";
+
+        boolean isBlockStatement = stmt.body instanceof Stmt.Block;
+
+        if (!isBlockStatement) {
+            result += "\n";
+            indentationLevel++;
+            result += indentation();
+        }
+
+        result += stmt.body.access(this);
+
+        if (!isBlockStatement) {
+            indentationLevel--;
+            result += "\n";
+        }
+
+        return result;
+    }
+
+    @Override
     public String visitBlockStmt(Stmt.Block stmt) {
         String result = "{\n";
         indentationLevel++;
@@ -114,7 +136,7 @@ public class PseudocodeGenerator implements Stmt.Visitor<String>, Expr.Visitor<S
             result += "\n";
         }
         indentationLevel--;
-        result += "}";
+        result += indentation() + "}";
         return result;
     }
 

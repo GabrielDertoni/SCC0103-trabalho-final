@@ -1,6 +1,7 @@
 package menus;
 
 import java.awt.Color;
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -77,8 +78,15 @@ public class BaseLVL extends JPanel {
 		runButton.addActionListener(event -> {
 			Stmt.Block block = (Stmt.Block)editor.toStmt();
 			PseudocodeGenerator gen = new PseudocodeGenerator();
-			System.out.println(gen.fromStmts(block.stmts));
-			levelArea.runInterpreter(block.stmts);
+
+			List<Stmt> stmts = Arrays.asList(
+					new Stmt.Block(
+							block.stmts
+					)
+			);
+
+			System.out.println(gen.fromStmts(stmts));
+			levelArea.runInterpreter(stmts);
 		});
 
 		int runButton_w = 80;

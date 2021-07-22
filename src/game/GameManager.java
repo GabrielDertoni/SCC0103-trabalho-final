@@ -47,6 +47,7 @@ public class GameManager implements OutputDevice {
 
     public void loop() {
         if (isRunning && interpreter != null && interpreter.isNotFinished()) {
+            print("ADVANCE");
             interpreter.advance();
         } else if (interpreter != null && !interpreter.isNotFinished()) {
             isRunning = false;

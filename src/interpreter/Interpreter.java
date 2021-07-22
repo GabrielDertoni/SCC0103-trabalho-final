@@ -101,7 +101,7 @@ public class Interpreter implements Stmt.Visitor<Stream<Void>>, Expr.Visitor<Obj
 
     @Override
     public Stream<Void> visitLoopStmt(Stmt.Loop stmt) {
-        Interpreter iterpreter = this;
+        Interpreter interpreter = this;
 
         return iteratorToStream(new Iterator<Void>() {
             private boolean condition = true;
@@ -115,7 +115,39 @@ public class Interpreter implements Stmt.Visitor<Stream<Void>>, Expr.Visitor<Obj
             public Void next() {
                 condition = isTruthy(evaluate(stmt.condition));
                 if (condition) {
-                    stmt.body.access(iterpreter);
+                    stmt.body.access(interpreter);
+                }
+                return null;
+            }
+        });
+    }
+
+    @Override
+    public Stream<Void> visitRepeatStmt(Stmt.Repeat stmt) {
+        Object value = stmt.numIterations.access(this);
+        final int numIterations;
+        if (value instanceof Double) {
+            numIterations = (int)(double)value;
+        } else {
+            throw new InterpreterException("valor de repetição precisa ser numérico");
+        }
+
+        Interpreter interpreter = this;
+
+        return iteratorToStream(new Iterator<Void>() {
+            private int countDown = numIterations;
+
+            @Override
+            public boolean hasNext() {
+                return countDown > 0;
+            }
+
+            @Override
+            public Void next() {
+                System.out.println("Number of iterations: " + countDown);
+                if (countDown > 0) {
+                    stmt.body.access(interpreter);
+                    countDown--;
                 }
                 return null;
             }

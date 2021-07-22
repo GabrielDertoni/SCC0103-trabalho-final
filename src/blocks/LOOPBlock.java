@@ -1,6 +1,7 @@
 package blocks;
 
 import java.awt.Color;
+import java.util.stream.Collectors;
 
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -13,9 +14,7 @@ import interpreter.Expr;
 import interpreter.Stmt;
 
 public class LOOPBlock extends BaseBlock {
-	
-	Expr.Literal rightHandSide = new Expr.Literal(1);
-	Stmt body = null;
+	private int numIterations = 0;
 
 	public LOOPBlock(BaseBlock father, int posX) {
   	  	super(posX, 5, 450, 60, Color.CYAN, BaseBlock.Mode.DRAGGABLE_Y);
@@ -26,10 +25,7 @@ public class LOOPBlock extends BaseBlock {
 		SpinnerModel value = new SpinnerNumberModel(1, 1, 15, 1);  
         JSpinner spinner = new JSpinner(value);    
         
-        spinner.addChangeListener(event -> {
-			int right = (int)spinner.getValue();
-			rightHandSide = new Expr.Literal(right);
-        });
+        spinner.addChangeListener(event -> numIterations = (int)spinner.getValue());
 		
 		JComboBox<String> blockSelect = new JComboBox<String>(new String[]{"Se", "Repete", "Move", "Interagir"});
 
@@ -88,13 +84,13 @@ public class LOOPBlock extends BaseBlock {
 
 	@Override
 	public Stmt toStmt() {
-		return new Stmt.Loop(
-				new Expr.Binary(
-						new Expr.Variable("i"),
-						Expr.Binary.Operator.LESS,
-						rightHandSide
-				),
-				body
+		return new Stmt.Repeat(
+				new Expr.Literal(numIterations),
+				new Stmt.Block(
+					blocks.stream()
+						.map(BaseBlock::toStmt)
+						.collect(Collectors.toList())
+				)
 		);
 	}
 }

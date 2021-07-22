@@ -47,15 +47,11 @@ public class BlockEditor extends BaseBlock {
 			case "Repete":
 				blocks.LOOPBlock LOOP = new blocks.LOOPBlock(this, 680);
 				super.addBlock(LOOP, 0);
-				add(LOOP);
-				blocks.add(LOOP);
 				break;
 
 			case "Move":
 				blocks.MOVEBlock MOVE = new blocks.MOVEBlock(this);
 				super.addBlock(MOVE, 0);
-				add(MOVE);
-				blocks.add(MOVE);
 				break;
 
 			case "Interagir":
