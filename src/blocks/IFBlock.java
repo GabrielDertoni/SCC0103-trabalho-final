@@ -2,6 +2,7 @@ package blocks;
 
 import java.awt.Color;
 import java.awt.Dimension;
+import java.util.stream.Collectors;
 
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -16,8 +17,7 @@ public class IFBlock extends BaseBlock {
 	String leftHandSideVar = "a Direita";
 	String rightHandSideVar = "uma parede";
 	Expr.Binary.Operator operator = Expr.Binary.Operator.EQUAL;
-	Stmt thenBranch = null, elseBranch = null;
-	
+
 	public IFBlock(BaseBlock father) {
 		super(700, 5, 250, 90, Color.YELLOW, BaseBlock.Mode.DRAGGABLE);
 		
@@ -117,8 +117,12 @@ public class IFBlock extends BaseBlock {
 						operator,
 						new Expr.Variable(rightHandSideVar)
 				),
-				thenBranch,
-				elseBranch
+				new Stmt.Block(
+						blocks.stream()
+								.map(BaseBlock::toStmt)
+								.collect(Collectors.toList())
+				),
+				null
 		);
 	}
 }
