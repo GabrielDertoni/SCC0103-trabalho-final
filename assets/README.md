@@ -8,3 +8,4 @@
 - objective = Computador com mesa, objetivo no mapa
 - tile1, tile2, tile3 = Diferentes "pisos" ou "azulejos" no mapa
 - wall = parede, que o personagem não pode ocupar
+- background = background da tela inicial *TEMPORARIO*
