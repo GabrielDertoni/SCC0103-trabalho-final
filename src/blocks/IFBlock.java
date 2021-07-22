@@ -1,7 +1,6 @@
 package blocks;
 
 import java.awt.Color;
-import java.awt.Dimension;
 import java.util.stream.Collectors;
 
 import javax.swing.JButton;
@@ -13,16 +12,18 @@ import interpreter.Stmt;
 
 public class IFBlock extends BaseBlock {
 
-	BaseBlock father;
 	String leftHandSideVar = "a Direita";
 	String rightHandSideVar = "uma parede";
 	Expr.Binary.Operator operator = Expr.Binary.Operator.EQUAL;
 
-	public IFBlock(BaseBlock father) {
-		super(700, 5, 250, 90, Color.YELLOW, BaseBlock.Mode.DRAGGABLE);
+	public IFBlock(BaseBlock father, int posX) {
+		super(posX, 5, 450, 80, Color.YELLOW, BaseBlock.Mode.DRAGGABLE_Y);
 		
+		this.posX = posX;
 		this.father = father;
 		
+		setLocation(posX, 5);
+
 		String direction[] = {"a Direita", "Cima", "a Esquerda", "Baixo"};
 		JComboBox<String> dir = new JComboBox<String>(direction);
 		dir.addActionListener(event -> leftHandSideVar = (String)dir.getSelectedItem());
@@ -53,11 +54,6 @@ public class IFBlock extends BaseBlock {
 		
 		JButton removeButton = new JButton("Remover");
 		removeButton.addActionListener(event -> {
-			father.nInstructions--;
-			father.altura -= altura;
-
-			father.setPreferredSize(new Dimension(father.largura, father.altura));
-
 			father.removeBlock(this);
 			father.repaint();
 		});
@@ -73,40 +69,36 @@ public class IFBlock extends BaseBlock {
     }
 
     public void addBlock(String blockName) {
-		nInstructions++;
-
 		switch(blockName) {
 			case "Se":
-				altura += 90;
+				height += 90;
 
-				blocks.IFBlock IF = new blocks.IFBlock(this);
-				super.addBlock(IF);
+				blocks.IFBlock IF = new blocks.IFBlock(this, posX + 10);
+				super.addBlock(IF, 80);
 				break;
 
 			case "Repete":
-				altura += 60;
+				height += 60;
 
-				blocks.LOOPBlock LOOP = new blocks.LOOPBlock(this);
-				super.addBlock(LOOP);
+				blocks.LOOPBlock LOOP = new blocks.LOOPBlock(this, posX + 10);
+				super.addBlock(LOOP, 50);
 				break;
 
 			case "Move":
-				altura += 30;
+				height += 30;
 
 				blocks.MOVEBlock MOVE = new blocks.MOVEBlock(this);
-				super.addBlock(MOVE);
+				super.addBlock(MOVE, 30);
 				break;
 
 			case "Interagir":
-				altura += 30;
+				height += 30;
 
 				blocks.INTERACTBlock INTERACT = new blocks.INTERACTBlock(this);
-				super.addBlock(INTERACT);
+				super.addBlock(INTERACT, 30);
 				break;
 		}
-
-		setPreferredSize(new Dimension(largura, altura));
-		updateUI();
+		//setPreferredSize(new Dimension(width, height));
 	}
 
 	@Override

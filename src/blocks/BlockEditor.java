@@ -1,19 +1,14 @@
 package blocks;
 
 import java.awt.*;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
 import javax.swing.JButton;
 import javax.swing.JComboBox;
-import javax.swing.JPanel;
-import javax.swing.border.EmptyBorder;
 
 import interpreter.PseudocodeGenerator;
 import interpreter.Stmt;
-import menus.WindowManager;
 
 public class BlockEditor extends BaseBlock {
 
@@ -57,27 +52,27 @@ public class BlockEditor extends BaseBlock {
 	private void addNewBlock(String blockName) {
 		switch(blockName) {
 			case "Se":
-				blocks.IFBlock IF = new blocks.IFBlock(this);
-				add(IF);
-				blocks.add(IF);
+				blocks.IFBlock IF = new blocks.IFBlock(this, 680);
+				super.addBlock(IF, 0);
 				break;
 
 			case "Repete":
-				blocks.LOOPBlock LOOP = new blocks.LOOPBlock(this);
+				blocks.LOOPBlock LOOP = new blocks.LOOPBlock(this, 680);
+				super.addBlock(LOOP, 0);
 				add(LOOP);
 				blocks.add(LOOP);
 				break;
 
 			case "Move":
 				blocks.MOVEBlock MOVE = new blocks.MOVEBlock(this);
+				super.addBlock(MOVE, 0);
 				add(MOVE);
 				blocks.add(MOVE);
 				break;
 
 			case "Interagir":
 				blocks.INTERACTBlock INTERACT = new blocks.INTERACTBlock(this);
-				add(INTERACT);
-				blocks.add(INTERACT);
+				super.addBlock(INTERACT, 0);
 				break;
 		}
 		updateUI();
