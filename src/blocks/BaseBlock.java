@@ -87,7 +87,7 @@ public abstract class BaseBlock extends JPanel{
 		nInstructions++;
 
 		setPreferredSize(new Dimension(width, height));
-		block.setLocation(posX, posY);
+		//block.setLocation(posX, posY);
 		if(father != null && father.mode != Mode.STATIC) father.updateHeight(newHeight, Method.ADD);
 
 		blocks.add(block);
@@ -100,7 +100,6 @@ public abstract class BaseBlock extends JPanel{
 		height -= block.height;
 
 		setPreferredSize(new Dimension(width, height));
-		setLocation(posX, posY);
 		if(father != null && father.mode != Mode.STATIC) father.updateHeight(block.height, Method.REMOVE);
 
 		blocks.remove(block);
