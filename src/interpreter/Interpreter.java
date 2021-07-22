@@ -85,12 +85,18 @@ public class Interpreter implements Stmt.Visitor<Stream<Void>>, Expr.Visitor<Obj
 
     @Override
     public Stream<Void> visitInteractStmt(Stmt.Interact stmt) {
-        return Stream.empty();
+        return once(() -> {
+            environment.outputDevice.interact();
+            return null;
+        });
     }
 
     @Override
     public Stream<Void> visitMoveStmt(Stmt.Move stmt) {
-        return Stream.empty();
+        return once(() -> {
+            environment.outputDevice.move(stmt.direction);
+            return null;
+        });
     }
 
     @Override
