@@ -7,19 +7,16 @@ import java.awt.event.ActionListener;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
-import javax.swing.JPanel;
 
 import interpreter.Direction;
 import interpreter.Stmt;
 
 public class MOVEBlock extends BaseBlock {
 	
-	JPanel father;
-	BaseBlock block;
 	Direction direction = Direction.RIGHT;
 	
-	public MOVEBlock(JPanel father) {
-		super(700, 5, 300, 30, Color.PINK, BaseBlock.Mode.DRAGGABLE);
+	public MOVEBlock(BaseBlock father) {
+		super(700, 5, 300, 30, Color.PINK, BaseBlock.Mode.DRAGGABLE_Y);
   	  
 		this.father = father;
 		
@@ -53,7 +50,7 @@ public class MOVEBlock extends BaseBlock {
 		
 		JButton removeButton = new JButton("Remover");
 		removeButton.addActionListener(event -> {
-			father.remove(block);
+			father.removeBlock(this);
 			father.repaint();
 		});
         
