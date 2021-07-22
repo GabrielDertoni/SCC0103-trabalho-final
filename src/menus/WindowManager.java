@@ -18,7 +18,6 @@ public class WindowManager extends JFrame {
 
 	private static WindowManager instance = null;
 
-	private JPanel contentPane;
 	private int lvl;
 	private WindowName currentWindow;
 
@@ -28,7 +27,6 @@ public class WindowManager extends JFrame {
 	private BaseLVL lvlBase;
 
 	private WindowManager() {
-		currentWindow = WindowName.MainMenu;
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 		
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -44,7 +42,8 @@ public class WindowManager extends JFrame {
 		lvlScreen = new Niveis(x, y, width, height);
 		configScreen = new Config(x, y, width, height);
 		lvlBase = new BaseLVL(x, y, width, height, lvl);
-		setContentPane(inicioScreen);
+
+		setCurrentWindow(WindowName.Game);
 
 		setExtendedState(JFrame.MAXIMIZED_BOTH);
 		setVisible(true);
