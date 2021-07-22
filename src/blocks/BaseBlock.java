@@ -10,10 +10,6 @@ import java.awt.event.MouseMotionAdapter;
 import javax.swing.JPanel;
 
 public class BaseBlock extends JPanel{
-	
-	public static final int NOT_STATIC = 0;
-	public static final int STATIC = 1;
-
 	public enum Mode {
 		DRAGGABLE, STATIC
 	}
