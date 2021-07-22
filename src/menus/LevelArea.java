@@ -1,12 +1,15 @@
 package menus;
 
 import game.GameManager;
+import interpreter.Direction;
+import interpreter.PseudocodeGenerator;
 import interpreter.Stmt;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Arrays;
 import java.util.List;
 
 public class LevelArea extends Background {
@@ -21,11 +24,22 @@ public class LevelArea extends Background {
 
         gameManager = new GameManager();
         // gameManager.loadLevel(lvl);
-        gameLoopTimer = new Timer(20, new GameLoop());
+        gameLoopTimer = new Timer(500, new GameLoop());
+        gameLoopTimer.start();
     }
 
     public void runInterpreter(List<Stmt> stmts) {
-        gameManager.interpret(stmts);
+        // gameManager.interpret(stmts);
+        List<Stmt> stmts2 = Arrays.asList(
+            new Stmt.Move(Direction.RIGHT),
+            new Stmt.Move(Direction.RIGHT),
+            new Stmt.Move(Direction.UP),
+            new Stmt.Move(Direction.UP),
+            new Stmt.Interact()
+        );
+
+        PseudocodeGenerator gen = new PseudocodeGenerator();
+        gameManager.interpret(stmts2);
     }
 
     @Override

@@ -78,6 +78,7 @@ public class BaseLVL extends JPanel {
 			Stmt.Block block = (Stmt.Block)editor.toStmt();
 			PseudocodeGenerator gen = new PseudocodeGenerator();
 			System.out.println(gen.fromStmts(block.stmts));
+			levelArea.runInterpreter(block.stmts);
 		});
 
 		int runButton_w = 80;

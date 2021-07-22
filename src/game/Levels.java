@@ -3,7 +3,7 @@ package game;
 public class Levels {
 
     public static Level getLevelTest() {
-        Player player = new Player(1, 2);
+        Player player = new Player(1, 3);
 
         Compositor compositor = new Compositor();
         compositor.pushLayer(
@@ -31,7 +31,7 @@ public class Levels {
                         {0, 0, 0, 0, 0},
                         {0, 0, 0, 0, 0},
                         {0, 0, 0, 0, 0}
-                }, true)
+                }, false)
         );
         compositor.pushLayer(player);
 

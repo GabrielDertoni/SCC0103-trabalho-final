@@ -30,7 +30,6 @@ public class Tile extends Rectangle {
     }
 
     public static final int SIZE = 100;
-
     private TileType type;
 
     public Tile(int x, int y, TileType type) {
@@ -41,6 +40,14 @@ public class Tile extends Rectangle {
     public Image getImage() {
         if (this.type == TileType.EMPTY) return null;
         return Resources.TEXTURES.get(this.type.getIndex());
+    }
+
+    public int getGridX() {
+        return x / SIZE;
+    }
+
+    public int getGridY() {
+        return y / SIZE;
     }
 
     public void render(Graphics graphics) {

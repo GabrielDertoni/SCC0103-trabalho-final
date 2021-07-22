@@ -7,7 +7,7 @@ public class Level {
     public int goalX;
     public int goalY;
 
-    private Compositor compositor;
+    public Compositor compositor;
 
     public Level(int goalX, int goalY, Compositor compositor, Player player) {
         this.goalX = goalX;

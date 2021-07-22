@@ -15,7 +15,7 @@ public class TileMap implements Compositor.Layer {
                 if (tilesData[i][j] == 0) {
                     tiles[i][j] = null;
                 } else {
-                    tiles[i][j] = new Tile(i, j, Tile.TileType.fromIndex(tilesData[i][j]));
+                    tiles[i][j] = new Tile(j, i, Tile.TileType.fromIndex(tilesData[i][j]));
                 }
             }
         }

@@ -39,18 +39,6 @@ public class BlockEditor extends BaseBlock {
 		add(plusButton);
 
 		plusButton.addActionListener(event -> addNewBlock(blockSelect.getSelectedItem().toString()));
-		
-		JButton runButton = new JButton("Run");
-		runButton.addActionListener(event -> {
-			List<Stmt> stmts = blocks.stream().map(BaseBlock::toStmt).collect(Collectors.toList());
-			PseudocodeGenerator gen = new PseudocodeGenerator();
-			System.out.println(gen.fromStmts(stmts));
-		});
-
-		int runButton_w = 80;
-		int runButton_h = 30;
-		runButton.setBounds(width-runButton_w-30, height-200, runButton_w, runButton_h);
-		add(runButton);
 	
 	}
 

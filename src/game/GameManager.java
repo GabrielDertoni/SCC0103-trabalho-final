@@ -31,12 +31,13 @@ public class GameManager implements OutputDevice {
         if (level == 0) {
             this.level = Levels.getLevelTest();
         } else {
-            JOptionPane.showConfirmDialog(WindowManager.getInstance(), "Jogo concluído");
+            JOptionPane.showMessageDialog(WindowManager.getInstance(), "Jogo concluído");
             WindowManager.getInstance().setCurrentWindow(WindowManager.WindowName.MainMenu);
         }
     }
 
     public void interpret(List<Stmt> stmts) {
+        isRunning = true;
         interpreter = new Interpreter(stmts, this);
     }
 
@@ -47,6 +48,8 @@ public class GameManager implements OutputDevice {
     public void loop() {
         if (isRunning && interpreter != null && interpreter.isNotFinished()) {
             interpreter.advance();
+        } else if (interpreter != null && !interpreter.isNotFinished()) {
+            isRunning = false;
         }
     }
 
@@ -59,8 +62,8 @@ public class GameManager implements OutputDevice {
 
     @Override
     public void interact() {
-        if (level.player.x == level.goalX && level.player.y == level.goalY) {
-            JOptionPane.showConfirmDialog(WindowManager.getInstance(), "Nível vencido!");
+        if (level.player.getGridX() == level.goalX && level.player.getGridY() == level.goalY) {
+            JOptionPane.showMessageDialog(WindowManager.getInstance(), "Nível vencido!");
             loadLevel(level_num + 1);
         }
     }
