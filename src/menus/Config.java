@@ -14,26 +14,6 @@ import javax.swing.ImageIcon;
 
 public class Config extends Background {
 	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-					JFrame frame = new JFrame();
-					Config teste = new Config(0, 0, screenSize.width, screenSize.height);
-					frame.setContentPane(teste);
-					frame.setExtendedState(JFrame.MAXIMIZED_BOTH); 
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
-
-	/**
 	 * Create the frame.
 	 */
 	public Config(int x, int y, int width, int height) {

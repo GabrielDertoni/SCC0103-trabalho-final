@@ -13,27 +13,6 @@ import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 
 public class Niveis extends Background {
-
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-					JFrame frame = new JFrame();
-					Niveis teste = new Niveis(0, 0, screenSize.width, screenSize.height);
-					frame.setContentPane(teste);
-					frame.setExtendedState(JFrame.MAXIMIZED_BOTH); 
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
-
 	/**
 	 * Create the frame.
 	 */

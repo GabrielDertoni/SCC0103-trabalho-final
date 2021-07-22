@@ -13,27 +13,6 @@ public class Inicio extends Background {
 	public int height;
 	public int x;
 	public int y;
-	
-	/**
-	 * Launch the application.
-	 *//*
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-					JFrame frame = new JFrame();
-					Inicio teste = new Inicio(0, 0, screenSize.width, screenSize.height, frame);
-					frame.setContentPane(teste);
-					frame.setExtendedState(JFrame.MAXIMIZED_BOTH); 
-					frame.setVisible(true);
-					
-					} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}*/
 
 	public Inicio(int x, int y, int width, int height) {
 		super(new ImageIcon("specification/Prototipo_fundo_menu.png").getImage());
