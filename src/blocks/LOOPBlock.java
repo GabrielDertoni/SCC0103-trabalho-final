@@ -16,7 +16,7 @@ import javax.swing.event.ChangeListener;
 import interpreter.Expr;
 import interpreter.Stmt;
 
-public class LOOPBlock {
+public class LOOPBlock implements CodeBlock {
 	
 	JPanel father;
 	BlocoArrasta block;
@@ -32,20 +32,15 @@ public class LOOPBlock {
 		SpinnerModel value = new SpinnerNumberModel(1, 1, 15, 1);  
         JSpinner spinner = new JSpinner(value);    
         
-        spinner.addChangeListener(new ChangeListener() {  
-        	public void stateChanged(ChangeEvent e) {
-        		int right = (int) ((JSpinner) e.getSource()).getValue();
-        		rightHandSide = new Expr.Literal(right);
-        		// Teste: System.out.println(rightHandSide);
-      	  	}
+        spinner.addChangeListener(event -> {
+			int right = (int)spinner.getValue();
+			rightHandSide = new Expr.Literal(right);
         });
 		
 		JButton removeButton = new JButton("Remover");
-		removeButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				father.remove(block);
-				father.repaint();
-			}
+		removeButton.addActionListener(event -> {
+			father.remove(block);
+			father.repaint();
 		});
 		
         block.add(new JLabel("Repete "));
@@ -57,11 +52,16 @@ public class LOOPBlock {
 	public BlocoArrasta getBlock() {
 		return block;
 	}
-	
-	public Stmt getStmt() {
-		Stmt.Loop LOOP = new Stmt.Loop(new Expr.Binary(new Expr.Variable("i"), Expr.Binary.Operator.LESS, rightHandSide), body);
-		
-		return LOOP;
+
+	@Override
+	public Stmt toStmt() {
+		return new Stmt.Loop(
+				new Expr.Binary(
+						new Expr.Variable("i"),
+						Expr.Binary.Operator.LESS,
+						rightHandSide
+				),
+				body
+		);
 	}
-	
 }

@@ -12,7 +12,7 @@ import javax.swing.JPanel;
 import interpreter.Direction;
 import interpreter.Stmt;
 
-public class MOVEBlock {
+public class MOVEBlock implements CodeBlock {
 	
 	JPanel father;
 	BlocoArrasta block;
@@ -53,11 +53,9 @@ public class MOVEBlock {
         });
 		
 		JButton removeButton = new JButton("Remover");
-		removeButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				father.remove(block);
-				father.repaint();
-			}
+		removeButton.addActionListener(event -> {
+			father.remove(block);
+			father.repaint();
 		});
         
         block.add(new JLabel("Mova para"));
@@ -68,11 +66,9 @@ public class MOVEBlock {
 	public BlocoArrasta getBlock() {
 		return block;
 	}
-	
-	public Stmt getStmt() {
-		Stmt.Move MOVE = new Stmt.Move(direction);
-		
-		return MOVE;
+
+	@Override
+	public Stmt toStmt() {
+		return new Stmt.Move(direction);
 	}
-	
 }

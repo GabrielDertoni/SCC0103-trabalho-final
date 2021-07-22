@@ -1,5 +1,7 @@
 package blocks;
 
+import interpreter.Stmt;
+
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -8,7 +10,7 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-public class INTERACTBlock {
+public class INTERACTBlock implements CodeBlock {
 	
 	JPanel father;
 	BlocoArrasta block;
@@ -34,5 +36,10 @@ public class INTERACTBlock {
 	
 	public BlocoArrasta getBlock() {
 		return block;
+	}
+
+	@Override
+	public Stmt toStmt() {
+		return null;
 	}
 }

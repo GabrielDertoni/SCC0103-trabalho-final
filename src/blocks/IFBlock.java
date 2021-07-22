@@ -15,11 +15,12 @@ import interpreter.Expr;
 import interpreter.Stmt;
 import interpreter.Stmt.Move;
 
-public class IFBlock { 
+public class IFBlock implements CodeBlock {
 
 	BlocoArrasta father;
 	BlocoArrasta block;
-	Expr.Variable leftHandSide = new Expr.Variable("a Direita"), rightHandSide = new Expr.Variable("uma parede");
+	String leftHandSideVar = "a Direita";
+	String rightHandSideVar = "uma parede";
 	Expr.Binary.Operator operator = Expr.Binary.Operator.EQUAL;
 	Stmt thenBranch = null, elseBranch = null;
 	
@@ -31,47 +32,23 @@ public class IFBlock {
 		    
 		String direction[] = {"a Direita", "Cima", "a Esquerda", "Baixo"};        
 		JComboBox<String> dir = new JComboBox<String>(direction);
-		dir.addActionListener(new ActionListener() {  
-			
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				JComboBox<String> cb = (JComboBox<String>) e.getSource();
-		        String left = (String)cb.getSelectedItem();
-			  	leftHandSide = new Expr.Variable(left);
-			  	// Teste: System.out.println(leftHandSide);
-			}
-		});
+		dir.addActionListener(event -> leftHandSideVar = (String)dir.getSelectedItem());
 				
 		String operatorBox[] = {"igual à", "diferente de"};        
 		JComboBox<String> op = new JComboBox<String>(operatorBox);
-		op.addActionListener(new ActionListener() {  
-			
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				JComboBox<String> cb = (JComboBox<String>) e.getSource();
-		        String operatorString = (String)cb.getSelectedItem();
-		        
-		        if(operatorString == "igual à") {
-		        	operator = Expr.Binary.Operator.EQUAL;
-		        }else {
-		        	operator = Expr.Binary.Operator.NOT_EQUAL;
-		        }
-			  	// Teste: System.out.println(operator);
+		op.addActionListener(event -> {
+			String operatorString = (String)op.getSelectedItem();
+
+			if(operatorString == "igual à") {
+				operator = Expr.Binary.Operator.EQUAL;
+			}else {
+				operator = Expr.Binary.Operator.NOT_EQUAL;
 			}
 		 });
 		
 		String stats[] = {"uma parede", "nada", "um inimigo"};        
 		JComboBox<String> st = new JComboBox<String>(stats);    
-		st.addActionListener(new ActionListener() {  
-			
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				JComboBox<String> cb = (JComboBox<String>) e.getSource();
-		        String right = (String)cb.getSelectedItem();
-		        rightHandSide = new Expr.Variable(right);
-			  	// Teste: System.out.println(rightHandSide);
-			}
-		 }); 
+		st.addActionListener(event -> rightHandSideVar = (String)st.getSelectedItem());
 		
 		JButton plusButton = new JButton("+");
 		String statements[] = {"Se", "Repete", "Move", "Interagir"};        
@@ -79,60 +56,55 @@ public class IFBlock {
 		
 		int plusButton_w = 80;
 		int plusButton_h = 30;
-		//stmts.setBounds(block.WIDTH - 10, block.HEIGHT - 10, plusButton_w, plusButton_h);
 		plusButton.setBounds(220, 200, plusButton_w, plusButton_h);
         
-		plusButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-        		block.nInstructions++;
-				String stmt = stmts.getItemAt(stmts.getSelectedIndex());
-				
-		        switch(stmt) {
-		        	case "Se":
-		        		block.altura += 90;
-		        		
-		        		blocks.IFBlock IF = new blocks.IFBlock(block);
-		        		block.add(IF.getBlock());
-		        		break;
-		        		
-		        	case "Repete":
-		        		block.altura += 60;
-		        		
-		        		blocks.LOOPBlock LOOP = new blocks.LOOPBlock(block);
-		        		block.add(LOOP.getBlock());
-		        		break;
-		        		
-		        	case "Move":
-		        		block.altura += 30;
-		        		
-		        		blocks.MOVEBlock MOVE = new blocks.MOVEBlock(block);
-		        		block.add(MOVE.getBlock());
-		        		break;
-		        		
-		        	case "Interagir":
-		        		block.altura += 30;
-		        		
-		        		blocks.INTERACTBlock INTERACT = new blocks.INTERACTBlock(block);
-		        		block.add(INTERACT.getBlock());
-		        		break;
-		        }
-		        
-		        block.setPreferredSize(new Dimension(block.largura, block.altura));
-		        
+		plusButton.addActionListener(event -> {
+			block.nInstructions++;
+			String stmt = stmts.getItemAt(stmts.getSelectedIndex());
+
+			switch(stmt) {
+				case "Se":
+					block.altura += 90;
+
+					blocks.IFBlock IF = new blocks.IFBlock(block);
+					block.add(IF.getBlock());
+					break;
+
+				case "Repete":
+					block.altura += 60;
+
+					blocks.LOOPBlock LOOP = new blocks.LOOPBlock(block);
+					block.add(LOOP.getBlock());
+					break;
+
+				case "Move":
+					block.altura += 30;
+
+					blocks.MOVEBlock MOVE = new blocks.MOVEBlock(block);
+					block.add(MOVE.getBlock());
+					break;
+
+				case "Interagir":
+					block.altura += 30;
+
+					blocks.INTERACTBlock INTERACT = new blocks.INTERACTBlock(block);
+					block.add(INTERACT.getBlock());
+					break;
 			}
+
+			block.setPreferredSize(new Dimension(block.largura, block.altura));
+			block.updateUI();
 		});
 		
 		JButton removeButton = new JButton("Remover");
-		removeButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				father.nInstructions--;
-				father.altura -= block.altura;
-				
-				father.setPreferredSize(new Dimension(father.largura, father.altura));
-				
-				father.remove(block);
-				father.repaint();
-			}
+		removeButton.addActionListener(event -> {
+			father.nInstructions--;
+			father.altura -= block.altura;
+
+			father.setPreferredSize(new Dimension(father.largura, father.altura));
+
+			father.remove(block);
+			father.repaint();
 		});
 		
 		block.add(new JLabel("Se "));
@@ -148,11 +120,17 @@ public class IFBlock {
 	public BlocoArrasta getBlock() {
 		return block;
 	}
-	
-	public Stmt getStmt() {
-		Stmt.If IF = new Stmt.If(new Expr.Binary(leftHandSide, operator, rightHandSide), thenBranch, elseBranch);
-		
-		return IF;
-	}
 
+	@Override
+	public Stmt toStmt() {
+		return new Stmt.If(
+				new Expr.Binary(
+						new Expr.Variable(leftHandSideVar),
+						operator,
+						new Expr.Variable(rightHandSideVar)
+				),
+				thenBranch,
+				elseBranch
+		);
+	}
 }
