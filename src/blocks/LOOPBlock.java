@@ -1,8 +1,6 @@
 package blocks;
 
 import java.awt.Color;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -10,8 +8,6 @@ import javax.swing.JPanel;
 import javax.swing.JSpinner;
 import javax.swing.SpinnerModel;
 import javax.swing.SpinnerNumberModel;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
 
 import interpreter.Expr;
 import interpreter.Stmt;
@@ -19,7 +15,7 @@ import interpreter.Stmt;
 public class LOOPBlock implements CodeBlock {
 	
 	JPanel father;
-	BlocoArrasta block;
+	BaseBlock block;
 	Expr.Literal rightHandSide = new Expr.Literal(1);
 	Stmt body = null;
 	
@@ -27,7 +23,7 @@ public class LOOPBlock implements CodeBlock {
   	  
 		this.father = father;
 		
-		block = new BlocoArrasta(700, 5, 250, 60, Color.CYAN, BlocoArrasta.NOT_STATIC);
+		block = new BaseBlock(700, 5, 250, 60, Color.CYAN, BaseBlock.Mode.DRAGGABLE);
   	    
 		SpinnerModel value = new SpinnerNumberModel(1, 1, 15, 1);  
         JSpinner spinner = new JSpinner(value);    
@@ -49,7 +45,8 @@ public class LOOPBlock implements CodeBlock {
         block.add(removeButton);
 	}
 
-	public BlocoArrasta getBlock() {
+	@Override
+	public BaseBlock getDraggablePanel() {
 		return block;
 	}
 

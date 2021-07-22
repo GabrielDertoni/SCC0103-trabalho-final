@@ -1,21 +1,16 @@
 package menus;
 
 import java.awt.Color;
-import java.awt.EventQueue;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
 import javax.swing.JButton;
 import javax.swing.JComboBox;
-import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
-import blocks.BlocoArrasta;
+import blocks.BaseBlock;
 import blocks.CodeBlock;
 import interpreter.PseudocodeGenerator;
 import interpreter.Stmt;
@@ -23,7 +18,7 @@ import interpreter.Stmt;
 public class BaseLVL extends JPanel {
 
 	private List<CodeBlock> blocks;
-	private BlocoArrasta blocos;
+	private BaseBlock editor;
 
 	public BaseLVL(int x, int y, int width, int height, int lvl) {
 		blocks = new ArrayList<CodeBlock>();
@@ -40,10 +35,10 @@ public class BaseLVL extends JPanel {
 		add(mapa);
 
 		//Area de manuseio dos blocos de programacao
-		blocos = new BlocoArrasta(0, 0, 0, 0, Color.GREEN, BlocoArrasta.STATIC);
-		blocos.setBounds((int) (width*2/3), 0, (int) (width/3),(int) (height*3/5));
-		blocos.setBackground(Color.GREEN);
-		add(blocos);
+		editor = new BaseBlock(0, 0, 0, 0, Color.GREEN, BaseBlock.Mode.STATIC);
+		editor.setBounds((int) (width*2/3), 0, (int) (width/3),(int) (height*3/5));
+		editor.setBackground(Color.GREEN);
+		add(editor);
 
 		JButton plusButton = new JButton("+");
 		JComboBox<String> blockSelect = new JComboBox<String>(new String[]{"Se", "Repete", "Move", "Interagir"});
@@ -54,37 +49,8 @@ public class BaseLVL extends JPanel {
 		add(blockSelect);
 		plusButton.setBounds(width-plusButton_w-30, height-250, plusButton_w, plusButton_h);
 		add(plusButton);
-        
-		plusButton.addActionListener(ActionListener -> {
-			String stmt = blockSelect.getItemAt(blockSelect.getSelectedIndex());
 
-			switch(stmt) {
-				case "Se":
-					blocks.IFBlock IF = new blocks.IFBlock(blocos);
-					blocos.add(IF.getBlock());
-					blocks.add(IF);
-					break;
-
-				case "Repete":
-					blocks.LOOPBlock LOOP = new blocks.LOOPBlock(blocos);
-					blocos.add(LOOP.getBlock());
-					blocks.add(LOOP);
-					break;
-
-				case "Move":
-					blocks.MOVEBlock MOVE = new blocks.MOVEBlock(blocos);
-					blocos.add(MOVE.getBlock());
-					blocks.add(MOVE);
-					break;
-
-				case "Interagir":
-					blocks.INTERACTBlock INTERACT = new blocks.INTERACTBlock(blocos);
-					blocos.add(INTERACT.getBlock());
-					blocks.add(INTERACT);
-					break;
-			}
-			blocos.updateUI();
-		});
+		plusButton.addActionListener(event -> addNewBlock(blockSelect.getSelectedItem().toString()));
 		
 		JButton runButton = new JButton("Run");
 		runButton.addActionListener(event -> {
@@ -136,6 +102,35 @@ public class BaseLVL extends JPanel {
 		}
 		btnRecomear.setFont(new Font("", Font.PLAIN, 18));*/// TODO mudar a fonte
 	
+	}
+
+	private void addNewBlock(String blockName) {
+		switch(blockName) {
+			case "Se":
+				blocks.IFBlock IF = new blocks.IFBlock(editor);
+				editor.add(IF.getDraggablePanel());
+				blocks.add(IF);
+				break;
+
+			case "Repete":
+				blocks.LOOPBlock LOOP = new blocks.LOOPBlock(editor);
+				editor.add(LOOP.getDraggablePanel());
+				blocks.add(LOOP);
+				break;
+
+			case "Move":
+				blocks.MOVEBlock MOVE = new blocks.MOVEBlock(editor);
+				editor.add(MOVE.getDraggablePanel());
+				blocks.add(MOVE);
+				break;
+
+			case "Interagir":
+				blocks.INTERACTBlock INTERACT = new blocks.INTERACTBlock(editor);
+				editor.add(INTERACT.getDraggablePanel());
+				blocks.add(INTERACT);
+				break;
+		}
+		editor.updateUI();
 	}
 	
 }

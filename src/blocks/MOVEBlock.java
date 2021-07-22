@@ -15,14 +15,14 @@ import interpreter.Stmt;
 public class MOVEBlock implements CodeBlock {
 	
 	JPanel father;
-	BlocoArrasta block;
+	BaseBlock block;
 	Direction direction = Direction.RIGHT;
 	
 	public MOVEBlock(JPanel father) {
   	  
 		this.father = father;
 		
-  	  	block = new BlocoArrasta(700, 5, 300, 30, Color.PINK, BlocoArrasta.NOT_STATIC);
+  	  	block = new BaseBlock(700, 5, 300, 30, Color.PINK, BaseBlock.Mode.DRAGGABLE);
   	  	
   	  	String directions[] = {"a Direita", "Cima", "a Esquerda", "Baixo"};
         JComboBox<String> dir = new JComboBox<String>(directions);
@@ -63,7 +63,8 @@ public class MOVEBlock implements CodeBlock {
         block.add(removeButton);
 	}
 
-	public BlocoArrasta getBlock() {
+	@Override
+	public BaseBlock getDraggablePanel() {
 		return block;
 	}
 

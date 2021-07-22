@@ -13,13 +13,13 @@ import javax.swing.JPanel;
 public class INTERACTBlock implements CodeBlock {
 	
 	JPanel father;
-	BlocoArrasta block;
+	BaseBlock block;
 	
 	public INTERACTBlock(JPanel father) {
 		
 		this.father = father;
 		
-		block = new BlocoArrasta(700, 5, 200, 30, Color.RED, BlocoArrasta.NOT_STATIC);
+		block = new BaseBlock(700, 5, 200, 30, Color.RED, BaseBlock.Mode.DRAGGABLE);
 		
         block.add(new JLabel("Interagir"));
 		
@@ -33,8 +33,9 @@ public class INTERACTBlock implements CodeBlock {
 		
 		block.add(removeButton);
 	}
-	
-	public BlocoArrasta getBlock() {
+
+	@Override
+	public BaseBlock getDraggablePanel() {
 		return block;
 	}
 

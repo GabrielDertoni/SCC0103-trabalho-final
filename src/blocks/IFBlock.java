@@ -2,33 +2,28 @@ package blocks;
 
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
-import javax.swing.JPanel;
 
-import interpreter.Direction;
 import interpreter.Expr;
 import interpreter.Stmt;
-import interpreter.Stmt.Move;
 
 public class IFBlock implements CodeBlock {
 
-	BlocoArrasta father;
-	BlocoArrasta block;
+	BaseBlock father;
+	BaseBlock block;
 	String leftHandSideVar = "a Direita";
 	String rightHandSideVar = "uma parede";
 	Expr.Binary.Operator operator = Expr.Binary.Operator.EQUAL;
 	Stmt thenBranch = null, elseBranch = null;
 	
-	public IFBlock(BlocoArrasta father) {
+	public IFBlock(BaseBlock father) {
 		
 		this.father = father;
 		
-		block = new BlocoArrasta(700, 5, 250, 90, Color.YELLOW, BlocoArrasta.NOT_STATIC);
+		block = new BaseBlock(700, 5, 250, 90, Color.YELLOW, BaseBlock.Mode.DRAGGABLE);
 		    
 		String direction[] = {"a Direita", "Cima", "a Esquerda", "Baixo"};        
 		JComboBox<String> dir = new JComboBox<String>(direction);
@@ -51,50 +46,13 @@ public class IFBlock implements CodeBlock {
 		st.addActionListener(event -> rightHandSideVar = (String)st.getSelectedItem());
 		
 		JButton plusButton = new JButton("+");
-		String statements[] = {"Se", "Repete", "Move", "Interagir"};        
-		JComboBox<String> stmts = new JComboBox<String>(statements);
+		JComboBox<String> blockSelect = new JComboBox<String>(new String[]{"Se", "Repete", "Move", "Interagir"});
 		
 		int plusButton_w = 80;
 		int plusButton_h = 30;
 		plusButton.setBounds(220, 200, plusButton_w, plusButton_h);
         
-		plusButton.addActionListener(event -> {
-			block.nInstructions++;
-			String stmt = stmts.getItemAt(stmts.getSelectedIndex());
-
-			switch(stmt) {
-				case "Se":
-					block.altura += 90;
-
-					blocks.IFBlock IF = new blocks.IFBlock(block);
-					block.add(IF.getBlock());
-					break;
-
-				case "Repete":
-					block.altura += 60;
-
-					blocks.LOOPBlock LOOP = new blocks.LOOPBlock(block);
-					block.add(LOOP.getBlock());
-					break;
-
-				case "Move":
-					block.altura += 30;
-
-					blocks.MOVEBlock MOVE = new blocks.MOVEBlock(block);
-					block.add(MOVE.getBlock());
-					break;
-
-				case "Interagir":
-					block.altura += 30;
-
-					blocks.INTERACTBlock INTERACT = new blocks.INTERACTBlock(block);
-					block.add(INTERACT.getBlock());
-					break;
-			}
-
-			block.setPreferredSize(new Dimension(block.largura, block.altura));
-			block.updateUI();
-		});
+		plusButton.addActionListener(event -> addNewBlock(blockSelect.getSelectedItem().toString()));
 		
 		JButton removeButton = new JButton("Remover");
 		removeButton.addActionListener(event -> {
@@ -112,12 +70,50 @@ public class IFBlock implements CodeBlock {
 		block.add(new JLabel("for "));
 		block.add(op);
 		block.add(st);
-		block.add(stmts);
+		block.add(blockSelect);
 		block.add(plusButton);
 		block.add(removeButton);
     }
-	
-	public BlocoArrasta getBlock() {
+
+    private void addNewBlock(String blockName) {
+		block.nInstructions++;
+
+		switch(blockName) {
+			case "Se":
+				block.altura += 90;
+
+				blocks.IFBlock IF = new blocks.IFBlock(block);
+				block.add(IF.getDraggablePanel());
+				break;
+
+			case "Repete":
+				block.altura += 60;
+
+				blocks.LOOPBlock LOOP = new blocks.LOOPBlock(block);
+				block.add(LOOP.getDraggablePanel());
+				break;
+
+			case "Move":
+				block.altura += 30;
+
+				blocks.MOVEBlock MOVE = new blocks.MOVEBlock(block);
+				block.add(MOVE.getDraggablePanel());
+				break;
+
+			case "Interagir":
+				block.altura += 30;
+
+				blocks.INTERACTBlock INTERACT = new blocks.INTERACTBlock(block);
+				block.add(INTERACT.getDraggablePanel());
+				break;
+		}
+
+		block.setPreferredSize(new Dimension(block.largura, block.altura));
+		block.updateUI();
+	}
+
+    @Override
+	public BaseBlock getDraggablePanel() {
 		return block;
 	}
 
