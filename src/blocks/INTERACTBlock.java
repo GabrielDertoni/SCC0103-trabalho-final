@@ -27,6 +27,6 @@ public class INTERACTBlock extends BaseBlock {
 
 	@Override
 	public Stmt toStmt() {
-		return null;
+		return new Stmt.Interact();
 	}
 }

@@ -10,8 +10,8 @@ import javax.swing.JPanel;
 public class WindowManager extends JFrame {
 
 	public enum WindowName {
-		LevelMenu,
 		MainMenu,
+		LevelMenu,
 		Config,
 		Game,
 	}
@@ -21,27 +21,11 @@ public class WindowManager extends JFrame {
 	private int lvl;
 	private WindowName currentWindow;
 
-	private Inicio inicioScreen;
-	private Niveis lvlScreen;
-	private Config configScreen;
-	private BaseLVL lvlBase;
-
 	private WindowManager() {
-		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-		
+
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setExtendedState(JFrame.MAXIMIZED_BOTH);
-		
-		int x = 0;
-		int y = 0;
-		lvl = 1;
-		int width = screenSize.width;
-		int height = screenSize.height;
 
-		inicioScreen = new Inicio(x, y, width, height);
-		lvlScreen = new Niveis(x, y, width, height);
-		configScreen = new Config(x, y, width, height);
-		lvlBase = new BaseLVL(x, y, width, height, lvl);
 
 		setCurrentWindow(WindowName.Game);
 
@@ -57,23 +41,30 @@ public class WindowManager extends JFrame {
 	}
 	
 	public void setCurrentWindow(WindowName window) {
+		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+		int x = 0;
+		int y = 0;
+		int width = screenSize.width;
+		int height = screenSize.height;
+
 		currentWindow = window;
+
 		switch (window) {
-			case LevelMenu -> {
-				setContentPane(lvlScreen);
-			}
 			case MainMenu -> {
-				setContentPane(inicioScreen);
+				setContentPane(new Inicio(x, y, width, height));
+			}
+			case LevelMenu -> {
+				setContentPane(new Niveis(x, y, width, height));
 			}
 			case Config -> {
-				setContentPane(configScreen);
+				setContentPane(new Config(x, y, width, height));
 			}
 			case Game -> {
-				setContentPane(lvlBase);
-				// lvlBase.setLvl(lvl);
+				setContentPane(new BaseLVL(x, y, width, height, lvl));
 			}
 		}
 		System.out.println(currentWindow);
+
 		revalidate();
 	}
 	
