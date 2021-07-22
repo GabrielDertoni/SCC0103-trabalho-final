@@ -15,7 +15,7 @@ public class Inicio extends Background {
 	public int y;
 
 	public Inicio(int x, int y, int width, int height) {
-		super(new ImageIcon("specification/Prototipo_fundo_menu.png").getImage());
+		super(new ImageIcon("assets/background.png").getImage());
 
 		setLayout(null);
 		
