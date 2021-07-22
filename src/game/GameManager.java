@@ -8,40 +8,46 @@ import menus.WindowManager;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.util.Arrays;
+import java.util.List;
 
 public class GameManager implements OutputDevice {
     private Interpreter interpreter;
     private boolean isRunning;
-    private Timer gameLoopTimer;
     private Level level;
+    private int level_num;
 
     public GameManager() {
         interpreter = null;
         isRunning = false;
 
         Resources.load();
-        gameLoopTimer = new Timer(20, new GameLoop());
 
         level = Levels.getLevelTest();
+        System.out.println(level.compositor.collidesWith(level.player));
     }
 
     public void loadLevel(int level) {
+        level_num = level;
         if (level == 0) {
             this.level = Levels.getLevelTest();
         } else {
-            throw new IllegalArgumentException("not a valid level: " + level);
+            JOptionPane.showConfirmDialog(WindowManager.getInstance(), "Jogo concluído");
+            WindowManager.getInstance().setCurrentWindow(WindowManager.WindowName.MainMenu);
         }
     }
 
-    public void interpret(Stmt toInterpret) {
-        interpreter = new Interpreter(Arrays.asList(toInterpret), this);
+    public void interpret(List<Stmt> stmts) {
+        interpreter = new Interpreter(stmts, this);
     }
 
     public void render(Graphics graphics) {
-        this.level.render(graphics);
+        level.render(graphics);
+    }
+
+    public void loop() {
+        if (isRunning && interpreter != null && interpreter.isNotFinished()) {
+            interpreter.advance();
+        }
     }
 
     /* Implementation of OutputDevice */
@@ -55,25 +61,17 @@ public class GameManager implements OutputDevice {
     public void interact() {
         if (level.player.x == level.goalX && level.player.y == level.goalY) {
             JOptionPane.showConfirmDialog(WindowManager.getInstance(), "Nível vencido!");
+            loadLevel(level_num + 1);
         }
     }
 
     @Override
     public void move(Direction direction) {
-        switch (direction) {
-            case UP    -> level.player.y++;
-            case DOWN  -> level.player.y--;
-            case LEFT  -> level.player.x++;
-            case RIGHT -> level.player.x--;
-        }
-    }
-
-    private class GameLoop implements ActionListener {
-        @Override
-        public void actionPerformed(ActionEvent arg0) {
-            if (isRunning && interpreter != null && interpreter.isNotFinished()) {
-                interpreter.advance();
-            }
+        // Tries to move in one direction, if it collides with a tilemap, move back.
+        level.player.move(direction);
+        Compositor.Layer collision = level.compositor.collidesWith(level.player);
+        if (collision instanceof TileMap) {
+            level.player.move(direction.getOpposite());
         }
     }
 }

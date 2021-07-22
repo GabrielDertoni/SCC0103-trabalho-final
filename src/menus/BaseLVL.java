@@ -1,13 +1,18 @@
 package menus;
 
 import java.awt.Color;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
+import blocks.BaseBlock;
 import blocks.BlockEditor;
 import game.GameManager;
+import interpreter.PseudocodeGenerator;
+import interpreter.Stmt;
 
 public class BaseLVL extends JPanel {
 
@@ -33,7 +38,7 @@ public class BaseLVL extends JPanel {
 		//Botao de voltar a tela de selecao de niveis
 		JButton btnNewButton = new JButton("Voltar");
 		btnNewButton.addActionListener(event -> {
-			WindowManager.getInstance().setCurrentWindow(WindowManager.WindowName.Game);
+			WindowManager.getInstance().setCurrentWindow(WindowManager.WindowName.LevelMenu);
 		});
 		int btnVoltar_w = 90;
 		int btnVoltar_h = 30;
@@ -51,7 +56,7 @@ public class BaseLVL extends JPanel {
 		//Botao de recomeçar o nivel
 		JButton btnRecomear = new JButton("Recomeçar");
 		btnRecomear.addActionListener(event -> {
-			WindowManager.getInstance().setCurrentWindow(WindowManager.WindowName.LevelMenu);
+			WindowManager.getInstance().setCurrentWindow(WindowManager.WindowName.Game);
 		});
 		btnRecomear.setBounds(width-120-30, height-150, 120, 25);
 		add(btnRecomear);
@@ -67,6 +72,18 @@ public class BaseLVL extends JPanel {
 			;
 		}
 		btnRecomear.setFont(new Font("", Font.PLAIN, 18));*/// TODO mudar a fonte
+
+		JButton runButton = new JButton("Run");
+		runButton.addActionListener(event -> {
+			Stmt.Block block = (Stmt.Block)editor.toStmt();
+			PseudocodeGenerator gen = new PseudocodeGenerator();
+			System.out.println(gen.fromStmts(block.stmts));
+		});
+
+		int runButton_w = 80;
+		int runButton_h = 30;
+		runButton.setBounds(width-runButton_w-30, height-200, runButton_w, runButton_h);
+		add(runButton);
 	}
 	
 }

@@ -1,12 +1,17 @@
 package menus;
 
 import game.GameManager;
+import interpreter.Stmt;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.List;
 
 public class LevelArea extends Background {
     private GameManager gameManager;
+    private Timer gameLoopTimer;
 
     public LevelArea(int x, int y, int width, int height) {
         super(new ImageIcon("assets/background.png").getImage());
@@ -16,11 +21,24 @@ public class LevelArea extends Background {
 
         gameManager = new GameManager();
         // gameManager.loadLevel(lvl);
+        gameLoopTimer = new Timer(20, new GameLoop());
+    }
+
+    public void runInterpreter(List<Stmt> stmts) {
+        gameManager.interpret(stmts);
     }
 
     @Override
     protected void paintComponent(Graphics graphics) {
         super.paintComponent(graphics);
         gameManager.render(graphics);
+    }
+
+    private class GameLoop implements ActionListener {
+        @Override
+        public void actionPerformed(ActionEvent arg0) {
+            gameManager.loop();
+            repaint();
+        }
     }
 }
