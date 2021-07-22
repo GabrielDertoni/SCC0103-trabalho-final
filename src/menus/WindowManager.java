@@ -87,7 +87,7 @@ public class WindowManager extends JFrame {
 			}
 			case Game -> {
 				setContentPane(lvlBase);
-				lvlBase.setLvl(lvl);
+				// lvlBase.setLvl(lvl);
 			}
 		}
 		System.out.println(currentWindow);
