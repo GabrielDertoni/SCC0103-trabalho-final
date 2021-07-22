@@ -7,10 +7,12 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
 import blocks.BlockEditor;
+import game.GameManager;
 
 public class BaseLVL extends JPanel {
 
 	private BlockEditor editor;
+	private LevelArea levelArea;
 
 	public BaseLVL(int x, int y, int width, int height, int lvl) {
 		setBounds(x, y, width, height);
@@ -19,10 +21,9 @@ public class BaseLVL extends JPanel {
 		setLayout(null);
 		
 		//Painel onde e mostrado o nivel do mapa atual e o personagem e sua posicao no mapa
-		JPanel mapa = new JPanel();
-		mapa.setBounds(0, 0, (int) (width*2/3)-50, height);
-		mapa.setBackground(Color.DARK_GRAY);
-		add(mapa);
+		levelArea = new LevelArea(0, 0, (int) (width*2/3)-50, height);
+		levelArea.setBackground(Color.DARK_GRAY);
+		add(levelArea);
 
 		//Area de manuseio dos blocos de programacao
 		editor = new BlockEditor((int) (width*2/3), 0, (int) (width/3), (height*3/5));
@@ -66,7 +67,6 @@ public class BaseLVL extends JPanel {
 			;
 		}
 		btnRecomear.setFont(new Font("", Font.PLAIN, 18));*/// TODO mudar a fonte
-	
 	}
 	
 }

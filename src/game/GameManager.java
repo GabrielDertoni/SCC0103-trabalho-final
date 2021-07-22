@@ -1,32 +1,47 @@
-package menus;
+package game;
 
 import interpreter.Direction;
 import interpreter.Interpreter;
 import interpreter.OutputDevice;
+import interpreter.Stmt;
+import menus.WindowManager;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.Arrays;
 
 public class GameManager implements OutputDevice {
-    private static GameManager instance = null;
-
     private Interpreter interpreter;
-    private Player player;
-    private int goalX;
-    private int goalY;
+    private boolean isRunning;
+    private Timer gameLoopTimer;
+    private Level level;
 
-    private GameManager() {
-        player = new Player(0, 0);
-        goalX = 10;
-        goalY = 10;
-        interpreter = new Interpreter(this);
+    public GameManager() {
+        interpreter = null;
+        isRunning = false;
+
+        Resources.load();
+        gameLoopTimer = new Timer(20, new GameLoop());
+
+        level = Levels.getLevelTest();
     }
 
-    public static GameManager getInstance() {
-        if (instance == null) {
-            instance = new GameManager();
+    public void loadLevel(int level) {
+        if (level == 0) {
+            this.level = Levels.getLevelTest();
+        } else {
+            throw new IllegalArgumentException("not a valid level: " + level);
         }
-        return instance;
+    }
+
+    public void interpret(Stmt toInterpret) {
+        interpreter = new Interpreter(Arrays.asList(toInterpret), this);
+    }
+
+    public void render(Graphics graphics) {
+        this.level.render(graphics);
     }
 
     /* Implementation of OutputDevice */
@@ -38,7 +53,7 @@ public class GameManager implements OutputDevice {
 
     @Override
     public void interact() {
-        if (player.x == goalX && player.y == goalY) {
+        if (level.player.x == level.goalX && level.player.y == level.goalY) {
             JOptionPane.showConfirmDialog(WindowManager.getInstance(), "Nível vencido!");
         }
     }
@@ -46,21 +61,19 @@ public class GameManager implements OutputDevice {
     @Override
     public void move(Direction direction) {
         switch (direction) {
-            case UP:
-                player.y++;
-                break;
+            case UP    -> level.player.y++;
+            case DOWN  -> level.player.y--;
+            case LEFT  -> level.player.x++;
+            case RIGHT -> level.player.x--;
+        }
+    }
 
-            case DOWN:
-                player.y--;
-                break;
-
-            case LEFT:
-                player.x++;
-                break;
-
-            case RIGHT:
-                player.x--;
-                break;
+    private class GameLoop implements ActionListener {
+        @Override
+        public void actionPerformed(ActionEvent arg0) {
+            if (isRunning && interpreter != null && interpreter.isNotFinished()) {
+                interpreter.advance();
+            }
         }
     }
 }

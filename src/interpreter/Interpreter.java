@@ -7,73 +7,43 @@ import java.util.stream.StreamSupport;
 public class Interpreter implements Stmt.Visitor<Stream<Void>>, Expr.Visitor<Object> {
 
     private Environment environment;
+    private Iterator<Void> interpretIterator;
 
-    public static void main(String[] args) {
-        Interpreter interpreter = new Interpreter(new OutputDevice() {
-            @Override
-            public void print(String msg) {
-                System.out.println(msg);
-            }
-
-            @Override
-            public void interact() {
-                System.out.println("interacted");
-            }
-
-            @Override
-            public void move(Direction direction) {
-                System.out.println("move " + direction.name());
-            }
-        });
-
-        List<Stmt> stmts = Arrays.asList(
-                new Stmt.VariableDeclaration(
-                        "minhaVar",
-                        new Expr.Literal(5)
-                ),
-                new Stmt.StmtExpr(
-                        new Expr.Call(
-                                "imprimeFormatado",
-                                Arrays.asList(
-                                        new Expr.Literal("minha variável possui valor %f"),
-                                        new Expr.Variable("minhaVar")
-                                )
-                        )
-                ),
-                new Stmt.VariableAssign(
-                        "minhaVar",
-                        new Expr.Binary(
-                                new Expr.Variable("minhaVar"),
-                                Expr.Binary.Operator.PLUS,
-                                new Expr.Literal(1)
-                        )
-                ),
-                new Stmt.StmtExpr(
-                        new Expr.Call(
-                                "imprimeFormatado",
-                                Arrays.asList(
-                                        new Expr.Literal("minha variável possui valor %f"),
-                                        new Expr.Variable("minhaVar")
-                                )
-                        )
-                )
-        );
-
-        PseudocodeGenerator gen = new PseudocodeGenerator();
-        System.out.println(gen.fromStmts(stmts));
-
-        Iterator<Void> interpretStream = interpreter.interpret(stmts).iterator();
-
-        Scanner scanner = new Scanner(System.in);
-        while (interpretStream.hasNext()) {
-            interpretStream.next();
-            scanner.nextLine();
-        }
+    public Interpreter(List<Stmt> stmts, OutputDevice outputDevice) {
+        environment = new Environment(outputDevice);
+        addBuilinFunctions();
+        interpret(stmts);
     }
 
     public Interpreter(OutputDevice outputDevice) {
-        this.environment = new Environment(outputDevice);
+        environment = new Environment(outputDevice);
+        addBuilinFunctions();
+        interpretIterator = null;
+    }
 
+    public boolean isNotFinished() {
+        return interpretIterator != null && interpretIterator.hasNext();
+    }
+
+    public void advance() {
+        interpretIterator.next();
+    }
+
+    public void interpret(List<Stmt> stmts) {
+        interpretIterator = stmts.stream()
+                .flatMap(stmt -> stmt.access(this))
+                .iterator();
+    }
+
+    public Object evaluate(Expr expr) {
+        return expr.access(this);
+    }
+
+    public void addBuiltinFunction(String name, Function<List<Object>, Object> func) {
+        environment.addFunction(name, func);
+    }
+
+    private void addBuilinFunctions() {
         addBuiltinFunction("imprime", (env, args) -> {
             for (Object arg : args) {
                 env.outputDevice.print(arg.toString());
@@ -97,18 +67,6 @@ public class Interpreter implements Stmt.Visitor<Stream<Void>>, Expr.Visitor<Obj
             env.outputDevice.print(String.format(format, args.toArray()));
             return null;
         });
-    }
-
-    Stream<Void> interpret(List<Stmt> stmts) {
-        return stmts.stream().flatMap((stmt) -> stmt.access(this));
-    }
-
-    public Object evaluate(Expr expr) {
-        return expr.access(this);
-    }
-
-    public void addBuiltinFunction(String name, Function<List<Object>, Object> func) {
-        environment.addFunction(name, func);
     }
 
     /* Statement visitor */
@@ -160,8 +118,7 @@ public class Interpreter implements Stmt.Visitor<Stream<Void>>, Expr.Visitor<Obj
 
     @Override
     public Stream<Void> visitBlockStmt(Stmt.Block stmt) {
-        interpret(stmt.stmts);
-        return Stream.empty();
+        return stmt.stmts.stream().flatMap(innerStmt -> innerStmt.access(this));
     }
 
     @Override
