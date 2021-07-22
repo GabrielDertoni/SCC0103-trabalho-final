@@ -14,7 +14,7 @@ import interpreter.Expr;
 import interpreter.Stmt;
 
 public class LOOPBlock extends BaseBlock {
-	private int numIterations = 0;
+	private int numIterations = 1;
 
 	public LOOPBlock(BaseBlock father, int posX) {
   	  	super(posX, 5, 450, 60, Color.CYAN, BaseBlock.Mode.DRAGGABLE_Y);
