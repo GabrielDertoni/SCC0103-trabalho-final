@@ -10,33 +10,24 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-public class INTERACTBlock implements CodeBlock {
-	
-	JPanel father;
-	BaseBlock block;
-	
-	public INTERACTBlock(JPanel father) {
+public class INTERACTBlock extends BaseBlock {
+
+	BaseBlock father;
+
+	public INTERACTBlock(BaseBlock father) {
+		super(700, 5, 200, 30, Color.RED, BaseBlock.Mode.DRAGGABLE);
 		
 		this.father = father;
 		
-		block = new BaseBlock(700, 5, 200, 30, Color.RED, BaseBlock.Mode.DRAGGABLE);
-		
-        block.add(new JLabel("Interagir"));
+        add(new JLabel("Interagir"));
 		
 		JButton removeButton = new JButton("Remover");
-		removeButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				father.remove(block);
-				father.repaint();
-			}
+		removeButton.addActionListener(event -> {
+			father.remove(this);
+			father.repaint();
 		});
 		
-		block.add(removeButton);
-	}
-
-	@Override
-	public BaseBlock getDraggablePanel() {
-		return block;
+		add(removeButton);
 	}
 
 	@Override

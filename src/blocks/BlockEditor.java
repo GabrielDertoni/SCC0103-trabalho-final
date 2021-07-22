@@ -1,7 +1,8 @@
 package blocks;
 
-import java.awt.Color;
+import java.awt.*;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -14,17 +15,18 @@ import interpreter.PseudocodeGenerator;
 import interpreter.Stmt;
 import menus.WindowManager;
 
-public class BlockEditor extends JPanel {
+public class BlockEditor extends BaseBlock {
 
-	private List<CodeBlock> blocks;
-	private BaseBlock editor;
+	// private BaseBlock editor;
 
 	public BlockEditor(int x, int y, int width, int height) {
-		blocks = new ArrayList<CodeBlock>();
+		super((int) (width*2/3), 0, (int) (width/3), (height*3/5), Color.GREEN, BaseBlock.Mode.STATIC);
+
+		setBounds(x, y, width, height);
+		setPreferredSize(new Dimension(width, height));
+		setBackground(Color.GREEN);
 
 		//Area de manuseio dos blocos de programacao
-		editor = new BaseBlock((int) (width*2/3), 0, (int) (width/3), (height*3/5), Color.GREEN, BaseBlock.Mode.STATIC);
-		add(editor);
 
 		JButton plusButton = new JButton("+");
 		JComboBox<String> blockSelect = new JComboBox<String>(new String[]{"Se", "Repete", "Move", "Interagir"});
@@ -40,7 +42,7 @@ public class BlockEditor extends JPanel {
 		
 		JButton runButton = new JButton("Run");
 		runButton.addActionListener(event -> {
-			List<Stmt> stmts = blocks.stream().map(CodeBlock::toStmt).collect(Collectors.toList());
+			List<Stmt> stmts = blocks.stream().map(BaseBlock::toStmt).collect(Collectors.toList());
 			PseudocodeGenerator gen = new PseudocodeGenerator();
 			System.out.println(gen.fromStmts(stmts));
 		});
@@ -55,30 +57,38 @@ public class BlockEditor extends JPanel {
 	private void addNewBlock(String blockName) {
 		switch(blockName) {
 			case "Se":
-				blocks.IFBlock IF = new blocks.IFBlock(editor);
-				editor.add(IF.getDraggablePanel());
+				blocks.IFBlock IF = new blocks.IFBlock(this);
+				add(IF);
 				blocks.add(IF);
 				break;
 
 			case "Repete":
-				blocks.LOOPBlock LOOP = new blocks.LOOPBlock(editor);
-				editor.add(LOOP.getDraggablePanel());
+				blocks.LOOPBlock LOOP = new blocks.LOOPBlock(this);
+				add(LOOP);
 				blocks.add(LOOP);
 				break;
 
 			case "Move":
-				blocks.MOVEBlock MOVE = new blocks.MOVEBlock(editor);
-				editor.add(MOVE.getDraggablePanel());
+				blocks.MOVEBlock MOVE = new blocks.MOVEBlock(this);
+				add(MOVE);
 				blocks.add(MOVE);
 				break;
 
 			case "Interagir":
-				blocks.INTERACTBlock INTERACT = new blocks.INTERACTBlock(editor);
-				editor.add(INTERACT.getDraggablePanel());
+				blocks.INTERACTBlock INTERACT = new blocks.INTERACTBlock(this);
+				add(INTERACT);
 				blocks.add(INTERACT);
 				break;
 		}
-		editor.updateUI();
+		updateUI();
 	}
-	
+
+	@Override
+	public Stmt toStmt() {
+		return new Stmt.Block(
+				blocks.stream()
+						.map(BaseBlock::toStmt)
+						.collect(Collectors.toList())
+		);
+	}
 }

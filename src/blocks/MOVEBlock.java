@@ -12,18 +12,17 @@ import javax.swing.JPanel;
 import interpreter.Direction;
 import interpreter.Stmt;
 
-public class MOVEBlock implements CodeBlock {
+public class MOVEBlock extends BaseBlock {
 	
 	JPanel father;
 	BaseBlock block;
 	Direction direction = Direction.RIGHT;
 	
 	public MOVEBlock(JPanel father) {
+		super(700, 5, 300, 30, Color.PINK, BaseBlock.Mode.DRAGGABLE);
   	  
 		this.father = father;
 		
-  	  	block = new BaseBlock(700, 5, 300, 30, Color.PINK, BaseBlock.Mode.DRAGGABLE);
-  	  	
   	  	String directions[] = {"a Direita", "Cima", "a Esquerda", "Baixo"};
         JComboBox<String> dir = new JComboBox<String>(directions);
         
@@ -58,14 +57,9 @@ public class MOVEBlock implements CodeBlock {
 			father.repaint();
 		});
         
-        block.add(new JLabel("Mova para"));
-        block.add(dir);
-        block.add(removeButton);
-	}
-
-	@Override
-	public BaseBlock getDraggablePanel() {
-		return block;
+        add(new JLabel("Mova para"));
+        add(dir);
+        add(removeButton);
 	}
 
 	@Override

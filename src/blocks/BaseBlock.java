@@ -1,26 +1,33 @@
 package blocks;
 
 
+import interpreter.Stmt;
+
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.JPanel;
 
-public class BaseBlock extends JPanel{
+public abstract class BaseBlock extends JPanel{
 	public enum Mode {
 		DRAGGABLE, STATIC
 	}
-	
+
     private volatile int draggedAtX, draggedAtY;
 	int nInstructions = 0;
 	int largura, altura;
 
+	protected List<BaseBlock> blocks;
+
     public BaseBlock(int posX, int posY, int largura, int altura, Color color, Mode mode) {
-		
-    	this.altura = altura;
+		blocks = new ArrayList<BaseBlock>();
+
+		this.altura = altura;
     	this.largura = largura;
     	
     	setBounds(posX, posY, this.largura, this.altura);
@@ -50,9 +57,16 @@ public class BaseBlock extends JPanel{
         int limit_y = this.getRootPane().getY();*/
         
     }
+
+	public void addBlock(BaseBlock block) {
+		blocks.add(block);
+		add(block);
+	}
     
 	public void removeBlock(BaseBlock block){
-		
+		blocks.remove(block);
+		remove(block);
 	}
 
+	public abstract Stmt toStmt();
 }

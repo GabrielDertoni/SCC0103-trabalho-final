@@ -12,19 +12,16 @@ import javax.swing.SpinnerNumberModel;
 import interpreter.Expr;
 import interpreter.Stmt;
 
-public class LOOPBlock implements CodeBlock {
+public class LOOPBlock extends BaseBlock {
 	
-	JPanel father;
-	BaseBlock block;
+	BaseBlock father;
 	Expr.Literal rightHandSide = new Expr.Literal(1);
 	Stmt body = null;
 	
-	public LOOPBlock(JPanel father) {
-  	  
+	public LOOPBlock(BaseBlock father) {
+  	  	super(700, 5, 250, 60, Color.CYAN, BaseBlock.Mode.DRAGGABLE);
 		this.father = father;
-		
-		block = new BaseBlock(700, 5, 250, 60, Color.CYAN, BaseBlock.Mode.DRAGGABLE);
-  	    
+
 		SpinnerModel value = new SpinnerNumberModel(1, 1, 15, 1);  
         JSpinner spinner = new JSpinner(value);    
         
@@ -35,19 +32,14 @@ public class LOOPBlock implements CodeBlock {
 		
 		JButton removeButton = new JButton("Remover");
 		removeButton.addActionListener(event -> {
-			father.remove(block);
+			father.remove(this);
 			father.repaint();
 		});
 		
-        block.add(new JLabel("Repete "));
-        block.add(spinner);
-        block.add(new JLabel(" vezes"));
-        block.add(removeButton);
-	}
-
-	@Override
-	public BaseBlock getDraggablePanel() {
-		return block;
+        add(new JLabel("Repete "));
+        add(spinner);
+        add(new JLabel(" vezes"));
+        add(removeButton);
 	}
 
 	@Override

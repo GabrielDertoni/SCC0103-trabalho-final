@@ -26,22 +26,6 @@ public class WindowManager extends JFrame {
 	private Niveis lvlScreen;
 	private Config configScreen;
 	private BaseLVL lvlBase;
-	private Object currentWindowObj;
-
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					WindowManager.getInstance();
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
 
 	private WindowManager() {
 		currentWindow = WindowName.MainMenu;

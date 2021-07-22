@@ -1,27 +1,18 @@
 package menus;
 
 import java.awt.Color;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.stream.Collectors;
 
 import javax.swing.JButton;
-import javax.swing.JComboBox;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
-import blocks.BaseBlock;
-import blocks.CodeBlock;
-import interpreter.PseudocodeGenerator;
-import interpreter.Stmt;
+import blocks.BlockEditor;
 
 public class BaseLVL extends JPanel {
 
 	private BlockEditor editor;
 
 	public BaseLVL(int x, int y, int width, int height, int lvl) {
-		blocks = new ArrayList<CodeBlock>();
-
 		setBounds(x, y, width, height);
 		setBorder(new EmptyBorder(5, 5, 5, 5));
 		//Nao usa um gerenciador de posicionamento
