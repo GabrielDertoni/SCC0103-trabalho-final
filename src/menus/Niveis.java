@@ -1,6 +1,8 @@
 package menus;
 
 import java.awt.*;
+import java.io.File;
+import java.io.IOException;
 
 import javax.swing.JFrame;
 import javax.swing.JButton;
@@ -17,21 +19,28 @@ public class Niveis extends Background {
 		super(new ImageIcon("specification/Prototipo_fundo_menu.png").getImage());
 		
 		setLayout(null);
-		
+
+		Font whiteRabbit = null;
+		try {
+			whiteRabbit = Font.createFont(Font.TRUETYPE_FONT, new File("assets/WHITRABT.TTF"));
+		} catch (FontFormatException| IOException e) {
+			e.printStackTrace();
+		}
+
 		ImageIcon btnBg = new ImageIcon("assets/botaoSemTextura.png");
-		
+
 		// Botoes de voltar ao inicio
-		JButton btnVoltar = new JButton("Voltar");
-		
+
 		int btnVoltar_w = 200;
 		int btnVoltar_h = 40;
 
 		Image resizedImage = btnBg.getImage().getScaledInstance(btnVoltar_w, btnVoltar_h, Image.SCALE_SMOOTH);
-		btnVoltar.setFont(new Font("Serif", Font.BOLD, 25));
-		btnVoltar.setForeground(Color.GREEN.darker());
-		btnVoltar.setIcon(new ImageIcon(resizedImage));
+		JButton btnVoltar = new JButton("Voltar", new ImageIcon(resizedImage));
+
 		btnVoltar.setBounds(20, 20, btnVoltar_w, btnVoltar_h);
-		btnVoltar.setBorder(BorderFactory.createEmptyBorder());
+
+		btnVoltar.setFont(whiteRabbit.deriveFont(25f));
+		btnVoltar.setForeground(Color.GREEN.darker());
 		btnVoltar.setHorizontalTextPosition(JLabel.CENTER);
 		btnVoltar.setVerticalTextPosition(JLabel.CENTER);
 		
@@ -41,17 +50,17 @@ public class Niveis extends Background {
 		add(btnVoltar);
 		
 		// Botao de acesso ao lvl1
-		JButton btnLvl1 = new JButton("1");
-		
+
 		int btnLvl_w = 500;
 		int btnLvl_h = 100;
 
 		resizedImage = btnBg.getImage().getScaledInstance(btnLvl_w, btnLvl_h, Image.SCALE_SMOOTH);
+		JButton btnLvl1 = new JButton("1", new ImageIcon(resizedImage));
 
 		btnLvl1.setBounds((int) (0.1*width), (3*height/5), btnLvl_w, btnLvl_h);
-		btnLvl1.setIcon(new ImageIcon(resizedImage));
+
 		btnLvl1.setForeground(Color.GREEN.darker());
-		btnLvl1.setFont(new Font("Serif", Font.BOLD, 30));
+		btnLvl1.setFont(whiteRabbit.deriveFont(30f));
 		btnLvl1.setHorizontalTextPosition(JLabel.CENTER);
 		btnLvl1.setVerticalTextPosition(JLabel.CENTER);
 		
@@ -62,12 +71,12 @@ public class Niveis extends Background {
 		add(btnLvl1);
 		
 		//Botao de acesso ao lvl2
-		JButton btnLvl2 = new JButton("2");
+		JButton btnLvl2 = new JButton("2", new ImageIcon(resizedImage));
 
 		btnLvl2.setBounds((int) (0.6*width), (3*height/5), btnLvl_w, btnLvl_h);
-		btnLvl2.setFont(new Font("Serif", Font.BOLD, 30));
+
+		btnLvl2.setFont(whiteRabbit.deriveFont(30f));
 		btnLvl2.setForeground(Color.GREEN.darker());
-		btnLvl2.setIcon(new ImageIcon(resizedImage));
 		btnLvl2.setHorizontalTextPosition(JLabel.CENTER);
 		btnLvl2.setVerticalTextPosition(JLabel.CENTER);
 		
@@ -79,13 +88,13 @@ public class Niveis extends Background {
 		add(btnLvl2);
 		
 		//Texto
-		int label_w = 500;
+		int label_w = 700;
 		int label_h = 100;
 		
 		JLabel lblLvlSelection = new JLabel("Selecione o Nivel:");
 		lblLvlSelection.setBounds(((width-label_w)/2), label_h*2, label_w, label_h);
 		lblLvlSelection.setForeground(Color.GREEN.darker());
-		lblLvlSelection.setFont(new Font("Arial", Font.PLAIN, 60));
+		lblLvlSelection.setFont(whiteRabbit.deriveFont(60f));
 		add(lblLvlSelection);
 	}
 }

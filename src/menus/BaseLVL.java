@@ -1,6 +1,8 @@
 package menus;
 
 import java.awt.*;
+import java.io.File;
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -24,7 +26,14 @@ public class BaseLVL extends Background {
 
 		setBounds(x, y, width, height);
 		setLayout(null);
-		
+
+		Font whiteRabbit = null;
+		try {
+			whiteRabbit = Font.createFont(Font.TRUETYPE_FONT, new File("assets/WHITRABT.TTF"));
+		} catch (FontFormatException| IOException e) {
+			e.printStackTrace();
+		}
+
 		//Painel onde e mostrado o nivel do mapa atual e o personagem e sua posicao no mapa
 		levelArea = new LevelArea(0, 0,  (width*2/3)-50, height);
 		levelArea.setBackground(Color.DARK_GRAY);
@@ -47,19 +56,19 @@ public class BaseLVL extends Background {
 			WindowManager.getInstance().setCurrentWindow(WindowManager.WindowName.LevelMenu);
 		});
 		btnVoltar.setBounds(width-btn_w-30, height-100, btn_w, btn_h);
-		btnVoltar.setFont(new Font("serif", Font.BOLD, 20));
+		btnVoltar.setFont(whiteRabbit.deriveFont(20f));
 		btnVoltar.setForeground(Color.GREEN.darker());
 		btnVoltar.setVerticalTextPosition(JLabel.CENTER);
 		btnVoltar.setHorizontalTextPosition(JLabel.CENTER);
 		add(btnVoltar);
 
 		//Botao de recomeçar o nivel
-		JButton btnRestart = new JButton("Recomeçar", new ImageIcon(resizedImage));
+		JButton btnRestart = new JButton("Restart", new ImageIcon(resizedImage));
 		btnRestart.addActionListener(event -> {
 			WindowManager.getInstance().setCurrentWindow(WindowManager.WindowName.Game);
 		});
 		btnRestart.setBounds(width-btn_w-30, height-150, btn_w, btn_h);
-		btnRestart.setFont(new Font("serif", Font.BOLD, 20));
+		btnRestart.setFont(whiteRabbit.deriveFont(20f));
 		btnRestart.setForeground(Color.GREEN.darker());
 		btnRestart.setVerticalTextPosition(JLabel.CENTER);
 		btnRestart.setHorizontalTextPosition(JLabel.CENTER);
@@ -74,11 +83,11 @@ public class BaseLVL extends Background {
 			System.out.println(gen.fromStmts(block.stmts));
 			levelArea.runInterpreter(block.stmts);
 		});
-		runButton.setFont(new Font("serif", Font.BOLD, 20));
+		runButton.setBounds(width-btn_w-30, height-200, btn_w, btn_h);
+		runButton.setFont(whiteRabbit.deriveFont(20f));
 		runButton.setForeground(Color.GREEN.darker());
 		runButton.setHorizontalTextPosition(JLabel.CENTER);
 		runButton.setVerticalTextPosition(JLabel.CENTER);
-		runButton.setBounds(width-btn_w-30, height-200, btn_w, btn_h);
 		add(runButton);
 	}
 	
