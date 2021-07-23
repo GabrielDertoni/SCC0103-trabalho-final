@@ -1,5 +1,7 @@
 package game;
 
+import java.awt.*;
+
 public class Levels {
 
     public static Level getLevelTest() {
@@ -33,8 +35,6 @@ public class Levels {
                         {0, 0, 0, 0, 0}
                 }, false)
         );
-        compositor.pushLayer(player);
-
-        return new Level(3, 1, compositor, player);
+        return new Level(new Point(3, 1), new Point(1, 3), compositor);
     }
 }

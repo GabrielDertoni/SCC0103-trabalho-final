@@ -14,6 +14,7 @@ public class GameManager implements OutputDevice {
     private Interpreter interpreter;
     private boolean isRunning;
     private Level level;
+    private Player player;
     private int level_num;
 
     public GameManager() {
@@ -23,7 +24,9 @@ public class GameManager implements OutputDevice {
         Resources.load();
 
         level = Levels.getLevelTest();
-        System.out.println(level.compositor.collidesWith(level.player));
+        player = new Player(level.startPosition);
+        level.compositor.pushLayer(player);
+        System.out.println(level.compositor.collidesWith(player));
     }
 
     public void loadLevel(int level) {
@@ -47,7 +50,6 @@ public class GameManager implements OutputDevice {
 
     public void loop() {
         if (isRunning && interpreter != null && interpreter.isNotFinished()) {
-            print("ADVANCE");
             interpreter.advance();
         } else if (interpreter != null && !interpreter.isNotFinished()) {
             isRunning = false;
@@ -63,7 +65,8 @@ public class GameManager implements OutputDevice {
 
     @Override
     public void interact() {
-        if (level.player.getGridX() == level.goalX && level.player.getGridY() == level.goalY) {
+        System.out.println("INTERACT");
+        if (player.x == level.goalPosition.x * Tile.SIZE && player.y == level.goalPosition.y * Tile.SIZE) {
             JOptionPane.showMessageDialog(WindowManager.getInstance(), "Nível vencido!");
             loadLevel(level_num + 1);
         }
@@ -72,10 +75,11 @@ public class GameManager implements OutputDevice {
     @Override
     public void move(Direction direction) {
         // Tries to move in one direction, if it collides with a tilemap, move back.
-        level.player.move(direction);
-        Compositor.Layer collision = level.compositor.collidesWith(level.player);
+        player.move(direction);
+        Compositor.Layer collision = level.compositor.collidesWith(player);
         if (collision instanceof TileMap) {
-            level.player.move(direction.getOpposite());
+            System.out.println("COLLISION when trying to move " + direction);
+            player.move(direction.getOpposite());
         }
     }
 }
