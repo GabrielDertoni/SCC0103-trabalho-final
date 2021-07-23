@@ -23,7 +23,6 @@ public class LevelArea extends Background {
         setBounds(x, y, width, height);
 
         gameManager = new GameManager();
-        // gameManager.loadLevel(lvl);
         gameLoopTimer = new Timer(500, new GameLoop());
         gameLoopTimer.start();
     }
