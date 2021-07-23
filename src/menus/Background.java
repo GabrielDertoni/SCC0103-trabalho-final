@@ -10,10 +10,7 @@ import java.awt.Insets;
 import java.awt.Paint;
 import java.awt.Rectangle;
 
-import javax.swing.JComponent;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JViewport;
+import javax.swing.*;
 
 public class Background extends JPanel {
 	public static final int SCALED = 0;
@@ -26,11 +23,15 @@ public class Background extends JPanel {
 	private float alignmentX = 0.5f;
 	private float alignmentY = 0.5f;
 	private boolean isTransparentAdd = true;
-	
+
 	public Background(Image image) {
 		this(image, SCALED);
 	}
-	
+
+	public Background(String image) {
+		this(new ImageIcon(image).getImage(), SCALED);
+	}
+
 	public Background(Image image, int style) {
 		setImage(image);
 		setStyle(style);
@@ -127,17 +128,17 @@ public class Background extends JPanel {
 		if (image == null) return;
 		
 		switch(style) {
-		case SCALED:
+			case SCALED:
+				drawScaled(g);
+				break;
+			case TILED:
+				drawTiled(g);
+				break;
+			case ACTUAL:
+				drawActual(g);
+				break;
+			default:
 			drawScaled(g);
-			break;
-		case TILED:
-			drawTiled(g);
-			break;
-		case ACTUAL:
-			drawActual(g);
-			break;
-		default:
-		drawScaled(g);
 		}
 	}
 	

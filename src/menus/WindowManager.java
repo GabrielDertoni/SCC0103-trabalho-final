@@ -27,7 +27,7 @@ public class WindowManager extends JFrame {
 		setExtendedState(JFrame.MAXIMIZED_BOTH);
 
 
-		setCurrentWindow(WindowName.Game);
+		setCurrentWindow(WindowName.MainMenu);
 
 		setExtendedState(JFrame.MAXIMIZED_BOTH);
 		setVisible(true);

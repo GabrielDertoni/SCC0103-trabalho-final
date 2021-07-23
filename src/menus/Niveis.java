@@ -1,9 +1,6 @@
 package menus;
 
-import java.awt.Dimension;
-import java.awt.EventQueue;
-import java.awt.Font;
-import java.awt.Toolkit;
+import java.awt.*;
 
 import javax.swing.JFrame;
 import javax.swing.JButton;
@@ -21,18 +18,22 @@ public class Niveis extends Background {
 		
 		setLayout(null);
 		
-		ImageIcon btnBg = new ImageIcon("specification/Fundo_prototipo_menu.jpg");
+		ImageIcon btnBg = new ImageIcon("assets/botaoSemTextura.png");
 		
 		// Botoes de voltar ao inicio
 		JButton btnVoltar = new JButton("Voltar");
 		
-		int btnVoltar_w = 120;
-		int btnVoltar_h = 25;
-		
-		btnVoltar.setFont(new Font("Serif", Font.PLAIN, 18));// TODO mudar a fonte
-		btnVoltar.setIcon(btnBg);
-		btnVoltar.setBounds(20, 20	, btnVoltar_w, btnVoltar_h);
+		int btnVoltar_w = 200;
+		int btnVoltar_h = 40;
+
+		Image resizedImage = btnBg.getImage().getScaledInstance(btnVoltar_w, btnVoltar_h, Image.SCALE_SMOOTH);
+		btnVoltar.setFont(new Font("Serif", Font.BOLD, 25));
+		btnVoltar.setForeground(Color.GREEN.darker());
+		btnVoltar.setIcon(new ImageIcon(resizedImage));
+		btnVoltar.setBounds(20, 20, btnVoltar_w, btnVoltar_h);
 		btnVoltar.setBorder(BorderFactory.createEmptyBorder());
+		btnVoltar.setHorizontalTextPosition(JLabel.CENTER);
+		btnVoltar.setVerticalTextPosition(JLabel.CENTER);
 		
 		btnVoltar.addActionListener(event -> {
 			WindowManager.getInstance().setCurrentWindow(WindowManager.WindowName.MainMenu);
@@ -42,13 +43,17 @@ public class Niveis extends Background {
 		// Botao de acesso ao lvl1
 		JButton btnLvl1 = new JButton("1");
 		
-		int btnLvl1_w = 120;
-		int btnLvl1_h = 25;
-		
-		btnLvl1.setBounds((int) (0.1*width), (int) (2*height/5), btnLvl1_w, btnLvl1_h);
-		btnLvl1.setFont(new Font("Serif", Font.PLAIN, 18));
-		btnLvl1.setIcon(btnBg);
-		btnLvl1.setBorder(BorderFactory.createEmptyBorder());
+		int btnLvl_w = 500;
+		int btnLvl_h = 100;
+
+		resizedImage = btnBg.getImage().getScaledInstance(btnLvl_w, btnLvl_h, Image.SCALE_SMOOTH);
+
+		btnLvl1.setBounds((int) (0.1*width), (3*height/5), btnLvl_w, btnLvl_h);
+		btnLvl1.setIcon(new ImageIcon(resizedImage));
+		btnLvl1.setForeground(Color.GREEN.darker());
+		btnLvl1.setFont(new Font("Serif", Font.BOLD, 30));
+		btnLvl1.setHorizontalTextPosition(JLabel.CENTER);
+		btnLvl1.setVerticalTextPosition(JLabel.CENTER);
 		
 		btnLvl1.addActionListener(event -> {
 			WindowManager.getInstance().setCurrentWindow(WindowManager.WindowName.Game);
@@ -58,14 +63,13 @@ public class Niveis extends Background {
 		
 		//Botao de acesso ao lvl2
 		JButton btnLvl2 = new JButton("2");
-		
-		int btnLvl2_w = 120;
-		int btnLvl2_h = 25;
-		
-		btnLvl2.setBounds((int) (0.6*width), (int) (2*height/5), btnLvl2_w, btnLvl2_h);
-		btnLvl2.setFont(new Font("Serif", Font.PLAIN, 18));
-		btnLvl2.setIcon(btnBg);
-		btnLvl2.setBorder(BorderFactory.createEmptyBorder());
+
+		btnLvl2.setBounds((int) (0.6*width), (3*height/5), btnLvl_w, btnLvl_h);
+		btnLvl2.setFont(new Font("Serif", Font.BOLD, 30));
+		btnLvl2.setForeground(Color.GREEN.darker());
+		btnLvl2.setIcon(new ImageIcon(resizedImage));
+		btnLvl2.setHorizontalTextPosition(JLabel.CENTER);
+		btnLvl2.setVerticalTextPosition(JLabel.CENTER);
 		
 		btnLvl2.addActionListener(event -> {
 			WindowManager.getInstance().setCurrentWindow(WindowManager.WindowName.Game);
@@ -75,12 +79,13 @@ public class Niveis extends Background {
 		add(btnLvl2);
 		
 		//Texto
-		int label_w = 190;
-		int label_h = 20;
+		int label_w = 500;
+		int label_h = 100;
 		
 		JLabel lblLvlSelection = new JLabel("Selecione o Nivel:");
-		lblLvlSelection.setBounds((int) ((width-label_w)/2), 80, label_w, label_h);
+		lblLvlSelection.setBounds(((width-label_w)/2), label_h*2, label_w, label_h);
+		lblLvlSelection.setForeground(Color.GREEN.darker());
+		lblLvlSelection.setFont(new Font("Arial", Font.PLAIN, 60));
 		add(lblLvlSelection);
-		lblLvlSelection.setFont(new Font("Arial", Font.PLAIN, 18));// TODO mudar a fonte
 	}
 }

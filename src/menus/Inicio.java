@@ -1,7 +1,6 @@
 package menus;
 
-import java.awt.Color;
-import java.awt.Font;
+import java.awt.*;
 
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
@@ -19,48 +18,52 @@ public class Inicio extends Background {
 
 		setLayout(null);
 		
-		int btnW = 350;
-		int btnH = 25;
+		int btnW = 500;
+		int btnH = 100;
 		
-		ImageIcon btnBg = new ImageIcon("specification/Fundo_prototipo_menu.jpg");
-		
+		ImageIcon btnBg = new ImageIcon("assets/botaoSemTextura.png");
+		Image resizedBG = btnBg.getImage().getScaledInstance(btnW, btnH, Image.SCALE_SMOOTH);
+
 		//Botoes de mudança de janela
-		JButton btnNiveis = new JButton("Niveis");
-		//JButton btnNiveis = new JButton("Niveis", btnBg);
+		JButton btnNiveis = new JButton("Níveis", new ImageIcon(resizedBG));
 		
-		btnNiveis.setFont(new Font("serif", Font.PLAIN, 18));
-		btnNiveis.setBounds((width-btnW)/2, 4*height/5-20, btnW, btnH);
+		btnNiveis.setFont(new Font("serif", Font.BOLD, 30));
+		btnNiveis.setForeground(Color.GREEN.darker());
+		btnNiveis.setBounds((width-btnW)/2, 3*height/5-btnH, btnW, btnH);
 		btnNiveis.setBorder(BorderFactory.createEmptyBorder());
+		btnNiveis.setHorizontalTextPosition(JLabel.CENTER);
+		btnNiveis.setVerticalTextPosition(JLabel.CENTER);
 		
 		btnNiveis.addActionListener(event -> {
 			WindowManager.getInstance().setCurrentWindow(WindowManager.WindowName.LevelMenu);
 		});
 		
 		//Botao de acesso a tela de configuraçoes
-		JButton btnConfig = new JButton("Configuraçoes");
-		//JButton btnConfig = new JButton("Configuraçoes", btnBg);
+		JButton btnTutorial = new JButton("Tutorial", new ImageIcon(resizedBG));
 		
-		btnConfig.setBorder(BorderFactory.createEmptyBorder());
-		btnConfig.setFont(new Font("Serif", Font.PLAIN, 18));
-		btnConfig.setForeground(Color.BLACK);
+		btnTutorial.setBorder(BorderFactory.createEmptyBorder());
+		btnTutorial.setFont(new Font("Serif", Font.BOLD, 30));
+		btnTutorial.setForeground(Color.GREEN.darker());
+		btnTutorial.setHorizontalTextPosition(JLabel.CENTER);
+		btnTutorial.setVerticalTextPosition(JLabel.CENTER);
 		
-		btnConfig.setBounds((width-btnW)/2, 4*height/5+20, btnW, btnH);
+		btnTutorial.setBounds((width-btnW)/2, 3*height/5+btnH, btnW, btnH);
 		
-		btnConfig.addActionListener(event -> {
+		btnTutorial.addActionListener(event -> {
 			WindowManager.getInstance().setCurrentWindow(WindowManager.WindowName.LevelMenu);
 		});
 		
 		//Texto
-		int label_w = 200;
-		int label_h = 20;
+		int label_w = 500;
+		int label_h = 100;
 		
 		JLabel lblProjetoFinalPoo = new JLabel("Projeto Final POO");
-		lblProjetoFinalPoo.setBounds((int) ((width-label_w)/2), (int) (0.1*height), label_w, label_h);
-		lblProjetoFinalPoo.setFont(new Font("Arial", Font.PLAIN, 18));
-		lblProjetoFinalPoo.setForeground(Color.GREEN);
+		lblProjetoFinalPoo.setBounds(((width-label_w)/2), (int) (0.1*height), label_w, label_h);
+		lblProjetoFinalPoo.setFont(new Font("customFont", Font.PLAIN, 60));
+		lblProjetoFinalPoo.setForeground(Color.GREEN.brighter());
 		
 		//Adiciona os componentes ao Panel
-		add(btnConfig);
+		add(btnTutorial);
 		add(btnNiveis);
 		add(lblProjetoFinalPoo);
 	}
