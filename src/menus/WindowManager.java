@@ -14,6 +14,7 @@ public class WindowManager extends JFrame {
 		LevelMenu,
 		Config,
 		Game,
+		Tutorial
 	}
 
 	private static WindowManager instance = null;
@@ -56,11 +57,14 @@ public class WindowManager extends JFrame {
 			case LevelMenu -> {
 				setContentPane(new Niveis(x, y, width, height));
 			}
-			case Config -> {
+			case Config -> { //Nao implementado
 				setContentPane(new Config(x, y, width, height));
 			}
 			case Game -> {
 				setContentPane(new BaseLVL(x, y, width, height, lvl));
+			}
+			case Tutorial -> {
+				setContentPane(new Tutorial(x, y, width, height));
 			}
 		}
 		System.out.println(currentWindow);

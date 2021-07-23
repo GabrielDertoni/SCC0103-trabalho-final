@@ -59,7 +59,7 @@ public class Inicio extends Background {
 		btnTutorial.setBounds((width-btnW)/2, 3*height/5+btnH, btnW, btnH);
 		
 		btnTutorial.addActionListener(event -> {
-			WindowManager.getInstance().setCurrentWindow(WindowManager.WindowName.LevelMenu);
+			WindowManager.getInstance().setCurrentWindow(WindowManager.WindowName.Tutorial);
 		});
 		
 		//Texto
