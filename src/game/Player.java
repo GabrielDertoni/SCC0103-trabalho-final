@@ -5,12 +5,15 @@ import interpreter.Direction;
 import java.awt.*;
 
 public class Player extends Tile implements Compositor.Layer {
+    Point originalPosition;
+
     public Player(Point position) {
         super(position.x, position.y, TileType.PLAYER);
+        originalPosition = position;
     }
 
     public Player(int x, int y) {
-        super(x, y, TileType.PLAYER);
+        this(new Point(x, y));
     }
 
     public void move(Direction direction) {
@@ -20,5 +23,9 @@ public class Player extends Tile implements Compositor.Layer {
             case LEFT  -> x -= SIZE;
             case RIGHT -> x += SIZE;
         }
+    }
+
+    public void resetPosition() {
+        setGridPosition(originalPosition);
     }
 }

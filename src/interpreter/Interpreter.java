@@ -2,7 +2,6 @@ package interpreter;
 
 import java.util.*;
 
-import iterutils.*;
 import iterutils.Iterator;
 
 public class Interpreter implements Stmt.Visitor<Iterator<Void>>, Expr.Visitor<Object> {
@@ -12,13 +11,13 @@ public class Interpreter implements Stmt.Visitor<Iterator<Void>>, Expr.Visitor<O
 
     public Interpreter(List<Stmt> stmts, OutputDevice outputDevice) {
         environment = new Environment(outputDevice);
-        addBuilinFunctions();
+        addBuiltinFunctions();
         interpret(stmts);
     }
 
     public Interpreter(OutputDevice outputDevice) {
         environment = new Environment(outputDevice);
-        addBuilinFunctions();
+        addBuiltinFunctions();
         interpretIterator = null;
     }
 
@@ -31,8 +30,11 @@ public class Interpreter implements Stmt.Visitor<Iterator<Void>>, Expr.Visitor<O
     }
 
     public void interpret(List<Stmt> stmts) {
-        interpretIterator = new JavaIteratorAdapter<>(stmts.iterator())
-                .flatMap(stmt -> stmt.access(this));
+        // Add one empty iteration before the actual code begins.
+        interpretIterator = new Iterator.Once<Void>(arg0 -> null)
+                .chain(new Iterator.JavaAdapter<>(stmts.iterator())
+                    .flatMap(stmt -> stmt.access(this))
+                );
     }
 
     public Object evaluate(Expr expr) {
@@ -43,7 +45,7 @@ public class Interpreter implements Stmt.Visitor<Iterator<Void>>, Expr.Visitor<O
         environment.addFunction(name, func);
     }
 
-    private void addBuilinFunctions() {
+    private void addBuiltinFunctions() {
         addBuiltinFunction("imprime", (env, args) -> {
             for (Object arg : args) {
                 env.outputDevice.print(arg.toString());
@@ -73,19 +75,19 @@ public class Interpreter implements Stmt.Visitor<Iterator<Void>>, Expr.Visitor<O
 
     @Override
     public Iterator<Void> visitIfStmt(Stmt.If stmt) {
-        return new OnceIterator<Iterator<Void>>(arg0 -> {
+        return new Iterator.Once<Iterator<Void>>(arg0 -> {
             if (isTruthy(evaluate(stmt.conditional))) {
                 return stmt.thenBranch.access(this);
             } else if (stmt.elseBranch != null) {
                 return stmt.elseBranch.access(this);
             }
-            return new EmptyIterator<Void>();
+            return new Iterator.Empty<Void>();
         }).flatMap(java.util.function.Function.identity());
     }
 
     @Override
     public Iterator<Void> visitInteractStmt(Stmt.Interact stmt) {
-        return new OnceIterator<>(arg0 -> {
+        return new Iterator.Once<>(arg0 -> {
             environment.outputDevice.interact();
             return null;
         });
@@ -93,7 +95,7 @@ public class Interpreter implements Stmt.Visitor<Iterator<Void>>, Expr.Visitor<O
 
     @Override
     public Iterator<Void> visitMoveStmt(Stmt.Move stmt) {
-        return new OnceIterator<>(arg0 -> {
+        return new Iterator.Once<>(arg0 -> {
             System.out.println("MOVE");
             environment.outputDevice.move(stmt.direction);
             return null;
@@ -102,7 +104,7 @@ public class Interpreter implements Stmt.Visitor<Iterator<Void>>, Expr.Visitor<O
 
     @Override
     public Iterator<Void> visitLoopStmt(Stmt.Loop stmt) {
-        return new RepeatIterator()
+        return new Iterator.Repeat()
                 .takeWhile(arg0 -> isTruthy(evaluate(stmt.condition)))
                 .flatMap(arg0 -> stmt.body.access(this));
     }
@@ -110,6 +112,7 @@ public class Interpreter implements Stmt.Visitor<Iterator<Void>>, Expr.Visitor<O
     @Override
     public Iterator<Void> visitRepeatStmt(Stmt.Repeat stmt) {
         Object value = stmt.numIterations.access(this);
+
         final int numIterations;
         if (value instanceof Double) {
             numIterations = (int)(double)value;
@@ -117,20 +120,20 @@ public class Interpreter implements Stmt.Visitor<Iterator<Void>>, Expr.Visitor<O
             throw new InterpreterException("valor de repetição precisa ser numérico");
         }
 
-        return new RepeatIterator()
+        return new Iterator.Repeat()
                 .take(numIterations)
                 .flatMap(arg0 -> stmt.body.access(this));
     }
 
     @Override
     public Iterator<Void> visitBlockStmt(Stmt.Block stmt) {
-        return new JavaIteratorAdapter<>(stmt.stmts.iterator())
+        return new Iterator.JavaAdapter<>(stmt.stmts.iterator())
                 .flatMap(innerStmt -> innerStmt.access(this));
     }
 
     @Override
     public Iterator<Void> visitExprStmt(Stmt.StmtExpr stmt) {
-        return new OnceIterator<>(arg0 -> {
+        return new Iterator.Once<>(arg0 -> {
             stmt.expr.access(this);
             return null;
         });
@@ -138,7 +141,7 @@ public class Interpreter implements Stmt.Visitor<Iterator<Void>>, Expr.Visitor<O
 
     @Override
     public Iterator<Void> visitVariableDeclarationStmt(Stmt.VariableDeclaration stmt) {
-        return new OnceIterator<>(arg0 -> {
+        return new Iterator.Once<>(arg0 -> {
             environment.declareVariable(stmt.varName, stmt.initializer.access(this));
             return null;
         });
@@ -146,7 +149,7 @@ public class Interpreter implements Stmt.Visitor<Iterator<Void>>, Expr.Visitor<O
 
     @Override
     public Iterator<Void> visitVariableAssignStmt(Stmt.VariableAssign stmt) {
-        return new OnceIterator<>(arg0 -> {
+        return new Iterator.Once<>(arg0 -> {
             environment.declareVariable(stmt.varName, stmt.value.access(this));
             return null;
         });

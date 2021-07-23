@@ -42,12 +42,13 @@ public class Tile extends Rectangle {
         return Resources.TEXTURES.get(this.type.getIndex());
     }
 
-    public int getGridX() {
-        return x / SIZE;
+    public Point getGridPosition() {
+        return new Point(x / SIZE, y / SIZE);
     }
 
-    public int getGridY() {
-        return y / SIZE;
+    public void setGridPosition(Point position) {
+        x = position.x * SIZE;
+        y = position.y * SIZE;
     }
 
     public void render(Graphics graphics) {

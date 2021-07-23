@@ -209,8 +209,8 @@ public abstract class Iterator<E> implements java.util.Iterator<E> {
         private Iterator<E> end;
 
         public Chain(Iterator<E> begin, Iterator<E> end) {
-            begin = begin;
-            end = end;
+            this.begin = begin;
+            this.end = end;
         }
 
         @Override

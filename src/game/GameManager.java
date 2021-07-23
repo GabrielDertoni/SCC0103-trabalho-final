@@ -41,6 +41,7 @@ public class GameManager implements OutputDevice {
 
     public void interpret(List<Stmt> stmts) {
         isRunning = true;
+        player.resetPosition();
         interpreter = new Interpreter(stmts, this);
     }
 
