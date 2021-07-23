@@ -1,10 +1,11 @@
 package interpreter;
 
 import java.util.*;
-import java.util.stream.Stream;
-import java.util.stream.StreamSupport;
 
-public class Interpreter implements Stmt.Visitor<Stream<Void>>, Expr.Visitor<Object> {
+import iterutils.*;
+import iterutils.Iterator;
+
+public class Interpreter implements Stmt.Visitor<Iterator<Void>>, Expr.Visitor<Object> {
 
     private Environment environment;
     private Iterator<Void> interpretIterator;
@@ -30,9 +31,8 @@ public class Interpreter implements Stmt.Visitor<Stream<Void>>, Expr.Visitor<Obj
     }
 
     public void interpret(List<Stmt> stmts) {
-        interpretIterator = stmts.stream()
-                .flatMap(stmt -> stmt.access(this))
-                .iterator();
+        interpretIterator = new JavaIteratorAdapter<>(stmts.iterator())
+                .flatMap(stmt -> stmt.access(this));
     }
 
     public Object evaluate(Expr expr) {
@@ -72,58 +72,43 @@ public class Interpreter implements Stmt.Visitor<Stream<Void>>, Expr.Visitor<Obj
     /* Statement visitor */
 
     @Override
-    public Stream<Void> visitIfStmt(Stmt.If stmt) {
-        return once(() -> {
+    public Iterator<Void> visitIfStmt(Stmt.If stmt) {
+        return new OnceIterator<Iterator<Void>>(arg0 -> {
             if (isTruthy(evaluate(stmt.conditional))) {
-                stmt.thenBranch.access(this);
+                return stmt.thenBranch.access(this);
             } else if (stmt.elseBranch != null) {
-                stmt.elseBranch.access(this);
+                return stmt.elseBranch.access(this);
             }
-            return null;
-        });
+            return new EmptyIterator<Void>();
+        }).flatMap(java.util.function.Function.identity());
     }
 
     @Override
-    public Stream<Void> visitInteractStmt(Stmt.Interact stmt) {
-        return once(() -> {
+    public Iterator<Void> visitInteractStmt(Stmt.Interact stmt) {
+        return new OnceIterator<>(arg0 -> {
             environment.outputDevice.interact();
             return null;
         });
     }
 
     @Override
-    public Stream<Void> visitMoveStmt(Stmt.Move stmt) {
-        return once(() -> {
+    public Iterator<Void> visitMoveStmt(Stmt.Move stmt) {
+        return new OnceIterator<>(arg0 -> {
+            System.out.println("MOVE");
             environment.outputDevice.move(stmt.direction);
             return null;
         });
     }
 
     @Override
-    public Stream<Void> visitLoopStmt(Stmt.Loop stmt) {
-        Interpreter interpreter = this;
-
-        return iteratorToStream(new Iterator<Void>() {
-            private boolean condition = true;
-
-            @Override
-            public boolean hasNext() {
-                return condition;
-            }
-
-            @Override
-            public Void next() {
-                condition = isTruthy(evaluate(stmt.condition));
-                if (condition) {
-                    stmt.body.access(interpreter);
-                }
-                return null;
-            }
-        });
+    public Iterator<Void> visitLoopStmt(Stmt.Loop stmt) {
+        return new RepeatIterator()
+                .takeWhile(arg0 -> isTruthy(evaluate(stmt.condition)))
+                .flatMap(arg0 -> stmt.body.access(this));
     }
 
     @Override
-    public Stream<Void> visitRepeatStmt(Stmt.Repeat stmt) {
+    public Iterator<Void> visitRepeatStmt(Stmt.Repeat stmt) {
         Object value = stmt.numIterations.access(this);
         final int numIterations;
         if (value instanceof Double) {
@@ -132,52 +117,36 @@ public class Interpreter implements Stmt.Visitor<Stream<Void>>, Expr.Visitor<Obj
             throw new InterpreterException("valor de repetição precisa ser numérico");
         }
 
-        Interpreter interpreter = this;
-
-        return iteratorToStream(new Iterator<Void>() {
-            private int countDown = numIterations;
-
-            @Override
-            public boolean hasNext() {
-                return countDown > 0;
-            }
-
-            @Override
-            public Void next() {
-                System.out.println("Number of iterations: " + countDown);
-                if (countDown > 0) {
-                    stmt.body.access(interpreter);
-                    countDown--;
-                }
-                return null;
-            }
-        });
+        return new RepeatIterator()
+                .take(numIterations)
+                .flatMap(arg0 -> stmt.body.access(this));
     }
 
     @Override
-    public Stream<Void> visitBlockStmt(Stmt.Block stmt) {
-        return stmt.stmts.stream().flatMap(innerStmt -> innerStmt.access(this));
+    public Iterator<Void> visitBlockStmt(Stmt.Block stmt) {
+        return new JavaIteratorAdapter<>(stmt.stmts.iterator())
+                .flatMap(innerStmt -> innerStmt.access(this));
     }
 
     @Override
-    public Stream<Void> visitExprStmt(Stmt.StmtExpr stmt) {
-        return once(() -> {
+    public Iterator<Void> visitExprStmt(Stmt.StmtExpr stmt) {
+        return new OnceIterator<>(arg0 -> {
             stmt.expr.access(this);
             return null;
         });
     }
 
     @Override
-    public Stream<Void> visitVariableDeclarationStmt(Stmt.VariableDeclaration stmt) {
-        return once(() -> {
+    public Iterator<Void> visitVariableDeclarationStmt(Stmt.VariableDeclaration stmt) {
+        return new OnceIterator<>(arg0 -> {
             environment.declareVariable(stmt.varName, stmt.initializer.access(this));
             return null;
         });
     }
 
     @Override
-    public Stream<Void> visitVariableAssignStmt(Stmt.VariableAssign stmt) {
-        return once(() -> {
+    public Iterator<Void> visitVariableAssignStmt(Stmt.VariableAssign stmt) {
+        return new OnceIterator<>(arg0 -> {
             environment.declareVariable(stmt.varName, stmt.value.access(this));
             return null;
         });
@@ -322,32 +291,5 @@ public class Interpreter implements Stmt.Visitor<Stream<Void>>, Expr.Visitor<Obj
         if (left == null) return false;
 
         return left.equals(right);
-    }
-
-    private <E> Stream<E> iteratorToStream(Iterator<E> iterator) {
-        Iterable<E> iterable = () -> iterator;
-        return StreamSupport.stream(iterable.spliterator(), false);
-    }
-
-    @FunctionalInterface
-    private interface OnceFunction<E> {
-        E call();
-    }
-
-    private <E> Stream<E> once(OnceFunction<E> function) {
-        return iteratorToStream(new Iterator<E>() {
-            private boolean hasRun = false;
-
-            @Override
-            public boolean hasNext() {
-                return !hasRun;
-            }
-
-            @Override
-            public E next() {
-                hasRun = true;
-                return function.call();
-            }
-        });
     }
 }
