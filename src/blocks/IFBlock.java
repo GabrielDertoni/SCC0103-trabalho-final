@@ -1,6 +1,7 @@
 package blocks;
 
 import java.awt.Color;
+import java.awt.Point;
 import java.util.stream.Collectors;
 
 import javax.swing.JButton;
@@ -22,7 +23,8 @@ public class IFBlock extends BaseBlock {
 		this.posX = posX;
 		this.father = father;
 		
-		setLocation(posX, 5);
+		System.out.println(getLocation());
+		setLocation(new Point(10, 5));
 
 		String direction[] = {"a Direita", "Cima", "a Esquerda", "Baixo"};
 		JComboBox<String> dir = new JComboBox<String>(direction);
@@ -58,6 +60,9 @@ public class IFBlock extends BaseBlock {
 			father.repaint();
 		});
 		
+		/*FlowLayout layout = (FlowLayout) getLayout();
+		layout.setAlignment(FlowLayout.LEFT);*/
+
 		add(new JLabel("Se "));
 		add(dir);
 		add(new JLabel("for "));

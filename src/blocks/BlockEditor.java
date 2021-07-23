@@ -1,21 +1,23 @@
 package blocks;
 
 import java.awt.*;
-import java.util.List;
 import java.util.stream.Collectors;
 
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 
-import interpreter.PseudocodeGenerator;
 import interpreter.Stmt;
 
 public class BlockEditor extends BaseBlock {
 
 	// private BaseBlock editor;
+	int x, y;
 
 	public BlockEditor(int x, int y, int width, int height) {
 		super((int) (width*2/3), 0, (int) (width/3), (height*3/5), Color.GREEN, BaseBlock.Mode.STATIC);
+
+		this.x = x;
+		this.y = y;
 
 		setBounds(x, y, width, height);
 		setPreferredSize(new Dimension(width, height));
@@ -40,7 +42,7 @@ public class BlockEditor extends BaseBlock {
 	private void addNewBlock(String blockName) {
 		switch(blockName) {
 			case "Se":
-				blocks.IFBlock IF = new blocks.IFBlock(this, 680);
+				blocks.IFBlock IF = new blocks.IFBlock(this, x + 10);
 				super.addBlock(IF, 0);
 				break;
 

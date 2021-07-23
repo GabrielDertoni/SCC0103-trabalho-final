@@ -10,6 +10,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
 import java.util.ArrayList;
 import java.util.List;
+import java.awt.Point;
 
 import javax.swing.JPanel;
 
@@ -38,7 +39,7 @@ public abstract class BaseBlock extends JPanel{
 		this.height = altura;
     	this.width = largura;
     	
-    	setBounds(posX, posY, width, height);
+		setBounds(posX, posY, width, height);
 		setPreferredSize(new Dimension(width, height));
 		setLocation(posX, posY);
 		setBackground(color); 
@@ -87,11 +88,10 @@ public abstract class BaseBlock extends JPanel{
 		nInstructions++;
 
 		setPreferredSize(new Dimension(width, height));
-		//block.setLocation(posX, posY);
 		if(father != null && father.mode != Mode.STATIC) father.updateHeight(newHeight, Method.ADD);
-
+		
+		add(block, "wrap");	
 		blocks.add(block);
-		add(block);
 		updateUI();
 	}
     
