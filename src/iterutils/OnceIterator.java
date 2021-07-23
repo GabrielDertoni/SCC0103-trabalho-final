@@ -18,6 +18,7 @@ public class OnceIterator<E> extends Iterator<E> {
 
     @Override
     public E next() {
+        hasRun = true;
         return genElement.apply(null);
     }
 }
