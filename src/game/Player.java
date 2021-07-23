@@ -8,7 +8,7 @@ public class Player extends Tile implements Compositor.Layer {
     Point originalPosition;
 
     public Player(Point position) {
-        super(position.x, position.y, TileType.PLAYER);
+        super(position.x, position.y, TileType.PLAYER_DOWN);
         originalPosition = position;
     }
 

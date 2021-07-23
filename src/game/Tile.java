@@ -5,7 +5,8 @@ import java.awt.*;
 public class Tile extends Rectangle {
 
     public enum TileType {
-        EMPTY(0), FLOOR(1), WALL(2), OBJECTIVE(3), PLAYER(4);
+        EMPTY(0), FLOOR(1), WALL(2), OBJECTIVE(3),
+        PLAYER_DOWN(4), PLAYER_RIGHT(5), PLAYER_LEFT(6), PLAYER_UP(7);
 
         public static TileType fromIndex(int index) {
             switch (index) {
@@ -13,7 +14,10 @@ public class Tile extends Rectangle {
                 case 1: return FLOOR;
                 case 2: return WALL;
                 case 3: return OBJECTIVE;
-                case 4: return PLAYER;
+                case 4: return PLAYER_DOWN;
+                case 5: return PLAYER_RIGHT;
+                case 6: return PLAYER_LEFT;
+                case 7: return PLAYER_UP;
                 default: throw new IllegalArgumentException("Expected index to be 0, 1 or 2");
             }
         }
