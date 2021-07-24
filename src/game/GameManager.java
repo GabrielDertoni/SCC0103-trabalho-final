@@ -8,7 +8,11 @@ import menus.WindowManager;
 
 import javax.swing.*;
 import java.awt.*;
+import java.io.File;
+import java.io.IOException;
 import java.util.List;
+
+import static game.Resources.whiteRabbit;
 
 public class GameManager implements OutputDevice {
     private Interpreter interpreter;
@@ -34,7 +38,7 @@ public class GameManager implements OutputDevice {
         if (level == 0) {
             this.level = Levels.getLevelTest();
         } else {
-            JOptionPane.showMessageDialog(WindowManager.getInstance(), "Jogo concluído");
+            MyOptionPane myoptp = new MyOptionPane("Jogo concluido!", 350, 200);
             WindowManager.getInstance().setCurrentWindow(WindowManager.WindowName.MainMenu);
         }
     }
@@ -68,7 +72,7 @@ public class GameManager implements OutputDevice {
     public void interact() {
         System.out.println("INTERACT");
         if (player.x == level.goalPosition.x * Tile.SIZE && player.y == level.goalPosition.y * Tile.SIZE) {
-            JOptionPane.showMessageDialog(WindowManager.getInstance(), "Nível vencido!");
+            MyOptionPane myoptp = new MyOptionPane("Nivel Vencido!", 350, 200);
             loadLevel(level_num + 1);
         }
     }

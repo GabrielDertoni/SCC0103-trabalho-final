@@ -16,6 +16,8 @@ import game.GameManager;
 import interpreter.PseudocodeGenerator;
 import interpreter.Stmt;
 
+import static game.Resources.whiteRabbit;
+
 public class BaseLVL extends Background {
 
 	private BlockEditor editor;
@@ -26,13 +28,6 @@ public class BaseLVL extends Background {
 
 		setBounds(x, y, width, height);
 		setLayout(null);
-
-		Font whiteRabbit = null;
-		try {
-			whiteRabbit = Font.createFont(Font.TRUETYPE_FONT, new File("assets/WHITRABT.TTF"));
-		} catch (FontFormatException| IOException e) {
-			e.printStackTrace();
-		}
 
 		//Painel onde e mostrado o nivel do mapa atual e o personagem e sua posicao no mapa
 		levelArea = new LevelArea(0, 0,  (width*2/3)-50, height);
@@ -89,6 +84,19 @@ public class BaseLVL extends Background {
 		runButton.setHorizontalTextPosition(JLabel.CENTER);
 		runButton.setVerticalTextPosition(JLabel.CENTER);
 		add(runButton);
+
+		//Botao de gerar o pseudocodigo ou chamar um MyOptionPane e mostrar por ali
+		JButton btnGenPseudo = new JButton("Codigo", new ImageIcon(resizedImage));
+
+		btnGenPseudo.addActionListener(event -> {
+			/*gerar o pseudo codigo*/
+		});
+		btnGenPseudo.setBounds(width-btn_w-30, height-250, btn_w, btn_h);
+		btnGenPseudo.setFont(whiteRabbit.deriveFont(20f));
+		btnGenPseudo.setForeground(Color.GREEN.darker());
+		btnGenPseudo.setHorizontalTextPosition(JLabel.CENTER);
+		btnGenPseudo.setVerticalTextPosition(JLabel.CENTER);
+		add(btnGenPseudo);
 	}
 	
 }

@@ -11,6 +11,8 @@ import javax.swing.ImageIcon;
 
 import javax.swing.JLabel;
 
+import static game.Resources.whiteRabbit;
+
 public class Niveis extends Background {
 	/**
 	 * Create the frame.
@@ -19,13 +21,6 @@ public class Niveis extends Background {
 		super(new ImageIcon("specification/Prototipo_fundo_menu.png").getImage());
 		
 		setLayout(null);
-
-		Font whiteRabbit = null;
-		try {
-			whiteRabbit = Font.createFont(Font.TRUETYPE_FONT, new File("assets/WHITRABT.TTF"));
-		} catch (FontFormatException| IOException e) {
-			e.printStackTrace();
-		}
 
 		ImageIcon btnBg = new ImageIcon("assets/botaoSemTextura.png");
 

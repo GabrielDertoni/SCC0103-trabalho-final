@@ -1,5 +1,7 @@
 package menus;
 
+import game.Resources;
+
 import java.awt.Dimension;
 import java.awt.EventQueue;
 import java.awt.Toolkit;
@@ -27,6 +29,7 @@ public class WindowManager extends JFrame {
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setExtendedState(JFrame.MAXIMIZED_BOTH);
 
+		Resources.load();
 
 		setCurrentWindow(WindowName.MainMenu);
 
