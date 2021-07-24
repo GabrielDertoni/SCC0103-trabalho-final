@@ -84,6 +84,19 @@ public class BaseLVL extends Background {
 		runButton.setHorizontalTextPosition(JLabel.CENTER);
 		runButton.setVerticalTextPosition(JLabel.CENTER);
 		add(runButton);
+
+		//Botao de gerar o pseudocodigo ou chamar um MyOptionPane e mostrar por ali
+		JButton btnGenPseudo = new JButton("Codigo", new ImageIcon(resizedImage));
+
+		btnGenPseudo.addActionListener(event -> {
+			/*gerar o pseudo codigo*/
+		});
+		btnGenPseudo.setBounds(width-btn_w-30, height-250, btn_w, btn_h);
+		btnGenPseudo.setFont(whiteRabbit.deriveFont(20f));
+		btnGenPseudo.setForeground(Color.GREEN.darker());
+		btnGenPseudo.setHorizontalTextPosition(JLabel.CENTER);
+		btnGenPseudo.setVerticalTextPosition(JLabel.CENTER);
+		add(btnGenPseudo);
 	}
 	
 }
