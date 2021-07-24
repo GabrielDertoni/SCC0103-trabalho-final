@@ -9,19 +9,23 @@ import javax.swing.JLabel;
 
 public class INTERACTBlock extends BaseBlock {
 
-	public INTERACTBlock(BaseBlock father) {
-		super(700, 5, 400, 40, Color.RED, BaseBlock.Mode.DRAGGABLE_Y);
+	public INTERACTBlock(BaseBlock father, int posX, int posY, int index) {
+		super(posX, posY, 400, 80, Color.RED, BaseBlock.Mode.DRAGGABLE_Y, index, null);
 		
+		this.posX = posX;
+		this.posY = posY;
 		this.father = father;
 		
-        add(new JLabel("Interagir"));
+		JLabel text = new JLabel("Interagir");
+		text.setBounds(5, 15, 85, 15);
+		add(text);
 		
 		JButton removeButton = new JButton("Remover");
 		removeButton.addActionListener(event -> {
 			father.removeBlock(this);
 			father.repaint();
 		});
-		
+		removeButton.setBounds(5, 80 - 25, 120, 20);
 		add(removeButton);
 	}
 

@@ -1,7 +1,6 @@
 package blocks;
 
 import java.awt.Color;
-import java.awt.Point;
 import java.util.stream.Collectors;
 
 import javax.swing.JButton;
@@ -17,21 +16,27 @@ public class IFBlock extends BaseBlock {
 	String rightHandSideVar = "uma parede";
 	Expr.Binary.Operator operator = Expr.Binary.Operator.EQUAL;
 
-	public IFBlock(BaseBlock father, int posX) {
-		super(posX, 5, 450, 80, Color.YELLOW, BaseBlock.Mode.DRAGGABLE_Y);
+	public IFBlock(BaseBlock father, int posX, int posY, int index) {
+		super(posX, posY, 450, 80, Color.YELLOW, BaseBlock.Mode.DRAGGABLE_Y, index, null);
 		
 		this.posX = posX;
+		this.posY = posY;
 		this.father = father;
 		
-		System.out.println(getLocation());
-		setLocation(new Point(10, 5));
+		JLabel text = new JLabel("Se ");
+		text.setBounds(5, 15, 25, 10);
+		add(text);
 
-		String direction[] = {"a Direita", "Cima", "a Esquerda", "Baixo"};
-		JComboBox<String> dir = new JComboBox<String>(direction);
+		JComboBox<String> dir = new JComboBox<String>(new String[]{"a Direita", "Cima", "a Esquerda", "Baixo"});
 		dir.addActionListener(event -> leftHandSideVar = (String)dir.getSelectedItem());
+		dir.setBounds(30, 10, 120, 20);
+		add(dir);
 				
-		String operatorBox[] = {"igual à", "diferente de"};        
-		JComboBox<String> op = new JComboBox<String>(operatorBox);
+		text = new JLabel(" for ");
+		text.setBounds(150, 15, 30, 10);
+		add(text);
+		
+		JComboBox<String> op = new JComboBox<String>(new String[]{"igual à", "diferente de"});        
 		op.addActionListener(event -> {
 			String operatorString = (String)op.getSelectedItem();
 
@@ -41,66 +46,56 @@ public class IFBlock extends BaseBlock {
 				operator = Expr.Binary.Operator.NOT_EQUAL;
 			}
 		 });
+		op.setBounds(180, 10, 120, 20);
+		add(op);
 		
-		String stats[] = {"uma parede", "nada", "um inimigo"};        
-		JComboBox<String> st = new JComboBox<String>(stats);    
+		JComboBox<String> st = new JComboBox<String>(new String[]{"uma parede", "nada", "um inimigo"});        
 		st.addActionListener(event -> rightHandSideVar = (String)st.getSelectedItem());
+		st.setBounds(300, 10, 120, 20);
+		add(st);
 		
 		JComboBox<String> blockSelect = new JComboBox<String>(new String[]{"Se", "Repete", "Move", "Interagir"});
+		blockSelect.setBounds(450 - 90 - 70, 80 - 25, 90, 20);
+		add(blockSelect);
 
-		int plusButton_w = 80;
-		int plusButton_h = 30;
 		JButton plusButton = new JButton("+");
-		plusButton.setBounds(220, 200, plusButton_w, plusButton_h);
 		plusButton.addActionListener(event -> addBlock(blockSelect.getSelectedItem().toString()));
+		plusButton.setBounds(450 - 65, 80 - 25, 60, 20);
+		add(plusButton);
 		
 		JButton removeButton = new JButton("Remover");
 		removeButton.addActionListener(event -> {
 			father.removeBlock(this);
 			father.repaint();
 		});
-		
-		/*FlowLayout layout = (FlowLayout) getLayout();
-		layout.setAlignment(FlowLayout.LEFT);*/
-
-		add(new JLabel("Se "));
-		add(dir);
-		add(new JLabel("for "));
-		add(op);
-		add(st);
-		add(blockSelect);
-		add(plusButton);
+		removeButton.setBounds(5, 80 - 25, 120, 20);
 		add(removeButton);
     }
 
     public void addBlock(String blockName) {
 		switch(blockName) {
 			case "Se":
-				height += 90;
-
-				blocks.IFBlock IF = new blocks.IFBlock(this, posX + 10);
-				super.addBlock(IF, 80);
+				blocks.IFBlock IF = new blocks.IFBlock(this, 40, height - 10, nInstructions);
+				
+				super.addBlock(IF);
 				break;
 
 			case "Repete":
-				height += 60;
+				blocks.LOOPBlock LOOP = new blocks.LOOPBlock(this, 40, height - 10, nInstructions);
 
-				blocks.LOOPBlock LOOP = new blocks.LOOPBlock(this, posX + 10);
-				super.addBlock(LOOP, 50);
+				super.addBlock(LOOP);
 				break;
 
 			case "Move":
-				height += 30;
+				blocks.MOVEBlock MOVE = new blocks.MOVEBlock(this, 40, height - 10, nInstructions);
 
-				blocks.MOVEBlock MOVE = new blocks.MOVEBlock(this);
-				super.addBlock(MOVE, 30);
+				super.addBlock(MOVE);
 				break;
 
 			case "Interagir":
-				height += 30;
+				blocks.INTERACTBlock INTERACT = new blocks.INTERACTBlock(this, 40, height - 10, nInstructions);
 
-				blocks.INTERACTBlock INTERACT = new blocks.INTERACTBlock(this);
-				super.addBlock(INTERACT, 30);
+				super.addBlock(INTERACT);
 				break;
 		}
 		//setPreferredSize(new Dimension(width, height));

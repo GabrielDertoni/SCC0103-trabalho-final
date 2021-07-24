@@ -13,13 +13,21 @@ public class MOVEBlock extends BaseBlock {
 	
 	Direction direction = Direction.RIGHT;
 	
-	public MOVEBlock(BaseBlock father) {
-		super(700, 5, 300, 30, Color.PINK, BaseBlock.Mode.DRAGGABLE_Y);
+	public MOVEBlock(BaseBlock father, int posX, int posY, int index) {
+		super(posX, posY, 300, 80, Color.PINK, BaseBlock.Mode.DRAGGABLE_Y, index, null);
   	  
+		this.posX = posX;
+		this.posY = posY;
 		this.father = father;
 		
+		JLabel text = new JLabel("Mova para");
+		text.setBounds(5, 15, 85, 15);
+		add(text);
+
   	  	String directions[] = {"a Direita", "Cima", "a Esquerda", "Baixo"};
         JComboBox<String> directionPicker = new JComboBox<String>(directions);
+		directionPicker.setBounds(90, 10, 120, 20);
+		add(directionPicker);
 
 		directionPicker.addActionListener(e -> {
 			String dir = (String)directionPicker.getSelectedItem();
@@ -45,9 +53,7 @@ public class MOVEBlock extends BaseBlock {
 			father.removeBlock(this);
 			father.repaint();
 		});
-        
-        add(new JLabel("Mova para"));
-        add(directionPicker);
+		removeButton.setBounds(5, 80 - 25, 120, 20);
         add(removeButton);
 	}
 

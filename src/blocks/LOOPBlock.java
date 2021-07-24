@@ -16,67 +16,70 @@ import interpreter.Stmt;
 public class LOOPBlock extends BaseBlock {
 	private int numIterations = 1;
 
-	public LOOPBlock(BaseBlock father, int posX) {
-  	  	super(posX, 5, 450, 60, Color.CYAN, BaseBlock.Mode.DRAGGABLE_Y);
+	public LOOPBlock(BaseBlock father, int posX, int posY, int index) {
+  	  	super(posX, posY, 450, 80, Color.CYAN, BaseBlock.Mode.DRAGGABLE_Y, index, null);
 
 		this.posX = posX;
+		this.posY = posY;
 		this.father = father;
+
+		JLabel text = new JLabel("Repete ");
+		text.setBounds(5, 15, 60, 15);
+		add(text);
 
 		SpinnerModel value = new SpinnerNumberModel(1, 1, 15, 1);  
         JSpinner spinner = new JSpinner(value);    
+		spinner.setBounds(65, 10, 40, 20);
+		add(spinner);
         
         spinner.addChangeListener(event -> numIterations = (int)spinner.getValue());
 		
-		JComboBox<String> blockSelect = new JComboBox<String>(new String[]{"Se", "Repete", "Move", "Interagir"});
+		text = new JLabel(" vezes");
+		text.setBounds(105, 15, 60, 10);
+		add(text);
 
-		int plusButton_w = 80;
-		int plusButton_h = 30;
+		JComboBox<String> blockSelect = new JComboBox<String>(new String[]{"Se", "Repete", "Move", "Interagir"});
+		blockSelect.setBounds(450 - 90 - 70, 80 - 25, 90, 20);
+		add(blockSelect);
+		
 		JButton plusButton = new JButton("+");
-		plusButton.setBounds(220, 200, plusButton_w, plusButton_h);
 		plusButton.addActionListener(event -> addBlock(blockSelect.getSelectedItem().toString()));
+		plusButton.setBounds(450 - 65, 80 - 25, 60, 20);
+		add(plusButton);
 
 		JButton removeButton = new JButton("Remover");
 		removeButton.addActionListener(event -> {
 			father.removeBlock(this);
 			father.repaint();
 		});
-		
-        add(new JLabel("Repete "));
-        add(spinner);
-        add(new JLabel(" vezes"));
-		add(blockSelect);
-		add(plusButton);
-        add(removeButton);
+		removeButton.setBounds(5, 80 - 25, 120, 20);
+		add(removeButton);
 	}
 
 	public void addBlock(String blockName) {
 		switch(blockName) {
 			case "Se":
-				height += 90;
-
-				blocks.IFBlock IF = new blocks.IFBlock(this, posX + 10);
-				super.addBlock(IF, 80);
+				blocks.IFBlock IF = new blocks.IFBlock(this, 40, height - 10, nInstructions);
+				
+				super.addBlock(IF);
 				break;
 
 			case "Repete":
-				height += 60;
+				blocks.LOOPBlock LOOP = new blocks.LOOPBlock(this, 40, height - 10, nInstructions);
 
-				blocks.LOOPBlock LOOP = new blocks.LOOPBlock(this, posX + 10);
-				super.addBlock(LOOP, 50);
+				super.addBlock(LOOP);
 				break;
 
 			case "Move":
-				height += 30;
+				blocks.MOVEBlock MOVE = new blocks.MOVEBlock(this, 40, height - 10, nInstructions);
 
-				blocks.MOVEBlock MOVE = new blocks.MOVEBlock(this);
-				super.addBlock(MOVE, 30);
+				super.addBlock(MOVE);
 				break;
 
 			case "Interagir":
-				height += 30;
+				blocks.INTERACTBlock INTERACT = new blocks.INTERACTBlock(this, 40, height - 10, nInstructions);
 
-				blocks.INTERACTBlock INTERACT = new blocks.INTERACTBlock(this);
-				super.addBlock(INTERACT, 30);
+				super.addBlock(INTERACT);
 				break;
 		}
 		//setPreferredSize(new Dimension(width, height));

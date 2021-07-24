@@ -2,6 +2,7 @@ package blocks;
 
 
 import interpreter.Stmt;
+import menus.Background;
 
 import java.awt.Color;
 import java.awt.Dimension;
@@ -10,11 +11,8 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
 import java.util.ArrayList;
 import java.util.List;
-import java.awt.Point;
 
-import javax.swing.JPanel;
-
-public abstract class BaseBlock extends JPanel{
+public abstract class BaseBlock extends Background {
 	public enum Method {
 		ADD, REMOVE
 	}
@@ -24,24 +22,27 @@ public abstract class BaseBlock extends JPanel{
 	}
 
     private volatile int draggedAtX, draggedAtY;
-	int nInstructions = 0;
+	int nInstructions = 0, index;
 	int posX, posY, width, height;
-	BaseBlock father;
+	BaseBlock father = null;
 	Mode mode;
 
 	protected List<BaseBlock> blocks;
 
-    public BaseBlock(int posX, int posY, int largura, int altura, Color color, Mode mode) {
+    public BaseBlock(int posX, int posY, int largura, int altura, Color color, Mode mode, int index, String imgName) {
+		super(imgName);
+		
 		blocks = new ArrayList<BaseBlock>();
 
 		this.posX = posX;
 		this.posY = posY;
 		this.height = altura;
     	this.width = largura;
+		this.index = index;
     	
+		setLayout(null);
 		setBounds(posX, posY, width, height);
-		setPreferredSize(new Dimension(width, height));
-		setLocation(posX, posY);
+		setSize(new Dimension(width, height));
 		setBackground(color); 
 		
 		this.mode = mode;
@@ -84,36 +85,49 @@ public abstract class BaseBlock extends JPanel{
         
     }
 
-	public void addBlock(BaseBlock block, int newHeight) {
+	public void addBlock(BaseBlock block) {
 		nInstructions++;
+		width += 40;
+		height += 80;
 
-		setPreferredSize(new Dimension(width, height));
-		if(father != null && father.mode != Mode.STATIC) father.updateHeight(newHeight, Method.ADD);
+		if(mode != Mode.STATIC) setSize(new Dimension(this.width, this.height));
+		if(father != null) father.updateDimension(this.index, Method.ADD);
 		
-		add(block, "wrap");	
+		add(block);
 		blocks.add(block);
 		updateUI();
 	}
     
 	public void removeBlock(BaseBlock block) {
 		nInstructions--;
-		height -= block.height;
+		width -= 40;
+		height -= 80;
 
-		setPreferredSize(new Dimension(width, height));
-		if(father != null && father.mode != Mode.STATIC) father.updateHeight(block.height, Method.REMOVE);
+		if(mode != Mode.STATIC) setSize(new Dimension(width, height));
+		if(father != null) father.updateDimension(index, Method.REMOVE);
 
 		blocks.remove(block);
 		remove(block);
 		updateUI();
 	}
 
-	private void updateHeight(int newHeight, Method flag) {
-		if(flag == Method.ADD)	height += newHeight;
-		if(flag == Method.REMOVE)	height -= newHeight;
-		
-		setPreferredSize(new Dimension(width, height));
+	private void updateDimension(int index, Method flag) {
 
-		if(father != null && father.mode != Mode.STATIC) father.updateHeight(newHeight, flag);
+		if(flag == Method.ADD) {
+			this.width += 40;
+			this.height += 80;
+		} else if(flag == Method.REMOVE) {
+			this.width -= 40;
+			this.height -= 80;
+		}
+		
+		if(mode != Mode.STATIC) setSize(new Dimension(this.width, this.height));
+		
+		for(int i = index + 1; i < nInstructions; i++){
+			blocks.get(i).setLocation(blocks.get(i).posX, blocks.get(i).posY + height);;
+		}
+
+		if(father != null) father.updateDimension(this.index, flag);
 	}
 
 	public abstract Stmt toStmt();
