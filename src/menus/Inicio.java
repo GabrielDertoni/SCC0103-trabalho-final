@@ -9,6 +9,8 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 
+import static game.Resources.whiteRabbit;
+
 public class Inicio extends Background {
 	public int width;
 	public int height;
@@ -17,13 +19,6 @@ public class Inicio extends Background {
 
 	public Inicio(int x, int y, int width, int height) {
 		super(new ImageIcon("assets/background.png").getImage());
-
-		Font whiteRabbit = null;
-		try {
-			whiteRabbit = Font.createFont(Font.TRUETYPE_FONT, new File("assets/WHITRABT.TTF"));
-		} catch (FontFormatException|IOException e) {
-			e.printStackTrace();
-		}
 
 		setLayout(null);
 
@@ -40,7 +35,6 @@ public class Inicio extends Background {
 		btnNiveis.setFont(whiteRabbit.deriveFont(30f));
 		btnNiveis.setForeground(Color.GREEN.darker());
 		btnNiveis.setBounds((width-btnW)/2, 3*height/5-btnH, btnW, btnH);
-		btnNiveis.setBorder(BorderFactory.createEmptyBorder());
 		btnNiveis.setHorizontalTextPosition(JLabel.CENTER);
 		btnNiveis.setVerticalTextPosition(JLabel.CENTER);
 		
@@ -48,7 +42,7 @@ public class Inicio extends Background {
 			WindowManager.getInstance().setCurrentWindow(WindowManager.WindowName.LevelMenu);
 		});
 		
-		//Botao de acesso a tela de configuraçoes
+		//Botao de acesso ao tutorial
 		JButton btnTutorial = new JButton("Tutorial", new ImageIcon(resizedBG));
 
 		btnTutorial.setFont(whiteRabbit.deriveFont(30f));

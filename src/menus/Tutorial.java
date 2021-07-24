@@ -5,17 +5,11 @@ import java.awt.*;
 import java.io.File;
 import java.io.IOException;
 
+import static game.Resources.whiteRabbit;
+
 public class Tutorial extends Background {
     public Tutorial(int x, int y, int width, int height) {
         super("assets/background.png");
-
-
-        Font whiteRabbit = null;
-        try {
-            whiteRabbit = Font.createFont(Font.TRUETYPE_FONT, new File("assets/WHITRABT.TTF"));
-        } catch (FontFormatException| IOException e) {
-            e.printStackTrace();
-        }
 
         setLayout(null);
 

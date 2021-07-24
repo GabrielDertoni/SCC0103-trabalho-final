@@ -16,6 +16,8 @@ import game.GameManager;
 import interpreter.PseudocodeGenerator;
 import interpreter.Stmt;
 
+import static game.Resources.whiteRabbit;
+
 public class BaseLVL extends Background {
 
 	private BlockEditor editor;
@@ -26,13 +28,6 @@ public class BaseLVL extends Background {
 
 		setBounds(x, y, width, height);
 		setLayout(null);
-
-		Font whiteRabbit = null;
-		try {
-			whiteRabbit = Font.createFont(Font.TRUETYPE_FONT, new File("assets/WHITRABT.TTF"));
-		} catch (FontFormatException| IOException e) {
-			e.printStackTrace();
-		}
 
 		//Painel onde e mostrado o nivel do mapa atual e o personagem e sua posicao no mapa
 		levelArea = new LevelArea(0, 0,  (width*2/3)-50, height);

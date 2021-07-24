@@ -1,6 +1,7 @@
 package game;
 
 import javax.imageio.ImageIO;
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -8,6 +9,7 @@ import java.util.ArrayList;
 
 public class Resources {
     public static final ArrayList<BufferedImage> TEXTURES = new ArrayList<>(10);
+    public static Font whiteRabbit = null;
 
     public static void load() {
         try {
@@ -18,7 +20,8 @@ public class Resources {
             TEXTURES.add(Tile.TileType.PLAYER_RIGHT.getIndex(), ImageIO.read(new File("assets/frontRight.png")));
             TEXTURES.add(Tile.TileType.PLAYER_LEFT.getIndex(), ImageIO.read(new File("assets/frontRight.png")));
             TEXTURES.add(Tile.TileType.PLAYER_UP.getIndex(), ImageIO.read(new File("assets/backRight.png")));
-        } catch (IOException e) {
+            whiteRabbit = Font.createFont(Font.TRUETYPE_FONT, new File("assets/WHITRABT.TTF"));
+        } catch (IOException|FontFormatException e) {
             e.printStackTrace();
         }
     }
