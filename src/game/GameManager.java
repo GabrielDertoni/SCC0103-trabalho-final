@@ -27,7 +27,9 @@ public class GameManager implements OutputDevice {
 
         Resources.load();
 
-        level = Levels.getLevelTest();
+        level_num = WindowManager.getInstance().getLvl();
+        loadLevel(level_num);
+        //level = Levels.getLevelTest();
         player = new Player(level.startPosition);
         level.compositor.pushLayer(player);
         System.out.println(level.compositor.collidesWith(player));
@@ -37,6 +39,10 @@ public class GameManager implements OutputDevice {
         level_num = level;
         if (level == 0) {
             this.level = Levels.getLevelTest();
+        } else if (level == 1) {
+            this.level = Levels.getLevel1();
+        } else if (level == 2) {
+            this.level = Levels.getLevel2();
         } else {
             MyOptionPane myoptp = new MyOptionPane("Jogo concluido!", 350, 200);
             WindowManager.getInstance().setCurrentWindow(WindowManager.WindowName.MainMenu);

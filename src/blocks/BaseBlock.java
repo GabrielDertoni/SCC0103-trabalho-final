@@ -87,11 +87,8 @@ public abstract class BaseBlock extends Background {
 
 	public void addBlock(BaseBlock block) {
 		nInstructions++;
-		width += 40;
-		height += 80;
 
-		if(mode != Mode.STATIC) setSize(new Dimension(this.width, this.height));
-		if(father != null) father.updateDimension(this.index, Method.ADD);
+		updateDimension(40, 80, this.index, Method.ADD);
 		
 		add(block);
 		blocks.add(block);
@@ -100,34 +97,23 @@ public abstract class BaseBlock extends Background {
     
 	public void removeBlock(BaseBlock block) {
 		nInstructions--;
-		width -= 40;
-		height -= 80;
 
-		if(mode != Mode.STATIC) setSize(new Dimension(width, height));
-		if(father != null) father.updateDimension(index, Method.REMOVE);
+		updateDimension(-(block.width - 450), -block.height, block.index, Method.REMOVE);
 
 		blocks.remove(block);
 		remove(block);
 		updateUI();
 	}
 
-	private void updateDimension(int index, Method flag) {
-
-		if(flag == Method.ADD) {
-			this.width += 40;
-			this.height += 80;
-		} else if(flag == Method.REMOVE) {
-			this.width -= 40;
-			this.height -= 80;
-		}
+	private void updateDimension(int wdith, int height, int index, Method flag) {
+		this.width += width;
+		this.height += height;
 		
 		if(mode != Mode.STATIC) setSize(new Dimension(this.width, this.height));
 		
-		for(int i = index + 1; i < nInstructions; i++){
-			blocks.get(i).setLocation(blocks.get(i).posX, blocks.get(i).posY + height);;
-		}
+		for(int i = index + 1; i < nInstructions; i++) blocks.get(i).setLocation(blocks.get(i).posX, blocks.get(i).posY + height);;
 
-		if(father != null) father.updateDimension(this.index, flag);
+		if(father != null) father.updateDimension(width, height, this.index, flag);
 	}
 
 	public abstract Stmt toStmt();

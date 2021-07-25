@@ -17,25 +17,25 @@ public class LOOPBlock extends BaseBlock {
 	private int numIterations = 1;
 
 	public LOOPBlock(BaseBlock father, int posX, int posY, int index) {
-  	  	super(posX, posY, 450, 80, Color.CYAN, BaseBlock.Mode.DRAGGABLE_Y, index, null);
+  	  	super(posX, posY, 450, 80, Color.CYAN, BaseBlock.Mode.DRAGGABLE_Y, index, "src/blocks/LOOPPlaceHolder.png");
 
 		this.posX = posX;
 		this.posY = posY;
 		this.father = father;
 
 		JLabel text = new JLabel("Repete ");
-		text.setBounds(5, 15, 60, 15);
+		text.setBounds(143, 15, 60, 15);
 		add(text);
 
 		SpinnerModel value = new SpinnerNumberModel(1, 1, 15, 1);  
         JSpinner spinner = new JSpinner(value);    
-		spinner.setBounds(65, 10, 40, 20);
+		spinner.setBounds(203, 10, 40, 20);
 		add(spinner);
         
         spinner.addChangeListener(event -> numIterations = (int)spinner.getValue());
 		
 		text = new JLabel(" vezes");
-		text.setBounds(105, 15, 60, 10);
+		text.setBounds(243, 15, 60, 10);
 		add(text);
 
 		JComboBox<String> blockSelect = new JComboBox<String>(new String[]{"Se", "Repete", "Move", "Interagir"});

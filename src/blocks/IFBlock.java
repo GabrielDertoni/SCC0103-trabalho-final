@@ -17,23 +17,23 @@ public class IFBlock extends BaseBlock {
 	Expr.Binary.Operator operator = Expr.Binary.Operator.EQUAL;
 
 	public IFBlock(BaseBlock father, int posX, int posY, int index) {
-		super(posX, posY, 450, 80, Color.YELLOW, BaseBlock.Mode.DRAGGABLE_Y, index, null);
+		super(posX, posY, 450, 80, Color.YELLOW, BaseBlock.Mode.DRAGGABLE_Y, index, "src/blocks/IFPlaceHolder.png");
 		
 		this.posX = posX;
 		this.posY = posY;
 		this.father = father;
 		
 		JLabel text = new JLabel("Se ");
-		text.setBounds(5, 15, 25, 10);
+		text.setBounds(15, 15, 25, 10);
 		add(text);
 
 		JComboBox<String> dir = new JComboBox<String>(new String[]{"a Direita", "Cima", "a Esquerda", "Baixo"});
 		dir.addActionListener(event -> leftHandSideVar = (String)dir.getSelectedItem());
-		dir.setBounds(30, 10, 120, 20);
+		dir.setBounds(40, 10, 120, 20);
 		add(dir);
 				
 		text = new JLabel(" for ");
-		text.setBounds(150, 15, 30, 10);
+		text.setBounds(160, 15, 30, 10);
 		add(text);
 		
 		JComboBox<String> op = new JComboBox<String>(new String[]{"igual à", "diferente de"});        
@@ -46,12 +46,12 @@ public class IFBlock extends BaseBlock {
 				operator = Expr.Binary.Operator.NOT_EQUAL;
 			}
 		 });
-		op.setBounds(180, 10, 120, 20);
+		op.setBounds(190, 10, 120, 20);
 		add(op);
 		
 		JComboBox<String> st = new JComboBox<String>(new String[]{"uma parede", "nada", "um inimigo"});        
 		st.addActionListener(event -> rightHandSideVar = (String)st.getSelectedItem());
-		st.setBounds(300, 10, 120, 20);
+		st.setBounds(310, 10, 120, 20);
 		add(st);
 		
 		JComboBox<String> blockSelect = new JComboBox<String>(new String[]{"Se", "Repete", "Move", "Interagir"});
