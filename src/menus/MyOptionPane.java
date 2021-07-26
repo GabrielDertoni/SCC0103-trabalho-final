@@ -1,4 +1,4 @@
-package game;
+package menus;
 
 import menus.Background;
 
@@ -9,11 +9,17 @@ import static game.Resources.whiteRabbit;
 
 public class MyOptionPane extends JFrame {
 	public MyOptionPane(String message, int width, int height){
-		setDefaultCloseOperation(EXIT_ON_CLOSE);
+		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 
-		Background contentPane = new Background("assets/background.png");
-		contentPane.setLayout(null);
-		setContentPane(contentPane);
+		Background panel = new Background("assets/background.png");
+		panel.setLayout(null);
+
+		JScrollPane scrollPane = new JScrollPane(panel);
+		int lblH = Math.max(message.split("<br/>").length * 30, 100);
+		scrollPane.setPreferredSize(new Dimension(width, lblH));
+		add(BorderLayout.CENTER, scrollPane);
+
+		setLocationRelativeTo(null);
 		setVisible(true);
 
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
@@ -21,7 +27,6 @@ public class MyOptionPane extends JFrame {
 
 		// Mensagem
 		int lblW = width-50;
-		int lblH = 20;
 
 		JLabel msg = new JLabel(message);
 		msg.setBounds((width-lblW)/2, (height-lblH)/2, lblW, lblH);
@@ -29,7 +34,7 @@ public class MyOptionPane extends JFrame {
 		msg.setForeground(Color.GREEN.darker());
 		msg.setVerticalTextPosition(JLabel.CENTER);
 		msg.setHorizontalTextPosition(JLabel.CENTER);
-		contentPane.add(msg);
+		panel.add(msg);
 
 		//Botao de voltar
 		int btnW = 80;
@@ -46,6 +51,6 @@ public class MyOptionPane extends JFrame {
 		btnFechar.addActionListener(event-> {
 			this.dispose();
 		});
-		contentPane.add(btnFechar);
+		panel.add(btnFechar);
 	}
 }
