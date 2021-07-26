@@ -96,6 +96,7 @@ public class IFBlock extends BaseBlock {
 				break;
 		}
 		editor.nBlocks++;
+		editor.updateUI();
 		//setPreferredSize(new Dimension(width, height));
 	}
 
