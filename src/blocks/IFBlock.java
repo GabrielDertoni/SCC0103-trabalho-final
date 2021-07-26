@@ -32,7 +32,7 @@ public class IFBlock extends BaseBlock {
 		text.setBounds(160, 15, 30, 10);
 		add(text);
 		
-		JComboBox<String> op = new JComboBox<String>(new String[]{"igual à", "diferente de"});        
+		JComboBox<String> op = new JComboBox<String>(new String[]{"igual à", "diferente de"});
 		op.addActionListener(event -> {
 			String operatorString = (String)op.getSelectedItem();
 
@@ -105,7 +105,7 @@ public class IFBlock extends BaseBlock {
 				new Expr.Binary(
 						new Expr.Variable(leftHandSideVar),
 						operator,
-						new Expr.Variable(rightHandSideVar)
+						new Expr.Literal(rightHandSideVar)
 				),
 				new Stmt.Block(
 						blocks.stream()

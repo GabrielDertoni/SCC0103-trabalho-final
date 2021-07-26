@@ -36,6 +36,10 @@ public class Environment {
         variables.put(name, value);
     }
 
+    public void setVariables(String name, Object value) {
+        variables.put(name, value);
+    }
+
     public void addFunction(String name, Function<List<Object>, Object> func) {
         functions.put(name, func);
     }
