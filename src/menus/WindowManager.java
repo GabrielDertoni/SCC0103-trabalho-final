@@ -21,7 +21,6 @@ public class WindowManager extends JFrame {
 
 	private static WindowManager instance = null;
 
-	private int lvl;
 	private WindowName currentWindow;
 
 	private WindowManager() {
@@ -44,7 +43,7 @@ public class WindowManager extends JFrame {
 		return instance;
 	}
 	
-	public void setCurrentWindow(WindowName window) {
+	public void setCurrentWindow(WindowName window, Object ...args) {
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 		int x = 0;
 		int y = 0;
@@ -64,7 +63,7 @@ public class WindowManager extends JFrame {
 				setContentPane(new Config(x, y, width, height));
 			}
 			case Game -> {
-				setContentPane(new BaseLVL(x, y, width, height, lvl));
+				setContentPane(new BaseLVL(x, y, width, height, (int)args[0]));
 			}
 			case Tutorial -> {
 				setContentPane(new Tutorial(x, y, width, height));
@@ -78,13 +77,4 @@ public class WindowManager extends JFrame {
 	public WindowName getCurrentWindow() {
 		return this.currentWindow;
 	}
-	
-	public void setLvl(int lvl) {
-		this.lvl = lvl;
-	}
-	
-	public int getLvl() {
-		return this.lvl;
-	}
-	
 }

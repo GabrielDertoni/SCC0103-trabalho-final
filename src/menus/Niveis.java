@@ -60,8 +60,7 @@ public class Niveis extends Background {
 		btnLvl1.setVerticalTextPosition(JLabel.CENTER);
 		
 		btnLvl1.addActionListener(event -> {
-			WindowManager.getInstance().setCurrentWindow(WindowManager.WindowName.Game);
-			WindowManager.getInstance().setLvl(1);
+			WindowManager.getInstance().setCurrentWindow(WindowManager.WindowName.Game, 1);
 		});
 		add(btnLvl1);
 		
@@ -76,8 +75,7 @@ public class Niveis extends Background {
 		btnLvl2.setVerticalTextPosition(JLabel.CENTER);
 		
 		btnLvl2.addActionListener(event -> {
-			WindowManager.getInstance().setCurrentWindow(WindowManager.WindowName.Game);
-			WindowManager.getInstance().setLvl(2);
+			WindowManager.getInstance().setCurrentWindow(WindowManager.WindowName.Game, 2);
 		});
 		
 		add(btnLvl2);

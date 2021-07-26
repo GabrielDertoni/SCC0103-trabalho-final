@@ -92,6 +92,7 @@ public abstract class BaseBlock extends Background {
     }
 
 	public void addBlock(BaseBlock block) {
+<<<<<<< HEAD
 		blocks.add(block);
 		
 		if(mode == Mode.STATIC){
@@ -102,6 +103,14 @@ public abstract class BaseBlock extends Background {
 			updateDimension(40, 80, Method.ADD);
 		}
 		repaint();
+=======
+		nInstructions++;
+		
+		add(block);
+		blocks.add(block);
+
+		updateDimension(40, 80, this.index, Method.ADD);
+>>>>>>> 230cca142582ca580b12a51ad3d17af431c339c6
 		updateUI();
 	}
     
@@ -170,11 +179,22 @@ public abstract class BaseBlock extends Background {
 		this.width += width;
 		this.height += height;
 		
+<<<<<<< HEAD
 		if(mode != Mode.STATIC){
 			father.updateDimension(width, height, flag);
 			updateUI();
 		}
 	}			
+=======
+		if(mode != Mode.STATIC) setSize(new Dimension(this.width, this.height));
+		
+		for(int i = index + 1; i < blocks.size(); i++) {
+			blocks.get(i).setLocation(blocks.get(i).posX, blocks.get(i).posY + height);
+		}
+
+		if(father != null) father.updateDimension(width, height, this.index, flag);
+	}
+>>>>>>> 230cca142582ca580b12a51ad3d17af431c339c6
 
 	public abstract Stmt toStmt();
 }
