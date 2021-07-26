@@ -60,7 +60,7 @@ public class BaseLVL extends Background {
 		//Botao de recomeçar o nivel
 		JButton btnRestart = new JButton("Restart", new ImageIcon(resizedImage));
 		btnRestart.addActionListener(event -> {
-			WindowManager.getInstance().setCurrentWindow(WindowManager.WindowName.Game);
+			WindowManager.getInstance().setCurrentWindow(WindowManager.WindowName.Game, lvl);
 		});
 		btnRestart.setBounds(width-btn_w-30, height-150, btn_w, btn_h);
 		btnRestart.setFont(whiteRabbit.deriveFont(20f));
@@ -89,7 +89,9 @@ public class BaseLVL extends Background {
 		JButton btnGenPseudo = new JButton("Codigo", new ImageIcon(resizedImage));
 
 		btnGenPseudo.addActionListener(event -> {
-			/*gerar o pseudo codigo*/
+			PseudocodeGenerator gen = new PseudocodeGenerator();
+			String code = "<html>"+gen.fromStmts(((Stmt.Block)editor.toStmt()).stmts);
+			MyOptionPane myoptp = new MyOptionPane(code.replace("\n", "<br/>"), 600, 300);
 		});
 		btnGenPseudo.setBounds(width-btn_w-30, height-250, btn_w, btn_h);
 		btnGenPseudo.setFont(whiteRabbit.deriveFont(20f));

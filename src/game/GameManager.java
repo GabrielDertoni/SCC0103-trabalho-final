@@ -4,15 +4,11 @@ import interpreter.Direction;
 import interpreter.Interpreter;
 import interpreter.OutputDevice;
 import interpreter.Stmt;
+import menus.MyOptionPane;
 import menus.WindowManager;
 
-import javax.swing.*;
 import java.awt.*;
-import java.io.File;
-import java.io.IOException;
 import java.util.List;
-
-import static game.Resources.whiteRabbit;
 
 public class GameManager implements OutputDevice {
     private Interpreter interpreter;
