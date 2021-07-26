@@ -16,12 +16,8 @@ public class IFBlock extends BaseBlock {
 	String rightHandSideVar = "uma parede";
 	Expr.Binary.Operator operator = Expr.Binary.Operator.EQUAL;
 
-	public IFBlock(BaseBlock father, int posX, int posY, int index) {
-		super(posX, posY, 450, 80, Color.YELLOW, BaseBlock.Mode.DRAGGABLE_Y, index, "src/blocks/IFPlaceHolder.png");
-		
-		this.posX = posX;
-		this.posY = posY;
-		this.father = father;
+	public IFBlock(BaseBlock father, BlockEditor editor, int posX, int posY, int listPos) {
+		super(father, editor, posX, posY, 450, 80, BaseBlock.Mode.DRAGGABLE_Y, listPos, "src/blocks/IFPlaceHolder.png");
 		
 		JLabel text = new JLabel("Se ");
 		text.setBounds(15, 15, 25, 10);
@@ -65,39 +61,41 @@ public class IFBlock extends BaseBlock {
 		
 		JButton removeButton = new JButton("Remover");
 		removeButton.addActionListener(event -> {
-			father.removeBlock(this);
-			father.repaint();
+			editor.nBlocks -= father.removeBlock(this);
+			editor.updateUI();
 		});
 		removeButton.setBounds(5, 80 - 25, 120, 20);
 		add(removeButton);
     }
 
     public void addBlock(String blockName) {
+		nInstructions++;
 		switch(blockName) {
 			case "Se":
-				blocks.IFBlock IF = new blocks.IFBlock(this, 40, height - 10, nInstructions);
+				blocks.IFBlock IF = new blocks.IFBlock(this, editor, 40, ((listPos + nInstructions) * 80) + 5, listPos + nInstructions);
 				
 				super.addBlock(IF);
 				break;
 
 			case "Repete":
-				blocks.LOOPBlock LOOP = new blocks.LOOPBlock(this, 40, height - 10, nInstructions);
+				blocks.LOOPBlock LOOP = new blocks.LOOPBlock(this, editor, 40, ((listPos + nInstructions) * 80) + 5, listPos + nInstructions);
 
 				super.addBlock(LOOP);
 				break;
 
 			case "Move":
-				blocks.MOVEBlock MOVE = new blocks.MOVEBlock(this, 40, height - 10, nInstructions);
+				blocks.MOVEBlock MOVE = new blocks.MOVEBlock(this, editor, 40, ((listPos + nInstructions) * 80) + 5, listPos + nInstructions);
 
 				super.addBlock(MOVE);
 				break;
 
 			case "Interagir":
-				blocks.INTERACTBlock INTERACT = new blocks.INTERACTBlock(this, 40, height - 10, nInstructions);
+				blocks.INTERACTBlock INTERACT = new blocks.INTERACTBlock(this, editor, 40, ((listPos + nInstructions) * 80) + 5, listPos + nInstructions);
 
 				super.addBlock(INTERACT);
 				break;
 		}
+		editor.nBlocks++;
 		//setPreferredSize(new Dimension(width, height));
 	}
 

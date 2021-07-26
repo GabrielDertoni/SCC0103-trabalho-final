@@ -13,13 +13,9 @@ public class MOVEBlock extends BaseBlock {
 	
 	Direction direction = Direction.RIGHT;
 	
-	public MOVEBlock(BaseBlock father, int posX, int posY, int index) {
-		super(posX, posY, 450, 80, Color.PINK, BaseBlock.Mode.DRAGGABLE_Y, index, "src/blocks/MOVEPlaceHolder.jpeg");
+	public MOVEBlock(BaseBlock father, BlockEditor editor, int posX, int posY, int index) {
+		super(father, editor, posX, posY, 450, 80, BaseBlock.Mode.DRAGGABLE_Y, index, "src/blocks/MOVEPlaceHolder.jpeg");
   	  
-		this.posX = posX;
-		this.posY = posY;
-		this.father = father;
-		
 		JLabel text = new JLabel("Mova para");
 		text.setBounds(125, 15, 85, 15);
 		add(text);
@@ -50,8 +46,9 @@ public class MOVEBlock extends BaseBlock {
 		
 		JButton removeButton = new JButton("Remover");
 		removeButton.addActionListener(event -> {
+			editor.nBlocks--;
 			father.removeBlock(this);
-			father.repaint();
+			editor.repaint();
 		});
 		removeButton.setBounds(165, 80 - 25, 120, 20);
         add(removeButton);

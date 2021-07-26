@@ -10,13 +10,14 @@ import interpreter.Stmt;
 public class BlockEditor extends BaseBlock {
 
 	// private BaseBlock editor;
-	int x, y;
+	//int posX, posY;
+	int nBlocks;
 
-	public BlockEditor(int x, int y, int width, int height, int index) {
-		super(x, y, width, height, Color.GREEN, BaseBlock.Mode.STATIC, index, "src/blocks/editPlaceHolder.png");
+	public BlockEditor(int posX, int posY, int width, int height) {
+		super(null, null, posX, posY, width, height, BaseBlock.Mode.STATIC, -1, "src/blocks/editPlaceHolder.png");
 
-		this.x = x;
-		this.y = y;
+		//this.posX = posX;
+		//this.posY = posY;
 
 		//Area de manuseio dos blocos de programacao
 
@@ -35,32 +36,35 @@ public class BlockEditor extends BaseBlock {
 	}
 
 	private void addNewBlock(String blockName) {
-		int sum = 0;
+		/*int sum = 0;
 		for(int i = 0; i < nInstructions; i++){
 			sum += blocks.get(i).height;
-		}
+		}*/
+		nInstructions++;
 
 		switch(blockName) {
 			case "Se":
-				blocks.IFBlock IF = new blocks.IFBlock(this, 10, sum + 5, nInstructions);
+				blocks.IFBlock IF = new blocks.IFBlock(this, this, 10, (nBlocks * 80) + 5, nBlocks);
 				super.addBlock(IF);
 				break;
 
 			case "Repete":
-				blocks.LOOPBlock LOOP = new blocks.LOOPBlock(this, 10, sum + 5, nInstructions);
+				blocks.LOOPBlock LOOP = new blocks.LOOPBlock(this, this, 10, (nBlocks * 80), nBlocks);
 				super.addBlock(LOOP);
 				break;
 
 			case "Move":
-				blocks.MOVEBlock MOVE = new blocks.MOVEBlock(this, 10, sum + 5, nInstructions);
+				blocks.MOVEBlock MOVE = new blocks.MOVEBlock(this, this, 10, (nBlocks * 80), nBlocks);
 				super.addBlock(MOVE);
 				break;
 
 			case "Interagir":
-				blocks.INTERACTBlock INTERACT = new blocks.INTERACTBlock(this, 10, sum + 5, nInstructions);
+				blocks.INTERACTBlock INTERACT = new blocks.INTERACTBlock(this, this, 10, (nBlocks * 80), nBlocks);
 				super.addBlock(INTERACT);
 				break;
+
 		}
+		nBlocks++;
 		updateUI();
 	}
 
