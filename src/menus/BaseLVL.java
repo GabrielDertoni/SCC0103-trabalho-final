@@ -35,7 +35,7 @@ public class BaseLVL extends Background {
 		add(levelArea);
 
 		//Area de manuseio dos blocos de programacao
-		editor = new BlockEditor((width*2/3), 0, (width/3), (height*3/5), 0);
+		editor = new BlockEditor((width*2/3), 0, (width/3), (height*3/5));
 		add(editor);
 
 		ImageIcon btnBg = new ImageIcon("assets/botaoSemTextura.png");
