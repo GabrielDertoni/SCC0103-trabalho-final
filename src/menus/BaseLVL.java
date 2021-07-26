@@ -30,7 +30,7 @@ public class BaseLVL extends Background {
 		setLayout(null);
 
 		//Painel onde e mostrado o nivel do mapa atual e o personagem e sua posicao no mapa
-		levelArea = new LevelArea(0, 0,  (width*2/3)-50, height);
+		levelArea = new LevelArea(0, 0,  (width*2/3)-50, height, lvl);
 		levelArea.setBackground(Color.DARK_GRAY);
 		add(levelArea);
 

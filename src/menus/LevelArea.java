@@ -16,13 +16,13 @@ public class LevelArea extends Background {
     private GameManager gameManager;
     private Timer gameLoopTimer;
 
-    public LevelArea(int x, int y, int width, int height) {
+    public LevelArea(int x, int y, int width, int height, int lvl) {
         super(new ImageIcon("assets/background.png").getImage());
 
         setLayout(null);
         setBounds(x, y, width, height);
 
-        gameManager = new GameManager();
+        gameManager = new GameManager(lvl);
         gameLoopTimer = new Timer(500, new GameLoop());
         gameLoopTimer.start();
     }

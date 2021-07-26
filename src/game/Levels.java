@@ -72,7 +72,7 @@ public class Levels {
                         {0, 0, 0, 0, 0, 0}
                 }, false)
         );
-        return new Level(new Point(1, 1), new Point(4, 4), compositor);
+        return new Level(new Point(3, 1), new Point(4, 4), compositor);
     }
 
     public static Level getLevel2() {

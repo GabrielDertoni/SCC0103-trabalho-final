@@ -87,11 +87,11 @@ public abstract class BaseBlock extends Background {
 
 	public void addBlock(BaseBlock block) {
 		nInstructions++;
-
-		updateDimension(40, 80, this.index, Method.ADD);
 		
 		add(block);
 		blocks.add(block);
+
+		updateDimension(40, 80, this.index, Method.ADD);
 		updateUI();
 	}
     
@@ -111,7 +111,9 @@ public abstract class BaseBlock extends Background {
 		
 		if(mode != Mode.STATIC) setSize(new Dimension(this.width, this.height));
 		
-		for(int i = index + 1; i < nInstructions; i++) blocks.get(i).setLocation(blocks.get(i).posX, blocks.get(i).posY + height);;
+		for(int i = index + 1; i < blocks.size(); i++) {
+			blocks.get(i).setLocation(blocks.get(i).posX, blocks.get(i).posY + height);
+		}
 
 		if(father != null) father.updateDimension(width, height, this.index, flag);
 	}
