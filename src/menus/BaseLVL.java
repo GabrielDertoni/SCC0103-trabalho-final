@@ -5,6 +5,7 @@ import java.awt.*;
 import javax.swing.*;
 
 import blocks.BlockEditor;
+import blocks.IFBlock;
 import interpreter.PseudocodeGenerator;
 import interpreter.Stmt;
 
@@ -13,7 +14,6 @@ import static game.Resources.whiteRabbit;
 public class BaseLVL extends Background {
 
 	private BlockEditor editor;
-	private JPanel editorContainer;
 	private LevelArea levelArea;
 
 	public BaseLVL(int x, int y, int width, int height, int lvl) {
