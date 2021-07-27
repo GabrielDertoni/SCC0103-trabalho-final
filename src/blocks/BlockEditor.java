@@ -1,6 +1,5 @@
 package blocks;
 
-import java.awt.*;
 import java.util.stream.Collectors;
 
 import javax.swing.JButton;

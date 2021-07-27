@@ -4,12 +4,9 @@ import menus.Background;
 
 import interpreter.Stmt;
 
-import java.awt.Color;
 import java.awt.Dimension;
 import java.util.ArrayList;
 import java.util.List;
-
-import javax.swing.JPanel;
 
 public abstract class BaseBlock extends Background {
 	
