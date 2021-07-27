@@ -46,6 +46,7 @@ public abstract class BaseBlock extends JPanel {
 		setLayout(null);
 		setBounds(posX, posY, width, height);
 		setSize(new Dimension(width, height));
+		setBackground(color);
     }
 
 	public void addBlock(BaseBlock block) {
