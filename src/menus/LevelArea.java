@@ -28,6 +28,10 @@ public class LevelArea extends Background {
         gameManager.interpret(stmts);
     }
 
+    public int getLevelNum() {
+        return gameManager.getLevelNum();
+    }
+
     @Override
     protected void paintComponent(Graphics graphics) {
         super.paintComponent(graphics);
