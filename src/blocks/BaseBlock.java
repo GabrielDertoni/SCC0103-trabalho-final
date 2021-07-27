@@ -4,11 +4,12 @@ import menus.Background;
 
 import interpreter.Stmt;
 
-import java.awt.Dimension;
+import javax.swing.*;
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class BaseBlock extends Background {
+public abstract class BaseBlock extends JPanel {
 	
 	public enum Method {
 		ADD, REMOVE

@@ -3,18 +3,17 @@ package blocks;
 import java.awt.*;
 import java.util.stream.Collectors;
 
-import javax.swing.JButton;
-import javax.swing.JComboBox;
-import javax.swing.JScrollPane;
+import javax.swing.*;
 
 import interpreter.Stmt;
 
 public class BlockEditor extends BaseBlock {
-
+	Image image;
 	int nBlocks;
 
 	public BlockEditor(int posX, int posY, int width, int height) {
 		super(null, null, posX, posY, width, height, BaseBlock.Mode.EDITOR, -1, 0, "assets/Editor.png");
+		setBackground(Color.GRAY);
 
 		//Area de manuseio dos blocos de programacao
 
@@ -60,6 +59,10 @@ public class BlockEditor extends BaseBlock {
 		updateUI();
 	}
 
+	public void setImage(String imgName){
+		this.image = new ImageIcon(imgName).getImage();
+	}
+
 	@Override
 	public Stmt toStmt() {
 		return new Stmt.Block(
@@ -67,5 +70,12 @@ public class BlockEditor extends BaseBlock {
 						.map(BaseBlock::toStmt)
 						.collect(Collectors.toList())
 		);
+	}
+
+	@Override
+	protected void paintComponent(Graphics g) {
+		super.paintComponent(g);
+		Dimension d = getSize();
+		g.drawImage(image, 0, 0, d.width, d.height, null);
 	}
 }

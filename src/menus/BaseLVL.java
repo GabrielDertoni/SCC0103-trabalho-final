@@ -28,6 +28,7 @@ public class BaseLVL extends Background {
 
 		//Area de manuseio dos blocos de programacao
 		editor = new BlockEditor((width*2/3), 0, (width/3), (height*5/7));
+		editor.setImage("assets/Editor.png");
 		add(editor);
 
 		ImageIcon btnBg = new ImageIcon("assets/botaoSemTextura.png");
