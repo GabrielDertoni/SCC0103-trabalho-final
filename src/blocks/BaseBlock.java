@@ -116,7 +116,6 @@ public abstract class BaseBlock extends Background {
 
 	public void updateIndex(int listPos, int update, int heigth, Method mode){
 		int i;
-		System.out.println("Entrou");
 
 		for(i = 0; i < nInstructions && blocks.get(i).listPos < listPos; i++);
 
@@ -133,9 +132,7 @@ public abstract class BaseBlock extends Background {
 			blocks.get(i).listPos += update;
 			blocks.get(i).posY = (blocks.get(i).listPos * 80) + 5;
 			blocks.get(i).setLocation(blocks.get(i).posX, blocks.get(i).posY);
-			System.out.println(blocks.get(i).listPos);
 		}
-		System.out.println();
 		updateUI();
 	}
 
