@@ -1,8 +1,6 @@
 package blocks;
 
-import javax.swing.JButton;
-import javax.swing.JComboBox;
-import javax.swing.JLabel;
+import javax.swing.*;
 
 import interpreter.Direction;
 import interpreter.Stmt;
@@ -54,6 +52,8 @@ public class MOVEBlock extends BaseBlock {
 		});
 		removeButton.setBounds(165, 80 - 25, 120, 20);
         add(removeButton);
+
+		setBorder(BorderFactory.createLineBorder(Color.BLACK, 4));
 	}
 
 	@Override

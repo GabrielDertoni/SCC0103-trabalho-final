@@ -2,8 +2,7 @@ package blocks;
 
 import interpreter.Stmt;
 
-import javax.swing.JButton;
-import javax.swing.JLabel;
+import javax.swing.*;
 import java.awt.*;
 
 public class INTERACTBlock extends BaseBlock {
@@ -23,6 +22,8 @@ public class INTERACTBlock extends BaseBlock {
 		});
 		removeButton.setBounds(165, 80 - 25, 120, 20);
 		add(removeButton);
+
+		setBorder(BorderFactory.createLineBorder(Color.BLACK, 4));
 	}
 
 	@Override

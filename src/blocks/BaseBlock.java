@@ -134,12 +134,13 @@ public abstract class BaseBlock extends JPanel {
 	private void updateDimension(int width, int height, Method flag) {
 		this.width += width;
 		this.height += height;
+
 		
 		if(mode != Mode.EDITOR){
 			father.updateDimension(width, height, flag);
-			updateUI();
 		}
-	}			
+		updateUI();
+	}
 
 	public abstract Stmt toStmt();
 }

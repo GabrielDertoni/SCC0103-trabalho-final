@@ -3,12 +3,7 @@ package blocks;
 import java.awt.*;
 import java.util.stream.Collectors;
 
-import javax.swing.JButton;
-import javax.swing.JComboBox;
-import javax.swing.JLabel;
-import javax.swing.JSpinner;
-import javax.swing.SpinnerModel;
-import javax.swing.SpinnerNumberModel;
+import javax.swing.*;
 
 import interpreter.Expr;
 import interpreter.Stmt;
@@ -55,6 +50,8 @@ public class LOOPBlock extends BaseBlock {
 		});
 		removeButton.setBounds(5, 80 - 25, 120, 20);
 		add(removeButton);
+
+		setBorder(BorderFactory.createLineBorder(Color.BLACK, 4));
 	}
 
 	public void addBlock(String blockName) {

@@ -6,6 +6,7 @@ import java.util.stream.Collectors;
 import javax.swing.*;
 
 import interpreter.Stmt;
+import menus.BaseLVL;
 
 public class BlockEditor extends BaseBlock {
 	Image image;
@@ -13,7 +14,6 @@ public class BlockEditor extends BaseBlock {
 
 	public BlockEditor(int posX, int posY, int width, int height) {
 		super(null, null, posX, posY, width, height, BaseBlock.Mode.EDITOR, -1, 0, new Color(0x55, 0x55, 0x55));
-
 		//Area de manuseio dos blocos de programacao
 
 		JButton plusButton = new JButton("+");

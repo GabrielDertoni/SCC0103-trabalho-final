@@ -3,9 +3,9 @@ package blocks;
 import java.awt.*;
 import java.util.stream.Collectors;
 
-import javax.swing.JButton;
-import javax.swing.JComboBox;
-import javax.swing.JLabel;
+import javax.swing.*;
+import javax.swing.border.BevelBorder;
+import javax.swing.border.Border;
 
 import interpreter.Expr;
 import interpreter.Stmt;
@@ -21,6 +21,7 @@ public class IFBlock extends BaseBlock {
 		
 		JLabel text = new JLabel("Se ");
 		text.setBounds(15, 15, 25, 10);
+		text.setForeground(Color.WHITE);
 		add(text);
 
 		JComboBox<String> dir = new JComboBox<String>(new String[]{"a Direita", "Cima", "a Esquerda", "Baixo"});
@@ -30,6 +31,7 @@ public class IFBlock extends BaseBlock {
 				
 		text = new JLabel(" for ");
 		text.setBounds(160, 15, 30, 10);
+		text.setForeground(Color.WHITE);
 		add(text);
 		
 		JComboBox<String> op = new JComboBox<String>(new String[]{"igual à", "diferente de"});
@@ -71,6 +73,8 @@ public class IFBlock extends BaseBlock {
 		});
 		removeButton.setBounds(5, 80 - 25, 120, 20);
 		add(removeButton);
+
+		setBorder(BorderFactory.createLineBorder(Color.BLACK, 4));
     }
 
     public void addBlock(String blockName) {
