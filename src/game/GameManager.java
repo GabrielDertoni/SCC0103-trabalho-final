@@ -48,10 +48,15 @@ public class GameManager implements OutputDevice {
     }
 
     private void updateInterpreterVariables() {
-        Rectangle right = new Rectangle(player.x + Tile.SIZE, player.y);
-        Rectangle left  = new Rectangle(player.x - Tile.SIZE, player.y);
-        Rectangle up    = new Rectangle(player.x, player.y + Tile.SIZE);
-        Rectangle down  = new Rectangle(player.x, player.y - Tile.SIZE);
+        Rectangle right = new Rectangle(player.x + Tile.SIZE, player.y, Tile.SIZE, Tile.SIZE);
+        Rectangle left  = new Rectangle(player.x - Tile.SIZE, player.y, Tile.SIZE, Tile.SIZE);
+        Rectangle up    = new Rectangle(player.x, player.y + Tile.SIZE, Tile.SIZE, Tile.SIZE);
+        Rectangle down  = new Rectangle(player.x, player.y - Tile.SIZE, Tile.SIZE, Tile.SIZE);
+
+        System.out.println("direita: " + (level.compositor.collidesWith(right) != null));
+        System.out.println("esquerda: " + (level.compositor.collidesWith(left) != null));
+        System.out.println("cima: " + (level.compositor.collidesWith(up) != null));
+        System.out.println("baixo: " + (level.compositor.collidesWith(down) != null));
 
         interpreter.setVariable(
                 "a Direita",
