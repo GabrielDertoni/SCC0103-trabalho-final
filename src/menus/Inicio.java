@@ -54,10 +54,10 @@ public class Inicio extends Background {
 		});
 		
 		//Texto
-		int label_w = 600;
+		int label_w = 620;
 		int label_h = 100;
 		
-		JLabel lblProjetoFinalPoo = new JLabel("Projeto Final POO");
+		JLabel lblProjetoFinalPoo = new JLabel("Not Neo Adventures");
 		lblProjetoFinalPoo.setBounds(((width-label_w)/2), (int) (0.1*height), label_w, label_h);
 		lblProjetoFinalPoo.setFont(whiteRabbit.deriveFont(60f));
 		lblProjetoFinalPoo.setForeground(Color.GREEN.brighter());
