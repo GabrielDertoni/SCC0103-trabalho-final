@@ -41,6 +41,10 @@ public class GameManager implements OutputDevice {
         this.level.compositor.pushLayer(player);
     }
 
+    public int getLevelNum() {
+        return level_num;
+    }
+
     public void interpret(List<Stmt> stmts) {
         isRunning = true;
         player.resetPosition();
