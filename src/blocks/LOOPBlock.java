@@ -16,8 +16,8 @@ import interpreter.Stmt;
 public class LOOPBlock extends BaseBlock {
 	private int numIterations = 1;
 
-	public LOOPBlock(BaseBlock father, BlockEditor editor, int posX, int posY, int listPos) {
-  	  	super(father, editor, posX, posY, 450, 80, BaseBlock.Mode.DRAGGABLE_Y, listPos, "src/blocks/LOOPPlaceHolder.png");
+	public LOOPBlock(BaseBlock father, BlockEditor editor, int posX, int posY, int depth, int listPos) {
+  	  	super(father, editor, posX, posY, 450, 80, BaseBlock.Mode.STATEMENT, listPos, depth, "assets/LOOPBlock.png");
 
 		JLabel text = new JLabel("Repete ");
 		text.setBounds(143, 15, 60, 15);
@@ -34,7 +34,12 @@ public class LOOPBlock extends BaseBlock {
 		text.setBounds(243, 15, 60, 10);
 		add(text);
 
-		JComboBox<String> blockSelect = new JComboBox<String>(new String[]{"Se", "Repete", "Move", "Interagir"});
+		JComboBox<String> blockSelect;
+		if(depth < 3){
+			blockSelect = new JComboBox<String>(new String[]{"Se", "Repete", "Move", "Interagir"});
+		}else{
+			blockSelect = new JComboBox<String>(new String[]{"Move", "Interagir"});
+		}
 		blockSelect.setBounds(450 - 90 - 70, 80 - 25, 90, 20);
 		add(blockSelect);
 		
@@ -45,42 +50,47 @@ public class LOOPBlock extends BaseBlock {
 
 		JButton removeButton = new JButton("Remover");
 		removeButton.addActionListener(event -> {
-			editor.nBlocks--;
-			father.removeBlock(this);
-			editor.repaint();
+			editor.nBlocks += father.removeBlock(this);
+			editor.updateUI();
 		});
 		removeButton.setBounds(5, 80 - 25, 120, 20);
 		add(removeButton);
 	}
 
 	public void addBlock(String blockName) {
+		int upgrade = calculateUpgrade();
+		nInstructions++;
+
 		switch(blockName) {
 			case "Se":
-				blocks.IFBlock IF = new blocks.IFBlock(this, editor, 40, ((listPos + nInstructions) * 80) + 5, listPos + nInstructions);
+				blocks.IFBlock IF = new blocks.IFBlock(this, editor, (depth * 30) + 10, ((listPos + upgrade + 1) * 80) + 5, depth + 1, listPos + upgrade + 1);
 				
-				super.addBlock(IF);
+				addBlock(IF);
 				break;
 
 			case "Repete":
-				blocks.LOOPBlock LOOP = new blocks.LOOPBlock(this, editor, 40, ((listPos + nInstructions) * 80) + 5, listPos + nInstructions);
+				blocks.LOOPBlock LOOP = new blocks.LOOPBlock(this, editor, (depth * 30) + 10, ((listPos + upgrade + 1) * 80) + 5, depth + 1, listPos + upgrade + 1);
 
-				super.addBlock(LOOP);
+				addBlock(LOOP);
 				break;
 
 			case "Move":
-				blocks.MOVEBlock MOVE = new blocks.MOVEBlock(this, editor, 40, ((listPos + nInstructions) * 80) + 5, listPos + nInstructions);
+				blocks.MOVEBlock MOVE = new blocks.MOVEBlock(this, editor, (depth * 30) + 10, ((listPos + upgrade + 1) * 80) + 5, depth + 1, listPos + upgrade + 1);
 
-				super.addBlock(MOVE);
+				addBlock(MOVE);
 				break;
 
 			case "Interagir":
-				blocks.INTERACTBlock INTERACT = new blocks.INTERACTBlock(this, editor, 40, ((listPos + nInstructions) * 80) + 5, listPos + nInstructions);
+				blocks.INTERACTBlock INTERACT = new blocks.INTERACTBlock(this, editor, (depth * 30) + 10, ((listPos + upgrade + 1) * 80) + 5, depth + 1, listPos + upgrade + 1);
 
-				super.addBlock(INTERACT);
+				addBlock(INTERACT);
+				break;
+
+			default:
 				break;
 		}
 		editor.nBlocks++;
-		//setPreferredSize(new Dimension(width, height));
+		editor.updateUI();
 	}
 
 	@Override

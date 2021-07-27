@@ -13,8 +13,8 @@ public class MOVEBlock extends BaseBlock {
 	
 	Direction direction = Direction.RIGHT;
 	
-	public MOVEBlock(BaseBlock father, BlockEditor editor, int posX, int posY, int index) {
-		super(father, editor, posX, posY, 450, 80, BaseBlock.Mode.DRAGGABLE_Y, index, "src/blocks/MOVEPlaceHolder.jpeg");
+	public MOVEBlock(BaseBlock father, BlockEditor editor, int posX, int posY, int depth, int listPos) {
+		super(father, editor, posX, posY, 450, 80, BaseBlock.Mode.STATEMENT, listPos, depth, "assets/MOVEBlock.png");
   	  
 		JLabel text = new JLabel("Mova para");
 		text.setBounds(125, 15, 85, 15);
@@ -40,6 +40,8 @@ public class MOVEBlock extends BaseBlock {
 					break;
 				case "Baixo":
 					direction = Direction.DOWN;
+					break;
+				default:
 					break;
 			}
         });
