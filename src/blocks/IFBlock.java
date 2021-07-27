@@ -55,6 +55,7 @@ public class IFBlock extends BaseBlock {
 		
 		JComboBox<String> st = new JComboBox<String>(new String[]{"uma parede", "nada"});
 		st.addActionListener(event -> rightHandSideVar = (String)st.getSelectedItem());
+		st.setFont(whiteRabbit.deriveFont(13f));
 		st.setBounds(310, 10, 120, 20);
 		add(st);
 		

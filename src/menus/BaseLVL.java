@@ -54,7 +54,7 @@ public class BaseLVL extends Background {
 		//Botao de recomeçar o nivel
 		JButton btnRestart = new JButton("Restart", new ImageIcon(resizedImage));
 		btnRestart.addActionListener(event -> {
-			WindowManager.getInstance().setCurrentWindow(WindowManager.WindowName.Game, lvl);
+			WindowManager.getInstance().setCurrentWindow(WindowManager.WindowName.Game, levelArea.getLevelNum());
 		});
 		btnRestart.setBounds(width-btn_w-30, height-150, btn_w, btn_h);
 		btnRestart.setFont(whiteRabbit.deriveFont(20f));

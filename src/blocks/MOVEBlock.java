@@ -28,7 +28,6 @@ public class MOVEBlock extends BaseBlock {
         JComboBox<String> directionPicker = new JComboBox<String>(directions);
 		directionPicker.setBounds(210, 10, 120, 20);
 		directionPicker.setFont(whiteRabbit.deriveFont(13f));
-		directionPicker.setForeground(Color.WHITE);
 		add(directionPicker);
 
 		directionPicker.addActionListener(e -> {
