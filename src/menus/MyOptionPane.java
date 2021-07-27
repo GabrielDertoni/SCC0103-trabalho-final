@@ -1,7 +1,5 @@
 package menus;
 
-import menus.Background;
-
 import javax.swing.*;
 import java.awt.*;
 
@@ -15,6 +13,7 @@ public class MyOptionPane extends JFrame {
 		panel.setLayout(null);
 
 		JScrollPane scrollPane = new JScrollPane(panel);
+		message = "<html>"+message.replace("\n", "<br/>").replace("    ", "&nbsp;&nbsp;&nbsp;&nbsp;");
 		int lblH = Math.max(message.split("<br/>").length * 30, 100);
 		scrollPane.setPreferredSize(new Dimension(width, lblH));
 		add(BorderLayout.CENTER, scrollPane);

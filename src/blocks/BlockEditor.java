@@ -3,14 +3,12 @@ package blocks;
 import java.awt.*;
 import java.util.stream.Collectors;
 
-import javax.swing.JButton;
-import javax.swing.JComboBox;
-import javax.swing.JScrollPane;
+import javax.swing.*;
 
 import interpreter.Stmt;
 
 public class BlockEditor extends BaseBlock {
-
+	Image image;
 	int nBlocks;
 
 	public BlockEditor(int posX, int posY, int width, int height) {
@@ -27,10 +25,6 @@ public class BlockEditor extends BaseBlock {
 		add(plusButton);
 
 		plusButton.addActionListener(event -> addNewBlock(blockSelect.getSelectedItem().toString()));
-
-		//JScrollPane scrollPane = new JScrollPane(this);
-  		//scrollPane.setPreferredSize(new Dimension(width, lblH));
-		//add(scrollPane);
 	}
 	private void addNewBlock(String blockName) {
 		nInstructions++;
@@ -63,6 +57,10 @@ public class BlockEditor extends BaseBlock {
 		updateUI();
 	}
 
+	public void setImage(String imgName){
+		this.image = new ImageIcon(imgName).getImage();
+	}
+
 	@Override
 	public Stmt toStmt() {
 		return new Stmt.Block(
@@ -70,5 +68,12 @@ public class BlockEditor extends BaseBlock {
 						.map(BaseBlock::toStmt)
 						.collect(Collectors.toList())
 		);
+	}
+
+	@Override
+	protected void paintComponent(Graphics g) {
+		super.paintComponent(g);
+		Dimension d = getSize();
+		g.drawImage(image, 0, 0, d.width, d.height, null);
 	}
 }

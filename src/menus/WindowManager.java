@@ -3,11 +3,9 @@ package menus;
 import game.Resources;
 
 import java.awt.Dimension;
-import java.awt.EventQueue;
 import java.awt.Toolkit;
 
 import javax.swing.JFrame;
-import javax.swing.JPanel;
 
 public class WindowManager extends JFrame {
 

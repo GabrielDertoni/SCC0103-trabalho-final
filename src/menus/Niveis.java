@@ -1,12 +1,8 @@
 package menus;
 
 import java.awt.*;
-import java.io.File;
-import java.io.IOException;
 
-import javax.swing.JFrame;
 import javax.swing.JButton;
-import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 
 import javax.swing.JLabel;
@@ -14,9 +10,6 @@ import javax.swing.JLabel;
 import static game.Resources.whiteRabbit;
 
 public class Niveis extends Background {
-	/**
-	 * Create the frame.
-	 */
 	public Niveis(int x, int y, int width, int height) {
 		super(new ImageIcon("specification/Prototipo_fundo_menu.png").getImage());
 		

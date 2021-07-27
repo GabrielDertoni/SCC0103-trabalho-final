@@ -1,18 +1,10 @@
 package menus;
 
 import java.awt.*;
-import java.io.File;
-import java.io.IOException;
-import java.util.Arrays;
-import java.util.List;
-import java.util.stream.Collectors;
 
 import javax.swing.*;
-import javax.swing.border.EmptyBorder;
 
-import blocks.BaseBlock;
 import blocks.BlockEditor;
-import game.GameManager;
 import interpreter.PseudocodeGenerator;
 import interpreter.Stmt;
 
@@ -37,6 +29,7 @@ public class BaseLVL extends Background {
 
 		//Area de manuseio dos blocos de programacao
 		editor = new BlockEditor((width*2/3), 0, (width/3), (height*5/7));
+		editor.setImage("assets/Editor.png");
 		add(editor);
 
 		ImageIcon btnBg = new ImageIcon("assets/botaoSemTextura.png");
@@ -91,8 +84,8 @@ public class BaseLVL extends Background {
 
 		btnGenPseudo.addActionListener(event -> {
 			PseudocodeGenerator gen = new PseudocodeGenerator();
-			String code = "<html>"+gen.fromStmts(((Stmt.Block)editor.toStmt()).stmts);
-			MyOptionPane myoptp = new MyOptionPane(code.replace("\n", "<br/>"), 600, 300);
+			String code = gen.fromStmts(((Stmt.Block)editor.toStmt()).stmts);
+			new MyOptionPane(code, 600, 300);
 		});
 		btnGenPseudo.setBounds(width-btn_w-30, height-250, btn_w, btn_h);
 		btnGenPseudo.setFont(whiteRabbit.deriveFont(20f));
