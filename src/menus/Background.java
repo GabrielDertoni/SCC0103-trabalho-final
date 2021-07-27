@@ -1,14 +1,6 @@
 package menus;
 
-import java.awt.BorderLayout;
-import java.awt.Component;
-import java.awt.Dimension;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.Image;
-import java.awt.Insets;
-import java.awt.Paint;
-import java.awt.Rectangle;
+import java.awt.*;
 
 import javax.swing.*;
 
@@ -36,6 +28,10 @@ public class Background extends JPanel {
 		setImage(image);
 		setStyle(style);
 		setLayout( new BorderLayout() );
+	}
+
+	public Background(Color color) {
+		setBackground(color);
 	}
 	
 	public Background(Image image, int style, float alignmentX, float alignmentY) {
@@ -117,7 +113,6 @@ public class Background extends JPanel {
 	@Override
 	protected void paintComponent(Graphics g) {
 		super.paintComponent(g);
-		
 		if(painter != null) {
 			Dimension d = getSize();
 			Graphics2D g2 = (Graphics2D) g;

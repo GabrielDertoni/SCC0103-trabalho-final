@@ -7,12 +7,14 @@ import javax.swing.JLabel;
 import interpreter.Direction;
 import interpreter.Stmt;
 
+import java.awt.*;
+
 public class MOVEBlock extends BaseBlock {
 	
 	Direction direction = Direction.RIGHT;
 	
 	public MOVEBlock(BaseBlock father, BlockEditor editor, int posX, int posY, int depth, int listPos) {
-		super(father, editor, posX, posY, 450, 80, BaseBlock.Mode.STATEMENT, listPos, depth, "assets/MOVEBlock.png");
+		super(father, editor, posX, posY, 450, 80, BaseBlock.Mode.STATEMENT, listPos, depth, new Color(0x70, 0x52, 0x40));
   	  
 		JLabel text = new JLabel("Mova para");
 		text.setBounds(125, 15, 85, 15);

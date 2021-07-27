@@ -21,6 +21,7 @@ import static game.Resources.whiteRabbit;
 public class BaseLVL extends Background {
 
 	private BlockEditor editor;
+	private JPanel editorContainer;
 	private LevelArea levelArea;
 
 	public BaseLVL(int x, int y, int width, int height, int lvl) {

@@ -1,5 +1,6 @@
 package blocks;
 
+import java.awt.*;
 import java.util.stream.Collectors;
 
 import javax.swing.JButton;
@@ -16,7 +17,7 @@ public class LOOPBlock extends BaseBlock {
 	private int numIterations = 1;
 
 	public LOOPBlock(BaseBlock father, BlockEditor editor, int posX, int posY, int depth, int listPos) {
-  	  	super(father, editor, posX, posY, 450, 80, BaseBlock.Mode.STATEMENT, listPos, depth, "assets/LOOPBlock.png");
+  	  	super(father, editor, posX, posY, 450, 80, BaseBlock.Mode.STATEMENT, listPos, depth, new Color(0x68, 0x8E, 0x74));
 
 		JLabel text = new JLabel("Repete ");
 		text.setBounds(143, 15, 60, 15);

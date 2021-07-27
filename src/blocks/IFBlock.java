@@ -1,5 +1,6 @@
 package blocks;
 
+import java.awt.*;
 import java.util.stream.Collectors;
 
 import javax.swing.JButton;
@@ -16,7 +17,7 @@ public class IFBlock extends BaseBlock {
 	Expr.Binary.Operator operator = Expr.Binary.Operator.EQUAL;
 
 	public IFBlock(BaseBlock father, BlockEditor editor, int posX, int posY, int depth, int listPos) {
-		super(father, editor, posX, posY, 450, 80, BaseBlock.Mode.STATEMENT, listPos, depth, "assets/IFBlock.png");
+		super(father, editor, posX, posY, 450, 80, BaseBlock.Mode.STATEMENT, listPos, depth, new Color(0x14, 0x2e, 0x1c));
 		
 		JLabel text = new JLabel("Se ");
 		text.setBounds(15, 15, 25, 10);
@@ -44,7 +45,7 @@ public class IFBlock extends BaseBlock {
 		op.setBounds(190, 10, 120, 20);
 		add(op);
 		
-		JComboBox<String> st = new JComboBox<String>(new String[]{"uma parede", "nada", "um inimigo"});        
+		JComboBox<String> st = new JComboBox<String>(new String[]{"uma parede", "nada"});
 		st.addActionListener(event -> rightHandSideVar = (String)st.getSelectedItem());
 		st.setBounds(310, 10, 120, 20);
 		add(st);

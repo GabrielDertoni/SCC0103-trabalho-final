@@ -1,5 +1,6 @@
 package blocks;
 
+import java.awt.*;
 import java.util.stream.Collectors;
 
 import javax.swing.JButton;
@@ -13,7 +14,7 @@ public class BlockEditor extends BaseBlock {
 	int nBlocks;
 
 	public BlockEditor(int posX, int posY, int width, int height) {
-		super(null, null, posX, posY, width, height, BaseBlock.Mode.EDITOR, -1, 0, "assets/Editor.png");
+		super(null, null, posX, posY, width, height, BaseBlock.Mode.EDITOR, -1, 0, new Color(0x55, 0x55, 0x55));
 
 		//Area de manuseio dos blocos de programacao
 
@@ -31,7 +32,6 @@ public class BlockEditor extends BaseBlock {
   		//scrollPane.setPreferredSize(new Dimension(width, lblH));
 		//add(scrollPane);
 	}
-
 	private void addNewBlock(String blockName) {
 		nInstructions++;
 

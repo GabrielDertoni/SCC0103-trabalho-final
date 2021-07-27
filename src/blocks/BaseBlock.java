@@ -1,14 +1,13 @@
 package blocks;
 
-import menus.Background;
-
 import interpreter.Stmt;
 
-import java.awt.Dimension;
+import javax.swing.*;
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class BaseBlock extends Background {
+public abstract class BaseBlock extends JPanel {
 	
 	public enum Method {
 		ADD, REMOVE
@@ -31,9 +30,7 @@ public abstract class BaseBlock extends Background {
 
 	protected List<BaseBlock> blocks;
 
-    public BaseBlock(BaseBlock father, BlockEditor editor, int posX, int posY, int largura, int altura, Mode mode, int listPos, int depth, String imgName) {
-		super(imgName);
-		
+    public BaseBlock(BaseBlock father, BlockEditor editor, int posX, int posY, int largura, int altura, Mode mode, int listPos, int depth, Color color) {
 		blocks = new ArrayList<BaseBlock>();
 
 		this.father = father;
