@@ -4,11 +4,11 @@ import java.awt.*;
 import java.util.stream.Collectors;
 
 import javax.swing.*;
-import javax.swing.border.BevelBorder;
-import javax.swing.border.Border;
 
 import interpreter.Expr;
 import interpreter.Stmt;
+
+import static game.Resources.whiteRabbit;
 
 public class IFBlock extends BaseBlock {
 
@@ -18,20 +18,25 @@ public class IFBlock extends BaseBlock {
 
 	public IFBlock(BaseBlock father, BlockEditor editor, int posX, int posY, int depth, int listPos) {
 		super(father, editor, posX, posY, 450, 80, BaseBlock.Mode.STATEMENT, listPos, depth, new Color(0x14, 0x2e, 0x1c));
-		
+
+		ImageIcon btnBg = new ImageIcon("assets/botaoSemTextura.png");
+
 		JLabel text = new JLabel("Se ");
 		text.setBounds(15, 15, 25, 10);
+		text.setFont(whiteRabbit.deriveFont(13f));
 		text.setForeground(Color.WHITE);
 		add(text);
 
 		JComboBox<String> dir = new JComboBox<String>(new String[]{"a Direita", "Cima", "a Esquerda", "Baixo"});
 		dir.addActionListener(event -> leftHandSideVar = (String)dir.getSelectedItem());
+		dir.setFont(whiteRabbit.deriveFont(15f));
 		dir.setBounds(40, 10, 120, 20);
 		add(dir);
 				
-		text = new JLabel(" for ");
+		text = new JLabel("for");
 		text.setBounds(160, 15, 30, 10);
 		text.setForeground(Color.WHITE);
+		text.setFont(whiteRabbit.deriveFont(13f));
 		add(text);
 		
 		JComboBox<String> op = new JComboBox<String>(new String[]{"igual à", "diferente de"});
@@ -44,6 +49,7 @@ public class IFBlock extends BaseBlock {
 				operator = Expr.Binary.Operator.NOT_EQUAL;
 			}
 		 });
+		op.setFont(whiteRabbit.deriveFont(13f));
 		op.setBounds(190, 10, 120, 20);
 		add(op);
 		
@@ -59,19 +65,31 @@ public class IFBlock extends BaseBlock {
 			blockSelect = new JComboBox<String>(new String[]{"Move", "Interagir"});
 		}
 		blockSelect.setBounds(450 - 90 - 70, 80 - 25, 90, 20);
+		blockSelect.setFont(whiteRabbit.deriveFont(13f));
 		add(blockSelect);
 
-		JButton plusButton = new JButton("+");
+		Image resizedImage = btnBg.getImage().getScaledInstance(60, 20, Image.SCALE_SMOOTH);
+
+		JButton plusButton = new JButton("+", new ImageIcon(resizedImage));
 		plusButton.addActionListener(event -> addBlock(blockSelect.getSelectedItem().toString()));
 		plusButton.setBounds(450 - 65, 80 - 25, 60, 20);
+		plusButton.setFont(whiteRabbit.deriveFont(13f));
+		plusButton.setForeground(Color.WHITE);
+		plusButton.setHorizontalTextPosition(JLabel.CENTER);
+		plusButton.setVerticalTextPosition(JLabel.CENTER);
 		add(plusButton);
-		
-		JButton removeButton = new JButton("Remover");
+
+		resizedImage = btnBg.getImage().getScaledInstance(120, 20, Image.SCALE_SMOOTH);
+		JButton removeButton = new JButton("Remover", new ImageIcon(resizedImage));
 		removeButton.addActionListener(event -> {
 			editor.nBlocks += father.removeBlock(this);
 			editor.updateUI();
 		});
 		removeButton.setBounds(5, 80 - 25, 120, 20);
+		removeButton.setFont(whiteRabbit.deriveFont(13f));
+		removeButton.setForeground(Color.WHITE);
+		removeButton.setVerticalTextPosition(JLabel.CENTER);
+		removeButton.setHorizontalTextPosition(JLabel.CENTER);
 		add(removeButton);
 
 		setBorder(BorderFactory.createLineBorder(Color.BLACK, 4));
