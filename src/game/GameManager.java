@@ -23,7 +23,6 @@ public class GameManager implements OutputDevice {
 
         Resources.load();
         loadLevel(lvl);
-        System.out.println(level.compositor.collidesWith(player));
     }
 
     public void loadLevel(int level) {
@@ -48,12 +47,48 @@ public class GameManager implements OutputDevice {
         interpreter = new Interpreter(stmts, this);
     }
 
+    private void updateInterpreterVariables() {
+        Rectangle right = new Rectangle(player.x + Tile.SIZE, player.y);
+        Rectangle left  = new Rectangle(player.x - Tile.SIZE, player.y);
+        Rectangle up    = new Rectangle(player.x, player.y + Tile.SIZE);
+        Rectangle down  = new Rectangle(player.x, player.y - Tile.SIZE);
+
+        interpreter.setVariable(
+                "a Direita",
+                level.compositor.collidesWith(right) != null ?
+                    "uma parede" :
+                    "nada"
+        );
+
+        interpreter.setVariable(
+                "a Esquerda",
+                level.compositor.collidesWith(left) != null ?
+                        "uma parede" :
+                        "nada"
+        );
+
+        interpreter.setVariable(
+                "Cima",
+                level.compositor.collidesWith(up) != null ?
+                        "uma parede" :
+                        "nada"
+        );
+
+        interpreter.setVariable(
+                "Baixo",
+                level.compositor.collidesWith(down) != null ?
+                        "uma parede" :
+                        "nada"
+        );
+    }
+
     public void render(Graphics graphics) {
         level.render(graphics);
     }
 
     public void loop() {
         if (isRunning && interpreter != null && interpreter.isNotFinished()) {
+            updateInterpreterVariables();
             interpreter.advance();
         } else if (interpreter != null && !interpreter.isNotFinished()) {
             isRunning = false;

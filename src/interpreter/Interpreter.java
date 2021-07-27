@@ -45,6 +45,10 @@ public class Interpreter implements Stmt.Visitor<Iterator<Void>>, Expr.Visitor<O
         environment.addFunction(name, func);
     }
 
+    public void setVariable(String name, Object value) {
+        environment.setVariables(name, value);
+    }
+
     private void addBuiltinFunctions() {
         addBuiltinFunction("imprime", (env, args) -> {
             for (Object arg : args) {
