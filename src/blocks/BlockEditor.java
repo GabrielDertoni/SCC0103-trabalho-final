@@ -1,5 +1,6 @@
 package blocks;
 
+import java.awt.*;
 import java.util.stream.Collectors;
 
 import javax.swing.JButton;
@@ -26,10 +27,6 @@ public class BlockEditor extends BaseBlock {
 		add(plusButton);
 
 		plusButton.addActionListener(event -> addNewBlock(blockSelect.getSelectedItem().toString()));
-
-		//JScrollPane scrollPane = new JScrollPane(this);
-  		//scrollPane.setPreferredSize(new Dimension(width, lblH));
-		//add(scrollPane);
 	}
 
 	private void addNewBlock(String blockName) {

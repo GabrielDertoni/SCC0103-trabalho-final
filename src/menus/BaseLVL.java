@@ -83,7 +83,7 @@ public class BaseLVL extends Background {
 		btnGenPseudo.addActionListener(event -> {
 			PseudocodeGenerator gen = new PseudocodeGenerator();
 			String code = gen.fromStmts(((Stmt.Block)editor.toStmt()).stmts);
-			MyOptionPane myoptp = new MyOptionPane(code, 600, 300);
+			new MyOptionPane(code, 600, 300);
 		});
 		btnGenPseudo.setBounds(width-btn_w-30, height-250, btn_w, btn_h);
 		btnGenPseudo.setFont(whiteRabbit.deriveFont(20f));

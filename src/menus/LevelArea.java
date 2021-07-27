@@ -1,15 +1,12 @@
 package menus;
 
 import game.GameManager;
-import interpreter.Direction;
-import interpreter.PseudocodeGenerator;
 import interpreter.Stmt;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.Arrays;
 import java.util.List;
 
 public class LevelArea extends Background {
